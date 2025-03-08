@@ -25,9 +25,14 @@ export function AutocompleteLoading() {
       
       const data = await response.json();
       setIngredientList(data);
+      
+      // Transform ingredient data for Autocomplete
+      const ingredientSuggestions = data.map((ingredient: { name: string }) => ingredient.name);
+      setData(ingredientSuggestions);
     } catch (error) {
       console.error('Error fetching ingredient list:', error);
       setIngredientList([]);
+      setData([]);
     }
   };
 
@@ -35,17 +40,14 @@ export function AutocompleteLoading() {
     window.clearTimeout(timeoutRef.current);
     setValue(val);
     setData([]);
-    console.log(ingredientList);
-    
 
-    if (val.trim().length === 0 || val.includes('@')) {
+    if (val.trim().length === 0) {
       setLoading(false);
     } else {
       setLoading(true);
       timeoutRef.current = window.setTimeout(() => {
         fetchIngredientList(val);
         setLoading(false);
-        setData(['gmail.com', 'outlook.com', 'yahoo.com'].map((provider) => `${val}@${provider}`));
       }, 1000);
     }
   };
