@@ -1,12 +1,26 @@
 "use client";
 import { Autocomplete, Loader } from '@mantine/core';
 import { useRef, useState } from 'react';
+import axios from 'axios';
 
 export function AutocompleteLoading() {
   const timeoutRef = useRef<number>(-1);
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
+  const [ingredientList, setIngredientList] = useState<string[]>([]);
+
+  const fetchIngredientList = async (searchTerm: string) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/ingredient/get_ingredient_list', {
+        name: searchTerm
+      });
+      setIngredientList(response.data);
+    } catch (error) {
+      console.error('Error fetching ingredient list:', error);
+      setIngredientList([]);
+    }
+  };
 
   const handleChange = (val: string) => {
     window.clearTimeout(timeoutRef.current);
@@ -18,6 +32,7 @@ export function AutocompleteLoading() {
     } else {
       setLoading(true);
       timeoutRef.current = window.setTimeout(() => {
+        fetchIngredientList(val);
         setLoading(false);
         setData(['gmail.com', 'outlook.com', 'yahoo.com'].map((provider) => `${val}@${provider}`));
       }, 1000);
