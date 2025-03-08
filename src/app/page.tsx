@@ -10,39 +10,32 @@ import {
 
 export default function Home() {
   return (
-    <AppShell header={{ height: 60 }} padding="md">
-      {/* <AppShellHeader>
-        <Group className="h-full px-md">
-          <Image
-            className="dark:invert"
-            src="/next.svg"
-            alt="Next.js logo"
-            width={180}
-            height={38}
-            priority
-          />
-        </Group>
-      </AppShellHeader> */}
-      <AppShellMain>
-        <Title className="text-center mt-20">
-          <AutocompleteLoading />
-        </Title>
-        <TableScrollArea/>
-        <Text
-          className="text-center text-gray-700 dark:text-gray-300 max-w-[500px] mx-auto mt-xl"
-          ta="center"
-          size="lg"
-          maw={580}
-          mx="auto"
-          mt="xl"
-        >
-          This starter Next.js project includes a minimal setup for Mantine with
-          TailwindCSS. To get started edit page.tsx file.
-        </Text>
-        <div className="flex justify-center mt-2">
-          <ColorSchemesSwitcher />
+    <AppShell 
+      header={{ height: 60 }} 
+      padding="md" 
+      className="h-screen flex flex-col"
+    >
+      <AppShellMain className="flex flex-col justify-between h-full overflow-hidden">
+        <div className="flex flex-col items-center justify-center flex-grow">
+          <Title className="text-center mb-4">
+            <AutocompleteLoading />
+          </Title>
+          <TableScrollArea className="w-full max-w-4xl"/>
         </div>
         
+        <div className="flex flex-col items-center">
+          <Text
+            className="text-center text-gray-700 dark:text-gray-300 max-w-[500px] mb-4"
+            ta="center"
+            size="lg"
+          >
+            This starter Next.js project includes a minimal setup for Mantine with
+            TailwindCSS. To get started edit page.tsx file.
+          </Text>
+          <div className="flex justify-center">
+            <ColorSchemesSwitcher />
+          </div>
+        </div>
       </AppShellMain>
     </AppShell>
   );
