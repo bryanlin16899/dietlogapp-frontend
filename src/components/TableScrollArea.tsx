@@ -1,170 +1,56 @@
 "use client";
 import { ScrollArea, Table } from '@mantine/core';
 import cx from 'clsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classes from './TableScrollArea.module.css';
-
-const data = [
-  {
-    name: 'Athena Weissnat',
-    company: 'Little - Rippin',
-    email: 'Elouise.Prohaska@yahoo.com',
-  },
-  {
-    name: 'Deangelo Runolfsson',
-    company: 'Greenfelder - Krajcik',
-    email: 'Kadin_Trantow87@yahoo.com',
-  },
-  {
-    name: 'Danny Carter',
-    company: 'Kohler and Sons',
-    email: 'Marina3@hotmail.com',
-  },
-  {
-    name: 'Trace Tremblay PhD',
-    company: 'Crona, Aufderhar and Senger',
-    email: 'Antonina.Pouros@yahoo.com',
-  },
-  {
-    name: 'Derek Dibbert',
-    company: 'Gottlieb LLC',
-    email: 'Abagail29@hotmail.com',
-  },
-  {
-    name: 'Viola Bernhard',
-    company: 'Funk, Rohan and Kreiger',
-    email: 'Jamie23@hotmail.com',
-  },
-  {
-    name: 'Austin Jacobi',
-    company: 'Botsford - Corwin',
-    email: 'Genesis42@yahoo.com',
-  },
-  {
-    name: 'Hershel Mosciski',
-    company: 'Okuneva, Farrell and Kilback',
-    email: 'Idella.Stehr28@yahoo.com',
-  },
-  {
-    name: 'Mylene Ebert',
-    company: 'Kirlin and Sons',
-    email: 'Hildegard17@hotmail.com',
-  },
-  {
-    name: 'Lou Trantow',
-    company: 'Parisian - Lemke',
-    email: 'Hillard.Barrows1@hotmail.com',
-  },
-  {
-    name: 'Dariana Weimann',
-    company: 'Schowalter - Donnelly',
-    email: 'Colleen80@gmail.com',
-  },
-  {
-    name: 'Dr. Christy Herman',
-    company: 'VonRueden - Labadie',
-    email: 'Lilyan98@gmail.com',
-  },
-  {
-    name: 'Katelin Schuster',
-    company: 'Jacobson - Smitham',
-    email: 'Erich_Brekke76@gmail.com',
-  },
-  {
-    name: 'Melyna Macejkovic',
-    company: 'Schuster LLC',
-    email: 'Kylee4@yahoo.com',
-  },
-  {
-    name: 'Pinkie Rice',
-    company: 'Wolf, Trantow and Zulauf',
-    email: 'Fiona.Kutch@hotmail.com',
-  },
-  {
-    name: 'Brain Kreiger',
-    company: 'Lueilwitz Group',
-    email: 'Rico98@hotmail.com',
-  },
-  {
-    name: 'Myrtice McGlynn',
-    company: 'Feest, Beahan and Johnston',
-    email: 'Julius_Tremblay29@hotmail.com',
-  },
-  {
-    name: 'Chester Carter PhD',
-    company: 'Gaylord - Labadie',
-    email: 'Jensen_McKenzie@hotmail.com',
-  },
-  {
-    name: 'Mrs. Ericka Bahringer',
-    company: 'Conn and Sons',
-    email: 'Lisandro56@hotmail.com',
-  },
-  {
-    name: 'Korbin Buckridge Sr.',
-    company: 'Mraz, Rolfson and Predovic',
-    email: 'Leatha9@yahoo.com',
-  },
-  {
-    name: 'Dr. Daisy Becker',
-    company: 'Carter - Mueller',
-    email: 'Keaton_Sanford27@gmail.com',
-  },
-  {
-    name: 'Derrick Buckridge Sr.',
-    company: "O'Reilly LLC",
-    email: 'Kay83@yahoo.com',
-  },
-  {
-    name: 'Ernie Hickle',
-    company: "Terry, O'Reilly and Farrell",
-    email: 'Americo.Leffler89@gmail.com',
-  },
-  {
-    name: 'Jewell Littel',
-    company: "O'Connell Group",
-    email: 'Hester.Hettinger9@hotmail.com',
-  },
-  {
-    name: 'Cyrus Howell',
-    company: 'Windler, Yost and Fadel',
-    email: 'Rick0@gmail.com',
-  },
-  {
-    name: 'Dr. Orie Jast',
-    company: 'Hilll - Pacocha',
-    email: 'Anna56@hotmail.com',
-  },
-  {
-    name: 'Luisa Murphy',
-    company: 'Turner and Sons',
-    email: 'Christine32@yahoo.com',
-  },
-  {
-    name: 'Lea Witting',
-    company: 'Hodkiewicz Inc',
-    email: 'Ford_Kovacek4@yahoo.com',
-  },
-  {
-    name: 'Kelli Runolfsson',
-    company: "Feest - O'Hara",
-    email: 'Dimitri87@yahoo.com',
-  },
-  {
-    name: 'Brook Gaylord',
-    company: 'Conn, Huel and Nader',
-    email: 'Immanuel77@gmail.com',
-  },
-];
 
 export function TableScrollArea() {
   const [scrolled, setScrolled] = useState(false);
+  const [dietLog, setDietLog] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const rows = data.map((row) => (
-    <Table.Tr key={row.name}>
-      <Table.Td>{row.name}</Table.Td>
-      <Table.Td>{row.email}</Table.Td>
-      <Table.Td>{row.company}</Table.Td>
+  useEffect(() => {
+    const fetchDietLog = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/diet/get_diet_log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            date: '2025-03-08',
+            name: 'Bryan'
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setDietLog(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching diet log:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchDietLog();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const rows = dietLog?.intake_foods?.map((food: any) => (
+    <Table.Tr key={food.name}>
+      <Table.Td>{food.name}</Table.Td>
+      <Table.Td>{food.calories}</Table.Td>
+      <Table.Td>{food.protein}</Table.Td>
+      <Table.Td>{food.fat}</Table.Td>
+      <Table.Td>{food.carbohydrates}</Table.Td>
+      <Table.Td>{food.weight}</Table.Td>
     </Table.Tr>
   ));
 
@@ -173,9 +59,12 @@ export function TableScrollArea() {
       <Table miw={700}>
         <Table.Thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <Table.Tr>
-            <Table.Th>Name</Table.Th>
-            <Table.Th>Email</Table.Th>
-            <Table.Th>Company</Table.Th>
+            <Table.Th>食物名稱</Table.Th>
+            <Table.Th>卡路里</Table.Th>
+            <Table.Th>蛋白質</Table.Th>
+            <Table.Th>脂肪</Table.Th>
+            <Table.Th>碳水化合物</Table.Th>
+            <Table.Th>重量(g)</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
