@@ -35,6 +35,8 @@ export function AutocompleteLoading() {
     window.clearTimeout(timeoutRef.current);
     setValue(val);
     setData([]);
+    console.log(ingredientList);
+    
 
     if (val.trim().length === 0 || val.includes('@')) {
       setLoading(false);
