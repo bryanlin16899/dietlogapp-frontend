@@ -1,7 +1,7 @@
 "use client";
 import { ScrollArea, Table } from '@mantine/core';
 import cx from 'clsx';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './TableScrollArea.module.css';
 
 export function TableScrollArea() {
@@ -28,6 +28,7 @@ export function TableScrollArea() {
         }
 
         const data = await response.json();
+        
         setDietLog(data);
         setLoading(false);
       } catch (error) {
@@ -44,7 +45,7 @@ export function TableScrollArea() {
   }
 
   const rows = dietLog?.intake_foods?.map((food: any) => (
-    <Table.Tr key={food.name}>
+    <Table.Tr key={food.id}>
       <Table.Td>{food.name}</Table.Td>
       <Table.Td>{food.calories}</Table.Td>
       <Table.Td>{food.protein}</Table.Td>

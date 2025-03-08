@@ -1,5 +1,6 @@
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
+import { TableScrollArea } from "@/components/TableScrollArea";
 import {
   AppShell,
   AppShellMain,
@@ -26,6 +27,7 @@ export default function Home() {
         <Title className="text-center mt-20">
           <AutocompleteLoading />
         </Title>
+        <TableScrollArea/>
         <Text
           className="text-center text-gray-700 dark:text-gray-300 max-w-[500px] mx-auto mt-xl"
           ta="center"
@@ -37,8 +39,7 @@ export default function Home() {
           This starter Next.js project includes a minimal setup for Mantine with
           TailwindCSS. To get started edit page.tsx file.
         </Text>
-
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-2">
           <ColorSchemesSwitcher />
         </div>
         

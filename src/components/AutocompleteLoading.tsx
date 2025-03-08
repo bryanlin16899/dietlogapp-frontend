@@ -27,7 +27,7 @@ export function AutocompleteLoading() {
       setIngredientList(data);
       
       // Transform ingredient data for Autocomplete
-      const ingredientSuggestions = data.map((ingredient: { name: string }) => ingredient.name);
+      const ingredientSuggestions = data.ingredients.map((ingredient: { name: string }) => ingredient.name);
       setData(ingredientSuggestions);
     } catch (error) {
       console.error('Error fetching ingredient list:', error);
