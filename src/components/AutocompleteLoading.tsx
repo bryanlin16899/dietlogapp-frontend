@@ -1,7 +1,6 @@
 "use client";
 import { Autocomplete, Loader } from '@mantine/core';
 import { useRef, useState } from 'react';
-import axios from 'axios';
 
 export function AutocompleteLoading() {
   const timeoutRef = useRef<number>(-1);
@@ -12,10 +11,20 @@ export function AutocompleteLoading() {
 
   const fetchIngredientList = async (searchTerm: string) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/ingredient/get_ingredient_list', {
-        name: searchTerm
+      const response = await fetch('http://127.0.0.1:8000/ingredient/get_ingredient_list', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: searchTerm })
       });
-      setIngredientList(response.data);
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      const data = await response.json();
+      setIngredientList(data);
     } catch (error) {
       console.error('Error fetching ingredient list:', error);
       setIngredientList([]);
