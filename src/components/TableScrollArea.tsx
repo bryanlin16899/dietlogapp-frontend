@@ -1,7 +1,7 @@
 "use client";
 import { ActionIcon, Group, ScrollArea, Table } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconTrash } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useEffect, useState } from 'react';
 import classes from './TableScrollArea.module.css';
@@ -59,9 +59,9 @@ export function TableScrollArea() {
           <Table.Td>{food.weight}</Table.Td>
           <Table.Td>
             <Group gap={0} justify="flex-end">
-              <ActionIcon variant="subtle" color="gray">
+              {/* <ActionIcon variant="subtle" color="gray">
                 <IconPencil size={16} stroke={1.5} />
-              </ActionIcon>
+              </ActionIcon> */}
               <ActionIcon variant="subtle" color="red">
                 <IconTrash size={16} stroke={1.5} />
               </ActionIcon>
@@ -75,7 +75,7 @@ export function TableScrollArea() {
   return (
     <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
       <Table 
-        miw={700} 
+        miw={400} 
         fz={isMobile ? 'xs' : 'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
       >
