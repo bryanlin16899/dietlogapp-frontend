@@ -1,11 +1,11 @@
 "use client";
 import { ActionIcon, Group, ScrollArea, Table } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useEffect, useState } from 'react';
 import classes from './TableScrollArea.module.css';
-import { notifications } from '@mantine/notifications';
 
 export function TableScrollArea() {
   const [scrolled, setScrolled] = useState(false);
@@ -82,6 +82,7 @@ export function TableScrollArea() {
       setDietLog(updatedData);
 
       notifications.show({
+        position: 'top-right',
         title: 'Intake Removed',
         message: 'Food item successfully deleted',
         color: 'green',

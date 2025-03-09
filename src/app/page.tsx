@@ -20,7 +20,7 @@ export default function Home() {
           <Title className="text-center mb-4">
             <AutocompleteLoading />
           </Title>
-          <TableScrollArea className="w-full max-w-4xl"/>
+          <TableScrollArea />
         </div>
         
         <div className="flex flex-col items-center">
@@ -29,8 +29,8 @@ export default function Home() {
             ta="center"
             size="lg"
           >
-            This starter Next.js project includes a minimal setup for Mantine with
-            TailwindCSS. To get started edit page.tsx file.
+            Log you diet, mantain your diet and keep track of your diet.
+            you can search for the food you eat and log it.
           </Text>
           <div className="flex justify-center">
             <ColorSchemesSwitcher />
