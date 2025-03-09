@@ -1,8 +1,9 @@
 "use client";
 import { Autocomplete, Button, Flex, Loader, NumberInput } from '@mantine/core';
 import { useRef, useState } from 'react';
+import { notifications } from '@mantine/notifications';
 
-export function AutocompleteLoading() {
+export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () => void }) {
   const timeoutRef = useRef<number>(-1);
   const [value, setValue] = useState('');
   const [weight, setWeight] = useState<string | number>('');
@@ -39,7 +40,11 @@ export function AutocompleteLoading() {
 
   const handleIntake = async () => {
     if (!value || !weight) {
-      alert('Please enter both food name and weight');
+      notifications.show({
+        title: 'Error',
+        message: 'Please enter both food name and weight',
+        color: 'red',
+      });
       return;
     }
 
@@ -63,12 +68,27 @@ export function AutocompleteLoading() {
       const data = await response.json();
       console.log('Intake recorded:', data);
       
+      // Trigger callback to refresh diet log
+      if (onIntakeSuccess) {
+        onIntakeSuccess();
+      }
+      
       // Reset fields after successful intake
       setValue('');
       setWeight('');
+
+      notifications.show({
+        title: 'Success',
+        message: 'Food intake recorded',
+        color: 'green',
+      });
     } catch (error) {
       console.error('Error recording intake:', error);
-      alert('Failed to record intake');
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to record intake',
+        color: 'red',
+      });
     }
   };
 

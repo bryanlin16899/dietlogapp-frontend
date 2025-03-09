@@ -7,11 +7,19 @@ import cx from 'clsx';
 import { useEffect, useState } from 'react';
 import classes from './TableScrollArea.module.css';
 
-export function TableScrollArea() {
+import { forwardRef, useImperativeHandle } from 'react';
+
+export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props, ref) => {
   const [scrolled, setScrolled] = useState(false);
   const [dietLog, setDietLog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  useImperativeHandle(ref, () => ({
+    refreshDietLog: () => {
+      fetchDietLog();
+    }
+  }));
 
   useEffect(() => {
     const fetchDietLog = async () => {

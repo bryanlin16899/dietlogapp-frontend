@@ -1,3 +1,4 @@
+"use client";
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
 import { TableScrollArea } from "@/components/TableScrollArea";
@@ -7,8 +8,15 @@ import {
   Text,
   Title
 } from "@mantine/core";
+import { useRef } from "react";
 
 export default function Home() {
+  const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
+
+  const handleIntakeSuccess = () => {
+    tableScrollAreaRef.current?.refreshDietLog();
+  };
+
   return (
     <AppShell 
       header={{ height: 60 }} 
@@ -18,9 +26,9 @@ export default function Home() {
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden">
         <div className="flex flex-col items-center justify-center flex-grow">
           <Title className="text-center mb-4">
-            <AutocompleteLoading />
+            <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess} />
           </Title>
-          <TableScrollArea />
+          <TableScrollArea ref={tableScrollAreaRef} />
         </div>
         
         <div className="flex flex-col items-center">
