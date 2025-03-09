@@ -21,7 +21,14 @@ export const fetchIngredientList = async (searchTerm: string) => {
   }
 };
 
-export const recordDietIntake = async (userName: string, foodName: string, weight: number) => {
+export type UnitType = 'grams' | 'serving';
+
+export const recordDietIntake = async (
+  userName: string, 
+  foodName: string, 
+  weight: number, 
+  unitType: UnitType = 'grams'
+) => {
   try {
     const response = await fetch(`${API_BASE_URL}/diet/intake`, {
       method: 'POST',
@@ -31,7 +38,8 @@ export const recordDietIntake = async (userName: string, foodName: string, weigh
       body: JSON.stringify({
         user_name: userName,
         food_name: foodName,
-        weight: weight
+        weight: weight,
+        unit_type: unitType
       })
     });
     

@@ -1,6 +1,6 @@
 "use client";
-import { fetchIngredientList, recordDietIntake } from '@/lib/api';
-import { Autocomplete, Button, Flex, Loader, NumberInput } from '@mantine/core';
+import { fetchIngredientList, recordDietIntake, UnitType } from '@/lib/api';
+import { Autocomplete, Button, Flex, Loader, NumberInput, Select } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useRef, useState } from 'react';
 
@@ -8,6 +8,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   const timeoutRef = useRef<number>(-1);
   const [value, setValue] = useState('');
   const [weight, setWeight] = useState<string | number>('');
+  const [unitType, setUnitType] = useState<UnitType>('grams');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
   const [ingredientList, setIngredientList] = useState<string[]>([]);
@@ -37,7 +38,12 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     }
 
     try {
-      const data = await recordDietIntake('Bryan', value, weight ? Number(weight) : 100);
+      const data = await recordDietIntake(
+        'Bryan', 
+        value, 
+        weight ? Number(weight) : 100, 
+        unitType
+      );
       console.log('Intake recorded:', data);
       
       // Trigger callback to refresh diet log
@@ -92,9 +98,18 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
       <NumberInput
         value={weight}
         onChange={(val) => setWeight(val)}
-        label="Weight (g)"
-        placeholder="Default 100g"
+        label="Weight"
+        placeholder="Default 100"
         min={0}
+      />
+      <Select
+        label="Unit Type"
+        value={unitType}
+        onChange={(val) => setUnitType(val as UnitType)}
+        data={[
+          { value: 'grams', label: 'Grams' },
+          { value: 'serving', label: 'Serving' }
+        ]}
       />
       <Button onClick={handleIntake}>
         Record Intake
