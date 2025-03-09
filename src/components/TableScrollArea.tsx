@@ -5,6 +5,7 @@ import { IconTrash } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useEffect, useState } from 'react';
 import classes from './TableScrollArea.module.css';
+import { notifications } from '@mantine/notifications';
 
 export function TableScrollArea() {
   const [scrolled, setScrolled] = useState(false);
@@ -47,6 +48,54 @@ export function TableScrollArea() {
     return <div>Loading...</div>;
   }
 
+  const handleRemoveIntake = async (foodId: number) => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/diet/remove_intake_by_id', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: foodId })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      // Refresh diet log after successful removal
+      const updatedResponse = await fetch('http://127.0.0.1:8000/diet/get_diet_log', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: new Date().toISOString().split('T')[0],
+          name: 'Bryan'
+        })
+      });
+
+      if (!updatedResponse.ok) {
+        throw new Error('Failed to fetch updated diet log');
+      }
+
+      const updatedData = await updatedResponse.json();
+      setDietLog(updatedData);
+
+      notifications.show({
+        title: 'Intake Removed',
+        message: 'Food item successfully deleted',
+        color: 'green',
+      });
+    } catch (error) {
+      console.error('Error removing intake:', error);
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to remove food item',
+        color: 'red',
+      });
+    }
+  };
+
   const rows = dietLog?.intake_foods?.map((food: any) => (
     <Table.Tr key={food.id}>
       <Table.Td>{food.name}</Table.Td>
@@ -62,7 +111,11 @@ export function TableScrollArea() {
               {/* <ActionIcon variant="subtle" color="gray">
                 <IconPencil size={16} stroke={1.5} />
               </ActionIcon> */}
-              <ActionIcon variant="subtle" color="red">
+              <ActionIcon 
+                variant="subtle" 
+                color="red" 
+                onClick={() => handleRemoveIntake(food.id)}
+              >
                 <IconTrash size={16} stroke={1.5} />
               </ActionIcon>
             </Group>
