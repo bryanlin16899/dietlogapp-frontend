@@ -21,12 +21,12 @@ export const fetchIngredientList = async (searchTerm: string) => {
   }
 };
 
-export type UnitType = 'grams' | 'serving';
+export type UnitType = 'grams' | 'servings';
 
 export const recordDietIntake = async (
   userName: string, 
   foodName: string, 
-  weight: number, 
+  quantity: number, 
   unitType: UnitType = 'grams'
 ) => {
   try {
@@ -38,7 +38,7 @@ export const recordDietIntake = async (
       body: JSON.stringify({
         user_name: userName,
         food_name: foodName,
-        weight: weight,
+        quantity: quantity,
         unit_type: unitType
       })
     });

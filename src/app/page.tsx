@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <AppShell 
-      header={{ height: 60 }} 
+      header={{ height: 100 }} 
       padding="md" 
       className="h-screen flex flex-col"
     >

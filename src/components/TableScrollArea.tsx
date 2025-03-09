@@ -7,8 +7,8 @@ import cx from 'clsx';
 import { useEffect, useState } from 'react';
 import classes from './TableScrollArea.module.css';
 
-import { forwardRef, useImperativeHandle } from 'react';
 import { fetchDietLog, removeIntakeById } from '@/lib/api';
+import { forwardRef, useImperativeHandle } from 'react';
 
 export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props, ref) => {
   const [scrolled, setScrolled] = useState(false);
@@ -72,7 +72,7 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
           <Table.Td>{food.protein}</Table.Td>
           <Table.Td>{food.fat}</Table.Td>
           <Table.Td>{food.carbohydrates}</Table.Td>
-          <Table.Td>{food.weight}</Table.Td>
+          <Table.Td>{food.quantity} {food.unit_type == 'grams' ? '(g)' : '(serving)'}</Table.Td>
           <Table.Td>
             <Group gap={0} justify="flex-end">
               {/* <ActionIcon variant="subtle" color="gray">
@@ -108,7 +108,7 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
                 <Table.Th>蛋白質</Table.Th>
                 <Table.Th>脂肪</Table.Th>
                 <Table.Th>碳水化合物</Table.Th>
-                <Table.Th>重量(g)</Table.Th>
+                <Table.Th>份量</Table.Th>
                 <Table.Th>操作</Table.Th>
               </>
             )}
