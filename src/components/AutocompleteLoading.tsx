@@ -2,6 +2,7 @@
 import { Autocomplete, Button, Flex, Loader, NumberInput } from '@mantine/core';
 import { useRef, useState } from 'react';
 import { notifications } from '@mantine/notifications';
+import { fetchIngredientList, recordDietIntake } from '@/lib/api';
 
 export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () => void }) {
   const timeoutRef = useRef<number>(-1);
@@ -11,28 +12,15 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   const [data, setData] = useState<string[]>([]);
   const [ingredientList, setIngredientList] = useState<string[]>([]);
 
-  const fetchIngredientList = async (searchTerm: string) => {
+  const handleFetchIngredientList = async (searchTerm: string) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/ingredient/get_ingredient_list', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: searchTerm })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      
-      const data = await response.json();
+      const data = await fetchIngredientList(searchTerm);
       setIngredientList(data);
       
       // Transform ingredient data for Autocomplete
       const ingredientSuggestions = data.ingredients.map((ingredient: { name: string }) => ingredient.name);
       setData(ingredientSuggestions);
     } catch (error) {
-      console.error('Error fetching ingredient list:', error);
       setIngredientList([]);
       setData([]);
     }
@@ -49,23 +37,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/diet/intake', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_name: 'Bryan',
-          food_name: value,
-          weight: Number(weight)
-        })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      
-      const data = await response.json();
+      const data = await recordDietIntake('Bryan', value, Number(weight));
       console.log('Intake recorded:', data);
       
       // Trigger callback to refresh diet log
@@ -83,7 +55,6 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
         color: 'green',
       });
     } catch (error) {
-      console.error('Error recording intake:', error);
       notifications.show({
         title: 'Error',
         message: 'Failed to record intake',

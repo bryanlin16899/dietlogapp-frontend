@@ -1,0 +1,92 @@
+export const API_BASE_URL = 'http://127.0.0.1:8000';
+
+export const fetchIngredientList = async (searchTerm: string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ingredient/get_ingredient_list`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: searchTerm })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching ingredient list:', error);
+    throw error;
+  }
+};
+
+export const recordDietIntake = async (userName: string, foodName: string, weight: number) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/diet/intake`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_name: userName,
+        food_name: foodName,
+        weight: weight
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error recording intake:', error);
+    throw error;
+  }
+};
+
+export const fetchDietLog = async (userName: string, date: string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/diet/get_diet_log`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        date: date,
+        name: userName
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching diet log:', error);
+    throw error;
+  }
+};
+
+export const removeIntakeById = async (foodId: number) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/diet/remove_intake_by_id`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: foodId })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error removing intake:', error);
+    throw error;
+  }
+};

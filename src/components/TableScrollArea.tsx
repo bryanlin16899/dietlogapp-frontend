@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import classes from './TableScrollArea.module.css';
 
 import { forwardRef, useImperativeHandle } from 'react';
+import { fetchDietLog, removeIntakeById } from '@/lib/api';
 
 export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props, ref) => {
   const [scrolled, setScrolled] = useState(false);
@@ -15,41 +16,24 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const fetchDietLog = async () => {
+  const handleFetchDietLog = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/diet/get_diet_log', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          date: new Date().toISOString().split('T')[0],
-          name: 'Bryan'
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      
+      const data = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
       setDietLog(data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching diet log:', error);
       setLoading(false);
     }
   };
 
   useImperativeHandle(ref, () => ({
     refreshDietLog: () => {
-      fetchDietLog();
+      handleFetchDietLog();
     }
   }));
 
   useEffect(() => {
-    fetchDietLog();
+    handleFetchDietLog();
   }, []);
 
   if (loading) {
@@ -58,35 +42,10 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
 
   const handleRemoveIntake = async (foodId: number) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/diet/remove_intake_by_id', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: foodId })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      await removeIntakeById(foodId);
       
       // Refresh diet log after successful removal
-      const updatedResponse = await fetch('http://127.0.0.1:8000/diet/get_diet_log', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          date: new Date().toISOString().split('T')[0],
-          name: 'Bryan'
-        })
-      });
-
-      if (!updatedResponse.ok) {
-        throw new Error('Failed to fetch updated diet log');
-      }
-
-      const updatedData = await updatedResponse.json();
+      const updatedData = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
       setDietLog(updatedData);
 
       notifications.show({
@@ -96,7 +55,6 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
         color: 'green',
       });
     } catch (error) {
-      console.error('Error removing intake:', error);
       notifications.show({
         title: 'Error',
         message: 'Failed to remove food item',
