@@ -1,10 +1,11 @@
 "use client";
-import { Autocomplete, Loader } from '@mantine/core';
+import { Autocomplete, Button, Flex, Loader, NumberInput } from '@mantine/core';
 import { useRef, useState } from 'react';
 
 export function AutocompleteLoading() {
   const timeoutRef = useRef<number>(-1);
   const [value, setValue] = useState('');
+  const [weight, setWeight] = useState<string | number>('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
   const [ingredientList, setIngredientList] = useState<string[]>([]);
@@ -36,6 +37,41 @@ export function AutocompleteLoading() {
     }
   };
 
+  const handleIntake = async () => {
+    if (!value || !weight) {
+      alert('Please enter both food name and weight');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/diet/intake', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_name: 'Bryan',
+          food_name: value,
+          weight: Number(weight)
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      const data = await response.json();
+      console.log('Intake recorded:', data);
+      
+      // Reset fields after successful intake
+      setValue('');
+      setWeight('');
+    } catch (error) {
+      console.error('Error recording intake:', error);
+      alert('Failed to record intake');
+    }
+  };
+
   const handleChange = (val: string) => {
     window.clearTimeout(timeoutRef.current);
     setValue(val);
@@ -52,13 +88,25 @@ export function AutocompleteLoading() {
     }
   };
   return (
-    <Autocomplete
-      value={value}
-      data={data}
-      onChange={handleChange}
-      rightSection={loading ? <Loader size={16} /> : null}
-      label="What was the last thing you ate?"
-      placeholder="Apple, Fried rice, Pizza..."
-    />
+    <Flex direction="column" gap="md">
+      <Autocomplete
+        value={value}
+        data={data}
+        onChange={handleChange}
+        rightSection={loading ? <Loader size={16} /> : null}
+        label="What was the last thing you ate?"
+        placeholder="Apple, Fried rice, Pizza..."
+      />
+      <NumberInput
+        value={weight}
+        onChange={(val) => setWeight(val)}
+        label="Weight (g)"
+        placeholder="Enter weight in grams"
+        min={0}
+      />
+      <Button onClick={handleIntake}>
+        Record Intake
+      </Button>
+    </Flex>
   );
 }
