@@ -3,27 +3,11 @@ import { Center, Group, Paper, RingProgress, SimpleGrid, Text } from '@mantine/c
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
-export function StatsRing() {
-  const [dietStats, setDietStats] = useState({
-    calories: 0,
-    consumption: 0,
-  });
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const data = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
-        setDietStats({
-          calories: data.calories || 0,
-          consumption: data.consumption || 0
-        });
-      } catch (error) {
-        console.error('Failed to fetch diet stats', error);
-      }
-    };
-
-    fetchStats();
-  }, []);
+export function StatsRing({ dietLog }: { dietLog: any }) {
+  const dietStats = {
+    calories: dietLog?.calories || 0,
+    consumption: dietLog?.consumption || 0,
+  };
 
   const calculateProgress = (current: number, total: number) => {
     return total > 0 ? Math.min(Math.round((current / total) * 100), 100) : 0;

@@ -10,35 +10,16 @@ import classes from './TableScrollArea.module.css';
 import { fetchDietLog, removeIntakeById } from '@/lib/api';
 import { forwardRef, useImperativeHandle } from 'react';
 
-export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props, ref) => {
-  const [scrolled, setScrolled] = useState(false);
-  const [dietLog, setDietLog] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const isMobile = useMediaQuery('(max-width: 768px)');
+export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { dietLog: any }>(
+  ({ dietLog }, ref) => {
+    const [scrolled, setScrolled] = useState(false);
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const handleFetchDietLog = async () => {
-    try {
-      const data = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
-      setDietLog(data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  };
-
-  useImperativeHandle(ref, () => ({
-    refreshDietLog: () => {
-      handleFetchDietLog();
-    }
-  }));
-
-  useEffect(() => {
-    handleFetchDietLog();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    useImperativeHandle(ref, () => ({
+      refreshDietLog: () => {
+        // This method is now a no-op since diet log is managed in parent
+      }
+    }));
 
   const handleRemoveIntake = async (foodId: number) => {
     try {
@@ -75,13 +56,12 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
           <Table.Td>{food.quantity} {food.unit_type == 'grams' ? '(g)' : '(serving)'}</Table.Td>
           <Table.Td>
             <Group gap={0} justify="flex-end">
-              {/* <ActionIcon variant="subtle" color="gray">
-                <IconPencil size={16} stroke={1.5} />
-              </ActionIcon> */}
               <ActionIcon 
                 variant="subtle" 
                 color="red" 
-                onClick={() => handleRemoveIntake(food.id)}
+                onClick={() => {
+                  // Emit event to parent to handle removal
+                }}
               >
                 <IconTrash size={16} stroke={1.5} />
               </ActionIcon>

@@ -3,20 +3,42 @@ import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
 import { StatsRing } from "@/components/Stats";
 import { TableScrollArea } from "@/components/TableScrollArea";
+import { fetchDietLog } from "@/lib/api";
 import {
   AppShell,
   AppShellMain,
   Text,
   Title
 } from "@mantine/core";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
+  const [dietLog, setDietLog] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
 
-  const handleIntakeSuccess = () => {
-    tableScrollAreaRef.current?.refreshDietLog();
+  const handleFetchDietLog = async () => {
+    try {
+      const data = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
+      setDietLog(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to fetch diet log', error);
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    handleFetchDietLog();
+  }, []);
+
+  const handleIntakeSuccess = () => {
+    handleFetchDietLog();
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <AppShell 
@@ -29,11 +51,14 @@ export default function Home() {
           <Title className="text-center mb-4">
             <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess} />
           </Title>
-          <TableScrollArea ref={tableScrollAreaRef} />
+          <TableScrollArea 
+            ref={tableScrollAreaRef} 
+            dietLog={dietLog} 
+          />
         </div>
 
         <div className="flex flex-col items-center justify-center flex-grow">
-          <StatsRing />
+          <StatsRing dietLog={dietLog} />
         </div>
         
         <div className="flex flex-col items-center">
