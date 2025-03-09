@@ -15,6 +15,33 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
+  const fetchDietLog = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/diet/get_diet_log', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: new Date().toISOString().split('T')[0],
+          name: 'Bryan'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      
+      setDietLog(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching diet log:', error);
+      setLoading(false);
+    }
+  };
+
   useImperativeHandle(ref, () => ({
     refreshDietLog: () => {
       fetchDietLog();
@@ -22,33 +49,6 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
   }));
 
   useEffect(() => {
-    const fetchDietLog = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/diet/get_diet_log', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            date: new Date().toISOString().split('T')[0],
-            name: 'Bryan'
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        
-        setDietLog(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching diet log:', error);
-        setLoading(false);
-      }
-    };
-
     fetchDietLog();
   }, []);
 
@@ -160,4 +160,4 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }>((props
       </Table>
     </ScrollArea>
   );
-}
+});
