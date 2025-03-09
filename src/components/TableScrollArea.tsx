@@ -1,5 +1,6 @@
 "use client";
-import { ActionIcon, Group, ScrollArea, Table, useMediaQuery } from '@mantine/core';
+import { ActionIcon, Group, ScrollArea, Table } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -20,7 +21,7 @@ export function TableScrollArea() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            date: '2025-03-08',
+            date: new Date().toISOString().split('T')[0],
             name: 'Bryan'
           })
         });
@@ -49,9 +50,9 @@ export function TableScrollArea() {
   const rows = dietLog?.intake_foods?.map((food: any) => (
     <Table.Tr key={food.id}>
       <Table.Td>{food.name}</Table.Td>
+      <Table.Td>{food.calories}</Table.Td>
       {!isMobile && (
         <>
-          <Table.Td>{food.calories}</Table.Td>
           <Table.Td>{food.protein}</Table.Td>
           <Table.Td>{food.fat}</Table.Td>
           <Table.Td>{food.carbohydrates}</Table.Td>
@@ -77,9 +78,9 @@ export function TableScrollArea() {
         <Table.Thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <Table.Tr>
             <Table.Th>食物名稱</Table.Th>
+            <Table.Th>卡路里</Table.Th>
             {!isMobile && (
               <>
-                <Table.Th>卡路里</Table.Th>
                 <Table.Th>蛋白質</Table.Th>
                 <Table.Th>脂肪</Table.Th>
                 <Table.Th>碳水化合物</Table.Th>
