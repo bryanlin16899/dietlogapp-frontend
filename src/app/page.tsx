@@ -1,6 +1,7 @@
 "use client";
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
+import { StatsRing } from "@/components/Stats";
 import { TableScrollArea } from "@/components/TableScrollArea";
 import {
   AppShell,
@@ -23,12 +24,16 @@ export default function Home() {
       padding="md" 
       className="h-screen flex flex-col"
     >
-      <AppShellMain className="flex flex-col justify-between h-full overflow-hidden">
+      <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow">
           <Title className="text-center mb-4">
             <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess} />
           </Title>
           <TableScrollArea ref={tableScrollAreaRef} />
+        </div>
+
+        <div className="flex flex-col items-center justify-center flex-grow">
+          <StatsRing />
         </div>
         
         <div className="flex flex-col items-center">
