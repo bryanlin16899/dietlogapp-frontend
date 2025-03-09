@@ -1,25 +1,57 @@
+import { fetchDietLog } from '@/lib/api';
 import { Center, Group, Paper, RingProgress, SimpleGrid, Text } from '@mantine/core';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
-
-const icons = {
-  up: IconArrowUpRight,
-  down: IconArrowDownRight,
-};
-
-const data = [
-  { label: 'Page views', stats: '456,578', progress: 65, color: 'teal', icon: 'up' },
-  { label: 'New users', stats: '2,550', progress: 72, color: 'blue', icon: 'up' },
-  {
-    label: 'Orders',
-    stats: '4,735',
-    progress: 52,
-    color: 'red',
-    icon: 'down',
-  },
-] as const;
+import { useEffect, useState } from 'react';
 
 export function StatsRing() {
-  const stats = data.map((stat) => {
+  const [dietStats, setDietStats] = useState({
+    calories: 0,
+    consumption: 0,
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
+        setDietStats({
+          calories: data.calories || 0,
+          consumption: data.consumption || 0
+        });
+      } catch (error) {
+        console.error('Failed to fetch diet stats', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  const calculateProgress = (current: number, total: number) => {
+    return total > 0 ? Math.min(Math.round((current / total) * 100), 100) : 0;
+  };
+
+  const statsData = [
+    { 
+      label: 'Calories Intake', 
+      stats: `${Math.round(dietStats.calories)} cal`, 
+      progress: calculateProgress(dietStats.calories, 2000), 
+      color: 'blue', 
+      icon: 'up' 
+    },
+    { 
+      label: 'Calories Consumed', 
+      stats: `${Math.round(dietStats.consumption)} cal`, 
+      progress: calculateProgress(dietStats.consumption, 2000), 
+      color: 'teal', 
+      icon: 'down' 
+    },
+  ];
+
+  const icons = {
+    up: IconArrowUpRight,
+    down: IconArrowDownRight,
+  };
+
+  const stats = statsData.map((stat) => {
     const Icon = icons[stat.icon];
     return (
       <Paper withBorder radius="md" p="xs" key={stat.label}>
@@ -49,5 +81,5 @@ export function StatsRing() {
     );
   });
 
-  return <SimpleGrid cols={{ base: 1, sm: 3 }}>{stats}</SimpleGrid>;
+  return <SimpleGrid cols={{ base: 1, sm: 2 }}>{stats}</SimpleGrid>;
 }
