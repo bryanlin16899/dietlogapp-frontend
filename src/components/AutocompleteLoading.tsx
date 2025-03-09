@@ -7,7 +7,7 @@ import { useRef, useState } from 'react';
 export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () => void }) {
   const timeoutRef = useRef<number>(-1);
   const [value, setValue] = useState('');
-  const [weight, setWeight] = useState<string | number>('');
+  const [quantity, setQuantity] = useState<string | number>('');
   const [unitType, setUnitType] = useState<UnitType>('grams');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
@@ -31,17 +31,18 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     if (!value) {
       notifications.show({
         title: 'Error',
-        message: 'Please enter both food name and weight',
+        message: 'Please enter both food name and quantity',
         color: 'red',
       });
       return;
     }
-
+    console.log(quantity,'qqq');
+    
     try {
       const data = await recordDietIntake(
         'Bryan', 
         value, 
-        weight ? Number(weight) : 100, 
+        quantity ? Number(quantity) : 100, 
         unitType
       );
       console.log('Intake recorded:', data);
@@ -53,7 +54,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
       
       // Reset fields after successful intake
       setValue('');
-      setWeight('');
+      setQuantity('');
       setData([]);
 
       notifications.show({
@@ -96,9 +97,9 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
         placeholder="Apple, Fried rice, Pizza..."
       />
       <NumberInput
-        value={weight}
-        onChange={(val) => setWeight(val)}
-        label="Weight"
+        value={quantity}
+        onChange={(val) => setQuantity(val)}
+        label="Quantity"
         placeholder="Default 100"
         min={0}
       />
@@ -108,7 +109,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
         onChange={(val) => setUnitType(val as UnitType)}
         data={[
           { value: 'grams', label: 'Grams' },
-          { value: 'serving', label: 'Serving' }
+          { value: 'servings', label: 'Servings' }
         ]}
       />
       <Button onClick={handleIntake}>
