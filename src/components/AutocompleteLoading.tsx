@@ -88,30 +88,35 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   };
   return (
     <Flex direction="column" gap="md">
-      <Autocomplete
-        value={value}
-        data={data}
-        onChange={handleChange}
-        rightSection={loading ? <Loader size={16} /> : null}
-        label="What was the last thing you ate?"
-        placeholder="Apple, Fried rice, Pizza..."
-      />
-      <NumberInput
-        value={quantity}
-        onChange={(val) => setQuantity(val)}
-        label="Quantity"
-        placeholder="Default 100"
-        min={0}
-      />
-      <Select
-        label="Unit Type"
-        value={unitType}
-        onChange={(val) => setUnitType(val as UnitType)}
-        data={[
-          { value: 'grams', label: 'Grams' },
-          { value: 'servings', label: 'Servings' }
-        ]}
-      />
+      <Flex gap="md" align="end">
+        <Autocomplete
+          value={value}
+          data={data}
+          onChange={handleChange}
+          rightSection={loading ? <Loader size={16} /> : null}
+          label="What was the last thing you ate?"
+          placeholder="Apple, Fried rice, Pizza..."
+          style={{ flexGrow: 1 }}
+        />
+        <NumberInput
+          value={quantity}
+          onChange={(val) => setQuantity(val)}
+          label="Quantity"
+          placeholder="Default 100"
+          min={0}
+          style={{ width: 120 }}
+        />
+        <Select
+          label="Unit Type"
+          value={unitType}
+          onChange={(val) => setUnitType(val as UnitType)}
+          data={[
+            { value: 'grams', label: 'Grams' },
+            { value: 'servings', label: 'Servings' }
+          ]}
+          style={{ width: 120 }}
+        />
+      </Flex>
       <Button onClick={handleIntake}>
         Record Intake
       </Button>
