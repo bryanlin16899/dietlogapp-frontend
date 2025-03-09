@@ -48,9 +48,10 @@ export default function Home() {
     >
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow">
-          <Title className="text-center mb-4">
+          <Title className="text-center mb-2">
             <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess} />
           </Title>
+          <StatsRing dietLog={dietLog} />
           <TableScrollArea 
             ref={tableScrollAreaRef} 
             dietLog={dietLog} 
@@ -58,13 +59,10 @@ export default function Home() {
           />
         </div>
 
-        <div className="flex flex-col items-center justify-center flex-grow">
-          <StatsRing dietLog={dietLog} />
-        </div>
         
         <div className="flex flex-col items-center">
           <Text
-            className="text-center text-gray-700 dark:text-gray-300 max-w-[500px] mb-4"
+            className="text-center text-gray-700 dark:text-gray-300 max-w-[500px] mb-2"
             ta="center"
             size="lg"
           >
