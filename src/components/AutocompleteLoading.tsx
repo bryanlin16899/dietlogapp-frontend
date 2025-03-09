@@ -1,8 +1,8 @@
 "use client";
-import { Autocomplete, Button, Flex, Loader, NumberInput } from '@mantine/core';
-import { useRef, useState } from 'react';
-import { notifications } from '@mantine/notifications';
 import { fetchIngredientList, recordDietIntake } from '@/lib/api';
+import { Autocomplete, Button, Flex, Loader, NumberInput } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useRef, useState } from 'react';
 
 export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () => void }) {
   const timeoutRef = useRef<number>(-1);
@@ -27,7 +27,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   };
 
   const handleIntake = async () => {
-    if (!value || !weight) {
+    if (!value) {
       notifications.show({
         title: 'Error',
         message: 'Please enter both food name and weight',
@@ -37,7 +37,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     }
 
     try {
-      const data = await recordDietIntake('Bryan', value, Number(weight));
+      const data = await recordDietIntake('Bryan', value, weight ? Number(weight) : 100);
       console.log('Intake recorded:', data);
       
       // Trigger callback to refresh diet log
@@ -48,6 +48,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
       // Reset fields after successful intake
       setValue('');
       setWeight('');
+      setData([]);
 
       notifications.show({
         title: 'Success',
@@ -92,7 +93,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
         value={weight}
         onChange={(val) => setWeight(val)}
         label="Weight (g)"
-        placeholder="Enter weight in grams"
+        placeholder="Default 100g"
         min={0}
       />
       <Button onClick={handleIntake}>
