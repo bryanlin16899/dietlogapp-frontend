@@ -74,10 +74,14 @@ export function TableScrollArea() {
 
   return (
     <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-      <Table miw={700}>
+      <Table 
+        miw={700} 
+        fz={isMobile ? 'xs' : 'sm'}
+        verticalSpacing={isMobile ? 'xs' : 'md'}
+      >
         <Table.Thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <Table.Tr>
-            <Table.Th>食物名稱</Table.Th>
+            <Table.Th>{isMobile ? '食物' : '食物名稱'}</Table.Th>
             <Table.Th>卡路里</Table.Th>
             {!isMobile && (
               <>
