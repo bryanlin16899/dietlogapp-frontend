@@ -1,7 +1,5 @@
-import { fetchDietLog } from '@/lib/api';
 import { Center, Group, Paper, RingProgress, SimpleGrid, Text } from '@mantine/core';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
 
 export function StatsRing({ dietLog }: { dietLog: any }) {
   const dietStats = {
