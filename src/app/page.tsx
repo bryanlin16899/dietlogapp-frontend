@@ -54,6 +54,7 @@ export default function Home() {
           <TableScrollArea 
             ref={tableScrollAreaRef} 
             dietLog={dietLog} 
+            onRemoveIntake={handleFetchDietLog}
           />
         </div>
 

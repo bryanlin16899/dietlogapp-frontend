@@ -10,8 +10,8 @@ import classes from './TableScrollArea.module.css';
 import { fetchDietLog, removeIntakeById } from '@/lib/api';
 import { forwardRef, useImperativeHandle } from 'react';
 
-export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { dietLog: any }>(
-  ({ dietLog }, ref) => {
+export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { dietLog: any, onRemoveIntake: () => void }>(
+  ({ dietLog, onRemoveIntake }, ref) => {
     const [scrolled, setScrolled] = useState(false);
     const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -25,9 +25,10 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
     try {
       await removeIntakeById(foodId);
       
-      // Refresh diet log after successful removal
-      const updatedData = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
-      setDietLog(updatedData);
+      // Trigger parent component to refresh diet log
+      if (onRemoveIntake) {
+        onRemoveIntake();
+      }
 
       notifications.show({
         position: 'top-right',
@@ -59,9 +60,7 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
               <ActionIcon 
                 variant="subtle" 
                 color="red" 
-                onClick={() => {
-                  // Emit event to parent to handle removal
-                }}
+                onClick={() => handleRemoveIntake(food.id)}
               >
                 <IconTrash size={16} stroke={1.5} />
               </ActionIcon>
