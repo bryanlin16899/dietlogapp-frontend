@@ -73,7 +73,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     } else {
       setLoading(true);
       timeoutRef.current = window.setTimeout(() => {
-        fetchIngredientList(val);
+        handleFetchIngredientList(val);
         setLoading(false);
       }, 1000);
     }
