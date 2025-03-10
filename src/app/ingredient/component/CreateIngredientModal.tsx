@@ -66,6 +66,7 @@ export function CreateIngredientModal({
       }
 
       notifications.show({
+        position: 'top-right',
         title: 'Success',
         message: 'Ingredient created successfully',
         color: 'green',
@@ -82,6 +83,7 @@ export function CreateIngredientModal({
       }
     } catch (error) {
       notifications.show({
+        position: 'top-right',
         title: 'Error',
         message: 'Failed to create ingredient',
         color: 'red',
@@ -146,10 +148,10 @@ export function CreateIngredientModal({
             <Dropzone
               onDrop={(files) => {
                 setImageFile(files[0]);
-                form.setFieldValue('name', files[0].name.split('.')[0]);
               }}
               onReject={(files) => {
                 notifications.show({
+                  position: 'top-right',
                   title: 'Invalid file',
                   message: 'Please upload a valid image file',
                   color: 'red'
