@@ -1,4 +1,4 @@
-import { fetchIngredientList, Ingredient } from '@/lib/api';
+import { fetchIngredientList, Ingredient, deleteIngredient } from '@/lib/api';
 import {
   ActionIcon,
   Center,
@@ -12,6 +12,7 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import { IconChevronDown, IconChevronUp, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
+import { notifications } from '@mantine/notifications';
 import classes from './TableWithSearch.module.css';
 
 interface ThProps {
@@ -113,6 +114,29 @@ export function TableSort() {
     setSortedData(sortData(ingredients, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
+  const handleDeleteIngredient = async (ingredientId: number) => {
+    try {
+      await deleteIngredient(ingredientId);
+      
+      // Remove the deleted ingredient from the list
+      const updatedIngredients = ingredients.filter(ing => ing.id !== ingredientId);
+      setIngredients(updatedIngredients);
+      setSortedData(updatedIngredients);
+
+      notifications.show({
+        title: 'Ingredient Deleted',
+        message: 'Ingredient successfully removed',
+        color: 'green',
+      });
+    } catch (error) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to delete ingredient',
+        color: 'red',
+      });
+    }
+  };
+
   const rows = sortedData.map((ingredient) => (
     <Table.Tr key={ingredient.id}>
       <Table.Td>{ingredient.name}</Table.Td>
@@ -120,13 +144,15 @@ export function TableSort() {
       <Table.Td>{ingredient.protein.toFixed(1)}</Table.Td>
       <Table.Td>{ingredient.fat.toFixed(1)}</Table.Td>
       <Table.Td>{ingredient.carbohydrates.toFixed(1)}</Table.Td>
-      <ActionIcon 
-        variant="subtle" 
-        color="red" 
-        // onClick={() => handleRemoveIntake(food.id)}
-      >
-        <IconTrash size={16} stroke={1.5} />
-      </ActionIcon>
+      <Table.Td>
+        <ActionIcon 
+          variant="subtle" 
+          color="red" 
+          onClick={() => handleDeleteIngredient(ingredient.id)}
+        >
+          <IconTrash size={16} stroke={1.5} />
+        </ActionIcon>
+      </Table.Td>
     </Table.Tr>
   ));
 

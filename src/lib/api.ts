@@ -117,3 +117,24 @@ export const removeIntakeById = async (foodId: number) => {
     throw error;
   }
 };
+
+export const deleteIngredient = async (ingredientId: number) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ingredient/delete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: ingredientId })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error deleting ingredient:', error);
+    throw error;
+  }
+};
