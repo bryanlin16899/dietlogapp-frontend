@@ -40,10 +40,6 @@ export function CreateIngredientModal({
         fat: values.fat,
         carbohydrates: values.carbohydrates,
         serving_size_grams: values.serving_size_grams,
-        serving_calories: values.serving_calories,
-        serving_protein: values.serving_protein,
-        serving_fat: values.serving_fat,
-        serving_carbohydrates: values.serving_carbohydrates
       };
 
       await createIngredient(ingredientData);
@@ -81,35 +77,30 @@ export function CreateIngredientModal({
           {...form.getInputProps('name')}
         />
         <NumberInput
-          label="Calories"
+          label="Calories (100g)"
           placeholder="Calories"
           required
           {...form.getInputProps('calories')}
         />
         <NumberInput
-          label="Protein"
+          label="Protein (100g)"
           placeholder="Protein"
           {...form.getInputProps('protein')}
         />
         <NumberInput
           label="Fat"
-          placeholder="Fat"
+          placeholder="Fat (100g)"
           {...form.getInputProps('fat')}
         />
         <NumberInput
           label="Carbohydrates"
-          placeholder="Carbohydrates"
+          placeholder="Carbohydrates (100g)"
           {...form.getInputProps('carbohydrates')}
         />
         <NumberInput
           label="Serving Size (grams)"
           placeholder="Serving Size"
           {...form.getInputProps('serving_size_grams')}
-        />
-        <NumberInput
-          label="Serving Calories"
-          placeholder="Serving Calories"
-          {...form.getInputProps('serving_calories')}
         />
         <Group justify="flex-end" mt="md">
           <Button type="submit">Add Ingredient</Button>
