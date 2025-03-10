@@ -28,6 +28,7 @@ export function CreateIngredientModal({
 }) {
   const [addMethod, setAddMethod] = useState<AddMethodType>('manual');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -49,6 +50,7 @@ export function CreateIngredientModal({
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    setIsLoading(true);
     try {
       if (addMethod === 'manual') {
         const ingredientData: CreateIngredientData = {
@@ -88,6 +90,8 @@ export function CreateIngredientModal({
         message: 'Failed to create ingredient',
         color: 'red',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -148,6 +152,7 @@ export function CreateIngredientModal({
             <Dropzone
               onDrop={(files) => {
                 setImageFile(files[0]);
+                form.setFieldValue('name', files[0].name.split('.')[0]);
               }}
               onReject={(files) => {
                 notifications.show({
@@ -159,6 +164,7 @@ export function CreateIngredientModal({
               }}
               maxSize={3 * 1024 * 1024}
               accept={IMAGE_MIME_TYPE}
+              disabled={isLoading}
             >
               <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
                 <Dropzone.Accept>
@@ -189,7 +195,11 @@ export function CreateIngredientModal({
           )}
 
           <Group justify="flex-end" mt="md">
-            <Button type="submit">
+            <Button 
+              type="submit" 
+              loading={isLoading}
+              disabled={isLoading || (addMethod === 'image' && !imageFile)}
+            >
               {addMethod === 'manual' ? 'Add Ingredient' : 'Add Image Ingredient'}
             </Button>
           </Group>
