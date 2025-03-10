@@ -46,25 +46,26 @@ export default function Home() {
       className="h-screen flex flex-col"
     >
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
-        <div className="flex flex-col items-center justify-center flex-grow">
+        <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
-          <StatsRing dietLog={dietLog} />
+          <div className="w-full mb-4">
+            <StatsRing dietLog={dietLog} />
+          </div>
           <TableScrollArea 
             ref={tableScrollAreaRef} 
             dietLog={dietLog} 
             onRemoveIntake={handleFetchDietLog}
           />
         </div>
-
         
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center max-w-[800px] w-full mx-auto px-4">
           <Text
-            className="text-center text-gray-700 dark:text-gray-300 max-w-[500px] mb-2"
+            className="text-center text-gray-700 dark:text-gray-300 mb-2"
             ta="center"
             size="lg"
           >
-            Log you diet, mantain your diet and keep track of your diet.
-            you can search for the food you eat and log it.
+            Log your diet, maintain your diet and keep track of your nutrition.
+            Search for the food you eat and log it easily.
           </Text>
           <div className="flex justify-center">
             <ColorSchemesSwitcher />

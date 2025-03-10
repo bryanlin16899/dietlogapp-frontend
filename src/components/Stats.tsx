@@ -63,5 +63,5 @@ export function StatsRing({ dietLog }: { dietLog: any }) {
     );
   });
 
-  return <SimpleGrid cols={{ base: 1, sm: 2 }}>{stats}</SimpleGrid>;
+  return <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">{stats}</SimpleGrid>;
 }

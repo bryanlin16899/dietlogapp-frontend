@@ -75,7 +75,8 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
   return (
     <ScrollArea h={350} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
       <Table 
-        miw={400}
+        w="100%"
+        miw={300}
         fz={'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
       >
