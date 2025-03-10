@@ -1,4 +1,4 @@
-import { fetchIngredientList, Ingredient, deleteIngredient } from '@/lib/api';
+import { deleteIngredient, fetchIngredientList, Ingredient } from '@/lib/api';
 import {
   ActionIcon,
   Center,
@@ -10,9 +10,9 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import { IconChevronDown, IconChevronUp, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import { notifications } from '@mantine/notifications';
 import classes from './TableWithSearch.module.css';
 
 interface ThProps {
