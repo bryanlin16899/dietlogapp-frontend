@@ -50,7 +50,7 @@ export function IntakeFoodDetail({ food, opened, onClose }: IntakeFoodDetailProp
         <Divider my="sm" />
         
         <Stack gap="xs">
-          <Text fw={500}>Consumed at: {new Date(food.created_at).toLocaleString()}</Text>
+          <Text fw={500}>Consumed at: {food.date}</Text>
           {food.notes && (
             <>
               <Text fw={500}>Notes:</Text>
