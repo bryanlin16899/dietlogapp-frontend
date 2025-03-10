@@ -56,9 +56,6 @@ export default function Home() {
             dietLog={dietLog} 
             onRemoveIntake={handleFetchDietLog}
           />
-        </div>
-        
-        <div className="flex flex-col items-center max-w-[800px] w-full mx-auto px-4">
           <Text
             className="text-center text-gray-700 dark:text-gray-300 mb-2"
             ta="center"
@@ -71,6 +68,9 @@ export default function Home() {
             <ColorSchemesSwitcher />
           </div>
         </div>
+        
+        {/* <div className="flex flex-col items-center max-w-[800px] w-full mx-auto px-4">
+        </div> */}
       </AppShellMain>
     </AppShell>
   );
