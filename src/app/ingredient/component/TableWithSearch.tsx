@@ -183,7 +183,7 @@ export function TableSort() {
   ));
 
   return (
-    <ScrollArea>
+    <ScrollArea h={500}>
       <TextInput
         placeholder="Search by any field"
         mb="md"
@@ -192,7 +192,7 @@ export function TableSort() {
         onChange={handleSearchChange}
       />
       <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
-        <Table.Tbody>
+        <Table.Thead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}>
           <Table.Tr>
             <Th
               sorted={sortBy === 'name'}
@@ -216,7 +216,7 @@ export function TableSort() {
               Company
             </Th>
           </Table.Tr>
-        </Table.Tbody>
+        </Table.Thead>
         <Table.Tbody>
           {rows.length > 0 ? (
             rows
