@@ -152,7 +152,6 @@ export function CreateIngredientModal({
             <Dropzone
               onDrop={(files) => {
                 setImageFile(files[0]);
-                form.setFieldValue('name', files[0].name.split('.')[0]);
               }}
               onReject={(files) => {
                 notifications.show({
