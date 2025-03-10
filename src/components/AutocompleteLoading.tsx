@@ -89,9 +89,9 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     }
   };
   return (
-    <Flex className='mb-2' direction="column" gap="md">
+    <Flex className='mb-2' direction="column" gap="xs">
       <Flex 
-        gap="md" 
+        gap="xs" 
         direction={{ base: 'column', sm: 'row' }} 
         align={{ base: 'stretch', sm: 'end' }}
       >

@@ -34,7 +34,7 @@ export function StatsRing({ dietLog }: { dietLog: any }) {
   };
 
   const stats = statsData.map((stat) => {
-    const Icon = icons[stat.icon];
+    const Icon = icons[stat.icon]; 
     return (
       <Paper withBorder radius="md" p="xs" key={stat.label}>
         <Group>

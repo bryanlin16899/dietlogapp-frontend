@@ -124,12 +124,14 @@ export function TableSort() {
       setSortedData(updatedIngredients);
 
       notifications.show({
+        position: 'top-right',
         title: 'Ingredient Deleted',
         message: 'Ingredient successfully removed',
         color: 'green',
       });
     } catch (error) {
       notifications.show({
+        position: 'top-right',
         title: 'Error',
         message: 'Failed to delete ingredient',
         color: 'red',
@@ -173,6 +175,7 @@ export function TableSort() {
         miw={isMobile ? 300 : 800} 
         fz={isMobile ? 'xs' : 'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
+        highlightOnHover
       >
         <Table.Thead>
           <Table.Tr>

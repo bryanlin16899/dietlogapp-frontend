@@ -1,6 +1,5 @@
 "use client";
 import {
-    ActionIcon,
     AppShell,
     AppShellMain,
     Button,
@@ -8,6 +7,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
+import { useState } from "react";
 import { CreateIngredientModal } from "./component/CreateIngredientModal";
 import { TableSort } from "./component/TableWithSearch";
 
@@ -31,10 +31,8 @@ export default function Ingredients() {
                 onClick={open}
                 className="mb-2"
             >
-                <ActionIcon>
-                    <IconPlus size={16} stroke={1.5} />
-                </ActionIcon>
-                Add Ingredient
+                <IconPlus size={16} stroke={1.5} />
+                 Add Ingredient
             </Button>
             <CreateIngredientModal 
               opened={opened} 

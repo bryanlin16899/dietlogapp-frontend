@@ -4,10 +4,10 @@ import { useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 import cx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import classes from './TableScrollArea.module.css';
 
-import { fetchDietLog, removeIntakeById } from '@/lib/api';
+import { removeIntakeById } from '@/lib/api';
 import { forwardRef, useImperativeHandle } from 'react';
 
 export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { dietLog: any, onRemoveIntake: () => void }>(
@@ -38,6 +38,7 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
       });
     } catch (error) {
       notifications.show({
+        position: 'top-right',
         title: 'Error',
         message: 'Failed to remove food item',
         color: 'red',
@@ -55,27 +56,27 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
           <Table.Td>{food.fat}</Table.Td>
           <Table.Td>{food.carbohydrates}</Table.Td>
           <Table.Td>{food.quantity} {food.unit_type == 'grams' ? '(g)' : '(serving)'}</Table.Td>
-          <Table.Td>
-            <Group gap={0} justify="flex-end">
-              <ActionIcon 
-                variant="subtle" 
-                color="red" 
-                onClick={() => handleRemoveIntake(food.id)}
-              >
-                <IconTrash size={16} stroke={1.5} />
-              </ActionIcon>
-            </Group>
-          </Table.Td>
         </>
       )}
+        <Table.Td>
+          <Group gap={0} justify="flex-end">
+            <ActionIcon 
+              variant="subtle" 
+              color="red" 
+              onClick={() => handleRemoveIntake(food.id)}
+            >
+              <IconTrash size={16} stroke={1.5} />
+            </ActionIcon>
+          </Group>
+        </Table.Td>
     </Table.Tr>
   ));
 
   return (
-    <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <ScrollArea h={350} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
       <Table 
-        miw={400} 
-        fz={isMobile ? 'xs' : 'sm'}
+        miw={400}
+        fz={'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
       >
         <Table.Thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
@@ -88,9 +89,9 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
                 <Table.Th>脂肪</Table.Th>
                 <Table.Th>碳水化合物</Table.Th>
                 <Table.Th>份量</Table.Th>
-                <Table.Th>操作</Table.Th>
               </>
             )}
+            <Table.Th>操作</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>

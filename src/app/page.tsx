@@ -7,8 +7,7 @@ import { fetchDietLog } from "@/lib/api";
 import {
   AppShell,
   AppShellMain,
-  Text,
-  Title
+  Text
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 
@@ -48,9 +47,7 @@ export default function Home() {
     >
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow">
-          <Title className="text-center mb-2">
-            <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess} />
-          </Title>
+          <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
           <StatsRing dietLog={dietLog} />
           <TableScrollArea 
             ref={tableScrollAreaRef} 
