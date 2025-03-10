@@ -146,10 +146,6 @@ export interface CreateIngredientData {
   protein: number;
   carbohydrates: number;
   serving_size_grams: number;
-  serving_calories: number;
-  serving_protein: number;
-  serving_fat: number;
-  serving_carbohydrates: number;
 }
 
 export const createIngredient = async (ingredientData: CreateIngredientData) => {
