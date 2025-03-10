@@ -1,13 +1,14 @@
 import {
-    Center,
-    Group,
-    keys,
-    ScrollArea,
-    Table,
-    Text,
-    TextInput,
-    UnstyledButton,
+  Center,
+  Group,
+  keys,
+  ScrollArea,
+  Table,
+  Text,
+  TextInput,
+  UnstyledButton,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconChevronDown, IconChevronUp, IconSearch, IconSelector } from '@tabler/icons-react';
 import { useState } from 'react';
 import classes from './TableWithSearch.module.css';
@@ -160,6 +161,7 @@ export function TableSort() {
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -183,16 +185,20 @@ export function TableSort() {
   ));
 
   return (
-    <ScrollArea h={500}>
+    <ScrollArea h={500} miw={400}>
       <TextInput
         placeholder="Search by any field"
-        mb="md"
+        mb="sm"
         leftSection={<IconSearch size={16} stroke={1.5} />}
         value={search}
         onChange={handleSearchChange}
       />
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
-        <Table.Thead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}>
+      <Table
+        miw={400} 
+        fz={isMobile ? 'xs' : 'sm'}
+        verticalSpacing={isMobile ? 'xs' : 'md'}
+      >
+        <Table.Thead>
           <Table.Tr>
             <Th
               sorted={sortBy === 'name'}
