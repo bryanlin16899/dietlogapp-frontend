@@ -10,8 +10,11 @@ import classes from './TableScrollArea.module.css';
 import { removeIntakeById } from '@/lib/api';
 import { forwardRef, useImperativeHandle } from 'react';
 
-export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { dietLog: any, onRemoveIntake: () => void }>(
-  ({ dietLog, onRemoveIntake }, ref) => {
+export const TableScrollArea = forwardRef<
+  { refreshDietLog: () => void }, 
+  { dietLog: any, onRemoveIntake: () => void, onFoodRowClick?: (food: any) => void }
+>(
+  ({ dietLog, onRemoveIntake, onFoodRowClick }, ref) => {
     const [scrolled, setScrolled] = useState(false);
     const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -47,7 +50,15 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
   };
 
   const rows = dietLog?.intake_foods?.map((food: any) => (
-    <Table.Tr key={food.id}>
+    <Table.Tr 
+      key={food.id} 
+      style={{ cursor: 'pointer' }}
+      onClick={(e) => {
+        // Prevent row click when clicking the delete button
+        if ((e.target as HTMLElement).closest('.delete-action')) return;
+        if (onFoodRowClick) onFoodRowClick(food);
+      }}
+    >
       <Table.Td>{food.name}</Table.Td>
       <Table.Td>{food.calories}</Table.Td>
       {!isMobile && (
@@ -63,7 +74,11 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
             <ActionIcon 
               variant="subtle" 
               color="red" 
-              onClick={() => handleRemoveIntake(food.id)}
+              className="delete-action"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemoveIntake(food.id);
+              }}
             >
               <IconTrash size={16} stroke={1.5} />
             </ActionIcon>

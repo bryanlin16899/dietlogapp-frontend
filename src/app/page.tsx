@@ -1,6 +1,7 @@
 "use client";
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
+import { IntakeFoodDetail } from "@/components/IntakeFoodDetail";
 import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
 import { TableScrollArea } from "@/components/TableScrollArea";
@@ -16,6 +17,8 @@ import { useEffect, useRef, useState } from "react";
 export default function Home() {
   const [dietLog, setDietLog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedFood, setSelectedFood] = useState<any>(null);
+  const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
 
   const handleFetchDietLog = async () => {
@@ -35,6 +38,11 @@ export default function Home() {
 
   const handleIntakeSuccess = () => {
     handleFetchDietLog();
+  };
+
+  const handleFoodRowClick = (food: any) => {
+    setSelectedFood(food);
+    setDetailModalOpened(true);
   };
 
   if (loading) {
@@ -71,6 +79,12 @@ export default function Home() {
             ref={tableScrollAreaRef} 
             dietLog={dietLog} 
             onRemoveIntake={handleFetchDietLog}
+            onFoodRowClick={handleFoodRowClick}
+          />
+          <IntakeFoodDetail
+            food={selectedFood}
+            opened={detailModalOpened}
+            onClose={() => setDetailModalOpened(false)}
           />
           <Text
             className="text-center text-gray-700 dark:text-gray-300 mb-2"
