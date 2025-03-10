@@ -73,12 +73,13 @@ export const TableScrollArea = forwardRef<{ refreshDietLog: () => void }, { diet
   ));
 
   return (
-    <ScrollArea h={350} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <ScrollArea h={400} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
       <Table 
         w="100%"
-        miw={300}
+        miw={isMobile ? 350 : 700}
         fz={'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
+        highlightOnHover
       >
         <Table.Thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <Table.Tr>
