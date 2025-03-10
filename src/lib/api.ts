@@ -138,3 +138,37 @@ export const deleteIngredient = async (ingredientId: number) => {
     throw error;
   }
 };
+
+export interface CreateIngredientData {
+  name: string;
+  calories: number;
+  fat: number;
+  protein: number;
+  carbohydrates: number;
+  serving_size_grams: number;
+  serving_calories: number;
+  serving_protein: number;
+  serving_fat: number;
+  serving_carbohydrates: number;
+}
+
+export const createIngredient = async (ingredientData: CreateIngredientData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ingredient/add`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(ingredientData)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating ingredient:', error);
+    throw error;
+  }
+};

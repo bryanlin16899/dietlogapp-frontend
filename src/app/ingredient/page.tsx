@@ -13,6 +13,11 @@ import { TableSort } from "./component/TableWithSearch";
 
 export default function Ingredients() {
   const [opened, { open, close }] = useDisclosure(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleIngredientCreated = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   return (
     <AppShell 
@@ -23,18 +28,20 @@ export default function Ingredients() {
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow">
             <Button
-                onClick={() => console.log('Add Ingredient')}
+                onClick={open}
                 className="mb-2"
-
             >
-                <ActionIcon
-                    onClick={() => open()}
-                >
+                <ActionIcon>
                     <IconPlus size={16} stroke={1.5} />
                 </ActionIcon>
+                Add Ingredient
             </Button>
-            <CreateIngredientModal opened={opened} close={close}/>
-            <TableSort/>
+            <CreateIngredientModal 
+              opened={opened} 
+              close={close} 
+              onIngredientCreated={handleIngredientCreated}
+            />
+            <TableSort key={refreshTrigger}/>
         </div>
 
         
