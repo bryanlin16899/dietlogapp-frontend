@@ -140,9 +140,9 @@ export function TableSort() {
   const rows = sortedData.map((ingredient) => (
     <Table.Tr key={ingredient.id}>
       <Table.Td>{ingredient.name}</Table.Td>
+      <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
       {!isMobile && (
         <>
-          <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
           <Table.Td>{ingredient.protein.toFixed(1)}</Table.Td>
           <Table.Td>{ingredient.fat.toFixed(1)}</Table.Td>
           <Table.Td>{ingredient.carbohydrates.toFixed(1)}</Table.Td>
@@ -183,15 +183,15 @@ export function TableSort() {
             >
               Name
             </Th>
+            <Th
+              sorted={sortBy === 'calories'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('calories')}
+            >
+              Calories
+            </Th>
             {!isMobile && (
               <>
-                <Th
-                  sorted={sortBy === 'calories'}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting('calories')}
-                >
-                  Calories
-                </Th>
                 <Th
                   sorted={sortBy === 'protein'}
                   reversed={reverseSortDirection}
