@@ -1,7 +1,6 @@
 import {
   Center,
   Group,
-  keys,
   ScrollArea,
   Table,
   Text,
@@ -10,14 +9,9 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconChevronDown, IconChevronUp, IconSearch, IconSelector } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { fetchIngredientList, Ingredient } from '@/lib/api';
 import classes from './TableWithSearch.module.css';
-
-interface RowData {
-  name: string;
-  email: string;
-  company: string;
-}
 
 interface ThProps {
   children: React.ReactNode;
@@ -44,150 +38,94 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   );
 }
 
-function filterData(data: RowData[], search: string) {
-  const query = search.toLowerCase().trim();
-  return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
-  );
-}
-
 function sortData(
-  data: RowData[],
-  payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
+  data: Ingredient[],
+  payload: { sortBy: keyof Ingredient | null; reversed: boolean; search: string }
 ) {
-  const { sortBy } = payload;
+  const { sortBy, search } = payload;
+  const query = search.toLowerCase().trim();
+
+  const filteredData = data.filter((item) => 
+    Object.values(item).some(
+      (value) => 
+        value && 
+        value.toString().toLowerCase().includes(query)
+    )
+  );
 
   if (!sortBy) {
-    return filterData(data, payload.search);
+    return filteredData;
   }
 
-  return filterData(
-    [...data].sort((a, b) => {
-      if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
-      }
+  return filteredData.sort((a, b) => {
+    const valueA = a[sortBy];
+    const valueB = b[sortBy];
 
-      return a[sortBy].localeCompare(b[sortBy]);
-    }),
-    payload.search
-  );
+    if (typeof valueA === 'string' && typeof valueB === 'string') {
+      return payload.reversed 
+        ? valueB.localeCompare(valueA) 
+        : valueA.localeCompare(valueB);
+    }
+
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
+      return payload.reversed 
+        ? valueB - valueA 
+        : valueA - valueB;
+    }
+
+    return 0;
+  });
 }
-
-const data = [
-  {
-    name: 'Athena Weissnat',
-    company: 'Little - Rippin',
-    email: 'Elouise.Prohaska@yahoo.com',
-  },
-  {
-    name: 'Deangelo Runolfsson',
-    company: 'Greenfelder - Krajcik',
-    email: 'Kadin_Trantow87@yahoo.com',
-  },
-  {
-    name: 'Danny Carter',
-    company: 'Kohler and Sons',
-    email: 'Marina3@hotmail.com',
-  },
-  {
-    name: 'Trace Tremblay PhD',
-    company: 'Crona, Aufderhar and Senger',
-    email: 'Antonina.Pouros@yahoo.com',
-  },
-  {
-    name: 'Derek Dibbert',
-    company: 'Gottlieb LLC',
-    email: 'Abagail29@hotmail.com',
-  },
-  {
-    name: 'Viola Bernhard',
-    company: 'Funk, Rohan and Kreiger',
-    email: 'Jamie23@hotmail.com',
-  },
-  {
-    name: 'Austin Jacobi',
-    company: 'Botsford - Corwin',
-    email: 'Genesis42@yahoo.com',
-  },
-  {
-    name: 'Hershel Mosciski',
-    company: 'Okuneva, Farrell and Kilback',
-    email: 'Idella.Stehr28@yahoo.com',
-  },
-  {
-    name: 'Mylene Ebert',
-    company: 'Kirlin and Sons',
-    email: 'Hildegard17@hotmail.com',
-  },
-  {
-    name: 'Lou Trantow',
-    company: 'Parisian - Lemke',
-    email: 'Hillard.Barrows1@hotmail.com',
-  },
-  {
-    name: 'Dariana Weimann',
-    company: 'Schowalter - Donnelly',
-    email: 'Colleen80@gmail.com',
-  },
-  {
-    name: 'Dr. Christy Herman',
-    company: 'VonRueden - Labadie',
-    email: 'Lilyan98@gmail.com',
-  },
-  {
-    name: 'Katelin Schuster',
-    company: 'Jacobson - Smitham',
-    email: 'Erich_Brekke76@gmail.com',
-  },
-  {
-    name: 'Melyna Macejkovic',
-    company: 'Schuster LLC',
-    email: 'Kylee4@yahoo.com',
-  },
-  {
-    name: 'Pinkie Rice',
-    company: 'Wolf, Trantow and Zulauf',
-    email: 'Fiona.Kutch@hotmail.com',
-  },
-  {
-    name: 'Brain Kreiger',
-    company: 'Lueilwitz Group',
-    email: 'Rico98@hotmail.com',
-  },
-];
 
 export function TableSort() {
   const [search, setSearch] = useState('');
-  const [sortedData, setSortedData] = useState(data);
-  const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [sortedData, setSortedData] = useState<Ingredient[]>([]);
+  const [sortBy, setSortBy] = useState<keyof Ingredient | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const setSorting = (field: keyof RowData) => {
+  useEffect(() => {
+    const loadIngredients = async () => {
+      try {
+        const data = await fetchIngredientList('');
+        setIngredients(data.ingredients);
+        setSortedData(data.ingredients);
+      } catch (error) {
+        console.error('Failed to fetch ingredients', error);
+      }
+    };
+
+    loadIngredients();
+  }, []);
+
+  const setSorting = (field: keyof Ingredient) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
+    setSortedData(sortData(ingredients, { sortBy: field, reversed, search }));
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
+    setSortedData(sortData(ingredients, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
-  const rows = sortedData.map((row) => (
-    <Table.Tr key={row.name}>
-      <Table.Td>{row.name}</Table.Td>
-      <Table.Td>{row.email}</Table.Td>
-      <Table.Td>{row.company}</Table.Td>
+  const rows = sortedData.map((ingredient) => (
+    <Table.Tr key={ingredient.id}>
+      <Table.Td>{ingredient.name}</Table.Td>
+      <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
+      <Table.Td>{ingredient.protein.toFixed(1)}</Table.Td>
+      <Table.Td>{ingredient.fat.toFixed(1)}</Table.Td>
+      <Table.Td>{ingredient.carbohydrates.toFixed(1)}</Table.Td>
     </Table.Tr>
   ));
 
   return (
     <ScrollArea h={500} miw={400}>
       <TextInput
-        placeholder="Search by any field"
+        placeholder="Search ingredients"
         mb="sm"
         leftSection={<IconSearch size={16} stroke={1.5} />}
         value={search}
@@ -208,18 +146,32 @@ export function TableSort() {
               Name
             </Th>
             <Th
-              sorted={sortBy === 'email'}
+              sorted={sortBy === 'calories'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('email')}
+              onSort={() => setSorting('calories')}
             >
-              Email
+              Calories
             </Th>
             <Th
-              sorted={sortBy === 'company'}
+              sorted={sortBy === 'protein'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('company')}
+              onSort={() => setSorting('protein')}
             >
-              Company
+              Protein
+            </Th>
+            <Th
+              sorted={sortBy === 'fat'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('fat')}
+            >
+              Fat
+            </Th>
+            <Th
+              sorted={sortBy === 'carbohydrates'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('carbohydrates')}
+            >
+              Carbohydrates
             </Th>
           </Table.Tr>
         </Table.Thead>
@@ -228,7 +180,7 @@ export function TableSort() {
             rows
           ) : (
             <Table.Tr>
-              <Table.Td colSpan={Object.keys(data[0]).length}>
+              <Table.Td colSpan={5}>
                 <Text fw={500} ta="center">
                   Nothing found
                 </Text>

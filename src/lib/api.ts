@@ -1,6 +1,25 @@
 export const API_BASE_URL = 'http://127.0.0.1:8000';
 
-export const fetchIngredientList = async (searchTerm: string) => {
+export interface Ingredient {
+  id: number;
+  name: string;
+  calories: number;
+  protein: number;
+  fat: number;
+  carbohydrates: number;
+  serving_size_grams: number;
+  serving_calories: number;
+  serving_protein: number;
+  serving_fat: number;
+  serving_carbohydrates: number;
+  added_by_image: boolean;
+}
+
+export interface IngredientListResponse {
+  ingredients: Ingredient[];
+}
+
+export const fetchIngredientList = async (searchTerm: string): Promise<IngredientListResponse> => {
   try {
     const response = await fetch(`${API_BASE_URL}/ingredient/get_ingredient_list`, {
       method: 'POST',
