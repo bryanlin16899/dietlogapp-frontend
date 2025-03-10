@@ -1,14 +1,15 @@
 "use client";
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
+import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
 import { TableScrollArea } from "@/components/TableScrollArea";
 import { fetchDietLog } from "@/lib/api";
 import {
   AppShell,
   AppShellMain,
-  Text,
-  Box
+  Box,
+  Text
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 
@@ -50,9 +51,10 @@ export default function Home() {
         pos="fixed" 
         top={10} 
         left={10} 
-        zIndex={100}
+        // zIndex={100}
       >
         <ColorSchemesSwitcher />
+        <NavMenu/>
       </Box>
       
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
