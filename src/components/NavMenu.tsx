@@ -1,12 +1,19 @@
 import { Button, Menu, MenuTarget } from "@mantine/core";
-import { IconArrowsLeftRight, IconSettings, IconTrash } from "@tabler/icons-react";
+import { IconArrowsLeftRight, IconArticle, IconSettings, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
 
 export function NavMenu() {
     return (
-        <Menu shadow="md" radius="md">
+        <Menu trigger="hover" shadow="md" radius="md">
             <MenuTarget>
-                <Button>Menu</Button>
+                {/* <Button
+                    leftSection={<IconArticle size={25}/>}
+                >
+                    Menu
+                </Button> */}
+                <Button radius={20}>
+                    <IconArticle size={25}/>
+                </Button>
             </MenuTarget>
 
             <Menu.Dropdown>
@@ -14,26 +21,17 @@ export function NavMenu() {
             <Menu.Item 
                 leftSection={<IconSettings size={14} />} 
                 component={Link} 
+                href="/"
+            >
+                Dashboard
+            </Menu.Item>
+            <Menu.Item 
+                leftSection={<IconSettings size={14} />} 
+                component={Link} 
                 href="/ingredient"
             >
                 Ingredients
             </Menu.Item>
-            {/* <Menu.Item leftSection={<IconMessageCircle size={14} />}>
-            Messages
-            </Menu.Item>
-            <Menu.Item leftSection={<IconPhoto size={14} />}>
-            Gallery
-            </Menu.Item>
-            <Menu.Item
-            leftSection={<IconSearch size={14} />}
-            rightSection={
-                <Text size="xs" c="dimmed">
-                    ⌘K
-                </Text>
-            }
-            >
-            Search
-            </Menu.Item> */}
 
             <Menu.Divider />
 
@@ -53,3 +51,5 @@ export function NavMenu() {
         </Menu>
     );
 }
+
+
