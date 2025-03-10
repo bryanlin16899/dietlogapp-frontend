@@ -1,18 +1,18 @@
-import { createIngredient, CreateIngredientData, createIngredientByImage } from "@/lib/api";
-import { 
-  Button, 
-  Group, 
-  Modal, 
-  NumberInput, 
-  TextInput, 
-  Select,
-  Stack 
+import { createIngredient, createIngredientByImage, CreateIngredientData } from "@/lib/api";
+import {
+    Button,
+    Group,
+    Modal,
+    NumberInput,
+    Select,
+    Stack,
+    TextInput
 } from "@mantine/core";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { useState } from "react";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
+import { useState } from "react";
 
 type AddMethodType = 'manual' | 'image';
 
