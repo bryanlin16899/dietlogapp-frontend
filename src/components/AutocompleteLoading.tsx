@@ -30,13 +30,13 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   const handleIntake = async () => {
     if (!value) {
       notifications.show({
+        position: 'top-right',
         title: 'Error',
         message: 'Please enter both food name and quantity',
         color: 'red',
       });
       return;
     }
-    console.log(quantity,'qqq');
     
     try {
       const data = await recordDietIntake(
@@ -58,12 +58,14 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
       setData([]);
 
       notifications.show({
+        position: 'top-right',
         title: 'Success',
         message: 'Food intake recorded',
         color: 'green',
       });
     } catch (error) {
       notifications.show({
+        position: 'top-right',
         title: 'Error',
         message: 'Failed to record intake',
         color: 'red',
@@ -87,8 +89,8 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     }
   };
   return (
-    <Flex direction="column" gap="md">
-      <Flex gap="md" align="end">
+    <Flex className='mb-2' direction="column" gap="md">
+      <Flex gap="xl" align="end">
         <Autocomplete
           value={value}
           data={data}
