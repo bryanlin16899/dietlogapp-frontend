@@ -1,15 +1,8 @@
+import { Ingredient } from "@/lib/api";
 import { Badge, Divider, Group, Modal, Stack, Text, Title } from "@mantine/core";
 
 interface IngredientDetailProps {
-  ingredient: {
-    name: string;
-    calories: number;
-    protein: number;
-    fat: number;
-    carbohydrates: number;
-    serving_size_grams: number;
-    added_by_image: boolean;
-  };
+  ingredient: Ingredient | null;
   opened: boolean;
   onClose: () => void;
 }
@@ -21,7 +14,7 @@ export function IngredientDetail({ ingredient, opened, onClose }: IngredientDeta
     <Modal 
       opened={opened} 
       onClose={onClose} 
-      title={<Title order={3}>Ingredient Details</Title>}
+      title={<Title order={3}>食材資訊</Title>}
       size="md"
       centered
     >
@@ -29,63 +22,66 @@ export function IngredientDetail({ ingredient, opened, onClose }: IngredientDeta
         <Group justify="space-between" align="center">
           <Title order={2}>{ingredient.name}</Title>
           <Badge size="lg" color={ingredient.added_by_image ? 'green' : 'blue'}>
-            {ingredient.added_by_image ? 'Image Scan' : 'Manual Entry'}
+            {ingredient.added_by_image ? '圖片新增' : '手動新增'}
           </Badge>
         </Group>
         
         <Divider my="sm" />
         
+        <Stack gap="xs">
+          <Text fw={500}>每 100 g</Text>
+        </Stack>
         <Group grow>
           <Stack gap="xs">
             <Text fw={700} size="lg" c="blue">{ingredient.calories.toFixed(1)}</Text>
-            <Text size="sm" c="dimmed">Calories</Text>
+            <Text size="sm" c="dimmed">熱量</Text>
           </Stack>
           
           <Stack gap="xs">
             <Text fw={700} size="lg" c="red">{ingredient.protein.toFixed(1)}g</Text>
-            <Text size="sm" c="dimmed">Protein</Text>
+            <Text size="sm" c="dimmed">蛋白質</Text>
           </Stack>
           
           <Stack gap="xs">
             <Text fw={700} size="lg" c="yellow">{ingredient.fat.toFixed(1)}g</Text>
-            <Text size="sm" c="dimmed">Fat</Text>
+            <Text size="sm" c="dimmed">脂肪</Text>
           </Stack>
           
           <Stack gap="xs">
             <Text fw={700} size="lg" c="green">{ingredient.carbohydrates.toFixed(1)}g</Text>
-            <Text size="sm" c="dimmed">Carbs</Text>
-          </Stack>
-        </Group>
-        
-        <Divider my="sm" />
-        
-        <Group grow>
-          <Stack gap="xs">
-            <Text fw={700} size="lg" c="blue">{ingredient.serving_calories?.toFixed(1) || ingredient.calories.toFixed(1)}</Text>
-            <Text size="sm" c="dimmed">Calories per Serving</Text>
-          </Stack>
-          
-          <Stack gap="xs">
-            <Text fw={700} size="lg" c="red">{ingredient.serving_protein?.toFixed(1) || ingredient.protein.toFixed(1)}g</Text>
-            <Text size="sm" c="dimmed">Protein per Serving</Text>
-          </Stack>
-          
-          <Stack gap="xs">
-            <Text fw={700} size="lg" c="yellow">{ingredient.serving_fat?.toFixed(1) || ingredient.fat.toFixed(1)}g</Text>
-            <Text size="sm" c="dimmed">Fat per Serving</Text>
-          </Stack>
-          
-          <Stack gap="xs">
-            <Text fw={700} size="lg" c="green">{ingredient.serving_carbohydrates?.toFixed(1) || ingredient.carbohydrates.toFixed(1)}g</Text>
-            <Text size="sm" c="dimmed">Carbs per Serving</Text>
+            <Text size="sm" c="dimmed">碳水化合物</Text>
           </Stack>
         </Group>
         
         <Divider my="sm" />
         
         <Stack gap="xs">
-          <Text fw={500}>Serving Size: {ingredient.serving_size_grams}g</Text>
+          <Text fw={500}>每份: {ingredient.serving_size_grams}g</Text>
         </Stack>
+        <Group grow>
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="blue">{ingredient.serving_calories.toFixed(1) || ingredient.calories.toFixed(1)}</Text>
+            <Text size="sm" c="dimmed">熱量</Text>
+          </Stack>
+          
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="red">{ingredient.serving_protein.toFixed(1) || ingredient.protein.toFixed(1)}g</Text>
+            <Text size="sm" c="dimmed">蛋白質</Text>
+          </Stack>
+          
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="yellow">{ingredient.serving_fat.toFixed(1) || ingredient.fat.toFixed(1)}g</Text>
+            <Text size="sm" c="dimmed">脂肪</Text>
+          </Stack>
+          
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="green">{ingredient.serving_carbohydrates.toFixed(1) || ingredient.carbohydrates.toFixed(1)}g</Text>
+            <Text size="sm" c="dimmed">碳水化合物</Text>
+          </Stack>
+        </Group>
+        
+        <Divider my="sm" />
+        
       </Stack>
     </Modal>
   );

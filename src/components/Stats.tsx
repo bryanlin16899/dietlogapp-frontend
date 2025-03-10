@@ -13,14 +13,14 @@ export function StatsRing({ dietLog }: { dietLog: any }) {
 
   const statsData = [
     { 
-      label: 'Calories Intake', 
+      label: 'Intake', 
       stats: `${Math.round(dietStats.calories)} cal`, 
       progress: calculateProgress(dietStats.calories, 2000), 
       color: 'blue', 
       icon: 'up' 
     },
     { 
-      label: 'Calories Consumed', 
+      label: 'Consumed', 
       stats: `${Math.round(dietStats.consumption)} cal`, 
       progress: calculateProgress(dietStats.consumption, 2000), 
       color: 'teal', 

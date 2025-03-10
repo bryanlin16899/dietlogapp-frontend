@@ -9,10 +9,11 @@ import {
   TextInput,
   UnstyledButton,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconChevronDown, IconChevronUp, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
+import { IngredientDetail } from './IngredientDetail';
 import classes from './TableWithSearch.module.css';
 
 interface ThProps {
@@ -85,6 +86,8 @@ export function TableSort() {
   const [sortedData, setSortedData] = useState<Ingredient[]>([]);
   const [sortBy, setSortBy] = useState<keyof Ingredient | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
+  const [detailModalOpened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
@@ -140,7 +143,14 @@ export function TableSort() {
   };
 
   const rows = sortedData.map((ingredient) => (
-    <Table.Tr key={ingredient.id}>
+    <Table.Tr 
+      key={ingredient.id} 
+      style={{ cursor: 'pointer' }}
+      onClick={() => {
+        setSelectedIngredient(ingredient);
+        openDetailModal();
+      }}
+    >
       <Table.Td>{ingredient.name}</Table.Td>
       <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
       {!isMobile && (
@@ -151,13 +161,19 @@ export function TableSort() {
         </>
       )}
       <Table.Td>
-        <ActionIcon 
-          variant="subtle" 
-          color="red" 
-          onClick={() => handleDeleteIngredient(ingredient.id)}
-        >
-          <IconTrash size={16} stroke={1.5} />
-        </ActionIcon>
+        <Group gap={0} justify="flex-end">
+          <ActionIcon 
+            variant="subtle" 
+            color="red" 
+            className="delete-action"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDeleteIngredient(ingredient.id);
+            }}
+          >
+            <IconTrash size={16} stroke={1.5} />
+          </ActionIcon>
+        </Group>
       </Table.Td>
     </Table.Tr>
   ));
@@ -184,14 +200,14 @@ export function TableSort() {
               reversed={reverseSortDirection}
               onSort={() => setSorting('name')}
             >
-              Name
+              名稱
             </Th>
             <Th
               sorted={sortBy === 'calories'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('calories')}
             >
-              Calories
+              熱量
             </Th>
             {!isMobile && (
               <>
@@ -200,21 +216,21 @@ export function TableSort() {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('protein')}
                 >
-                  Protein
+                  蛋白質
                 </Th>
                 <Th
                   sorted={sortBy === 'fat'}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('fat')}
                 >
-                  Fat
+                  脂肪
                 </Th>
                 <Th
                   sorted={sortBy === 'carbohydrates'}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('carbohydrates')}
                 >
-                  Carbohydrates
+                  碳水化合物
                 </Th>
               </>
             )}
@@ -228,13 +244,18 @@ export function TableSort() {
             <Table.Tr>
               <Table.Td colSpan={isMobile ? 2 : 6}>
                 <Text fw={500} ta="center">
-                  Nothing found
+                  無
                 </Text>
               </Table.Td>
             </Table.Tr>
           )}
         </Table.Tbody>
       </Table>
+      <IngredientDetail 
+        ingredient={selectedIngredient} 
+        opened={detailModalOpened} 
+        onClose={closeDetailModal} 
+      />
     </ScrollArea>
   );
 }

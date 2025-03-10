@@ -1,20 +1,15 @@
-import { Button, Menu, MenuTarget } from "@mantine/core";
+import { Button, Menu } from "@mantine/core";
 import { IconArrowsLeftRight, IconArticle, IconSettings, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
 
 export function NavMenu() {
     return (
         <Menu trigger="hover" shadow="md" radius="md">
-            <MenuTarget>
-                {/* <Button
-                    leftSection={<IconArticle size={25}/>}
-                >
-                    Menu
-                </Button> */}
+            <Menu.Target>
                 <Button radius={20}>
                     <IconArticle size={25}/>
                 </Button>
-            </MenuTarget>
+            </Menu.Target>
 
             <Menu.Dropdown>
             <Menu.Label>Application</Menu.Label>

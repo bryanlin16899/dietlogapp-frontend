@@ -1,7 +1,10 @@
 "use client";
+import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
+import { NavMenu } from "@/components/NavMenu";
 import {
     AppShell,
     AppShellMain,
+    Box,
     Button,
     Text
 } from "@mantine/core";
@@ -26,13 +29,27 @@ export default function Ingredients() {
       className="h-screen flex flex-col"
     >
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
+        <Box 
+        pos="fixed" 
+        top={10} 
+        left={10} 
+        >
+        <ColorSchemesSwitcher />
+        </Box>
+        <Box 
+        pos="fixed" 
+        top={10} 
+        right={10} 
+        >
+        <NavMenu/>
+        </Box>
         <div className="flex flex-col items-center justify-center flex-grow">
             <Button
                 onClick={open}
                 className="mb-2"
             >
                 <IconPlus size={16} stroke={1.5} />
-                 Add Ingredient
+                 新增食材
             </Button>
             <CreateIngredientModal 
               opened={opened} 
