@@ -1,4 +1,5 @@
 import {
+  Box,
   ColorSchemeScript,
   mantineHtmlProps,
   MantineProvider
@@ -6,6 +7,7 @@ import {
 import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import type { Metadata } from "next";
+import { NavMenu } from "@/components/NavMenu";
 import "./globals.css";
 import theme from "./theme";
 
@@ -27,6 +29,14 @@ export default function RootLayout({
       <body className="antialiased">
         <MantineProvider theme={theme}>
           <Notifications />
+          <Box 
+            pos="fixed" 
+            top={10} 
+            right={10} 
+            zIndex={1000}
+          >
+            <NavMenu/>
+          </Box>
           {children}
         </MantineProvider>
       </body>

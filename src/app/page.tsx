@@ -1,7 +1,6 @@
 "use client";
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
-import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
 import { TableScrollArea } from "@/components/TableScrollArea";
 import { fetchDietLog } from "@/lib/api";
@@ -54,14 +53,6 @@ export default function Home() {
         // zIndex={100}
       >
         <ColorSchemesSwitcher />
-      </Box>
-      <Box 
-        pos="fixed" 
-        top={10} 
-        right={10} 
-        // zIndex={100}
-      >
-        <NavMenu/>
       </Box>
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
