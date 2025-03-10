@@ -90,7 +90,11 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   };
   return (
     <Flex className='mb-2' direction="column" gap="md">
-      <Flex gap="xl" align="end">
+      <Flex 
+        gap="md" 
+        direction={{ base: 'column', sm: 'row' }} 
+        align={{ base: 'stretch', sm: 'end' }}
+      >
         <Autocomplete
           value={value}
           data={data}
@@ -106,7 +110,10 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
           label="Quantity"
           placeholder="Default 100"
           min={0}
-          style={{ width: 120 }}
+          style={{ 
+            width: { base: '100%', sm: 120 },
+            flexGrow: { base: 1, sm: 0 }
+          }}
         />
         <Select
           label="Unit Type"
@@ -116,7 +123,10 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
             { value: 'grams', label: 'Grams' },
             { value: 'servings', label: 'Servings' }
           ]}
-          style={{ width: 120 }}
+          style={{ 
+            width: { base: '100%', sm: 120 },
+            flexGrow: { base: 1, sm: 0 }
+          }}
         />
       </Flex>
       <Button onClick={handleIntake}>
