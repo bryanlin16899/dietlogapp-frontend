@@ -4,20 +4,7 @@ import Link from "next/link";
 
 export function NavMenu() {
     return (
-        <Menu 
-            trigger="hover" 
-            shadow="md" 
-            radius="md" 
-            position="bottom-end"
-            styles={{
-                root: {
-                    position: 'absolute',
-                    top: '1rem',
-                    right: '1rem',
-                    zIndex: 1000
-                }
-            }}
-        >
+        <Menu trigger="hover" shadow="md" radius="md">
             <MenuTarget>
                 {/* <Button
                     leftSection={<IconArticle size={25}/>}
