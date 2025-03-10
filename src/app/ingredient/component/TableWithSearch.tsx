@@ -140,10 +140,14 @@ export function TableSort() {
   const rows = sortedData.map((ingredient) => (
     <Table.Tr key={ingredient.id}>
       <Table.Td>{ingredient.name}</Table.Td>
-      <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
-      <Table.Td>{ingredient.protein.toFixed(1)}</Table.Td>
-      <Table.Td>{ingredient.fat.toFixed(1)}</Table.Td>
-      <Table.Td>{ingredient.carbohydrates.toFixed(1)}</Table.Td>
+      {!isMobile && (
+        <>
+          <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
+          <Table.Td>{ingredient.protein.toFixed(1)}</Table.Td>
+          <Table.Td>{ingredient.fat.toFixed(1)}</Table.Td>
+          <Table.Td>{ingredient.carbohydrates.toFixed(1)}</Table.Td>
+        </>
+      )}
       <Table.Td>
         <ActionIcon 
           variant="subtle" 
@@ -157,7 +161,7 @@ export function TableSort() {
   ));
 
   return (
-    <ScrollArea h={500} miw={800}>
+    <ScrollArea h={500} miw={isMobile ? 300 : 800}>
       <TextInput
         placeholder="Search ingredients"
         mb="sm"
@@ -166,7 +170,7 @@ export function TableSort() {
         onChange={handleSearchChange}
       />
       <Table
-        miw={800} 
+        miw={isMobile ? 300 : 800} 
         fz={isMobile ? 'xs' : 'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
       >
@@ -179,34 +183,38 @@ export function TableSort() {
             >
               Name
             </Th>
-            <Th
-              sorted={sortBy === 'calories'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('calories')}
-            >
-              Calories
-            </Th>
-            <Th
-              sorted={sortBy === 'protein'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('protein')}
-            >
-              Protein
-            </Th>
-            <Th
-              sorted={sortBy === 'fat'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('fat')}
-            >
-              Fat
-            </Th>
-            <Th
-              sorted={sortBy === 'carbohydrates'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('carbohydrates')}
-            >
-              Carbohydrates
-            </Th>
+            {!isMobile && (
+              <>
+                <Th
+                  sorted={sortBy === 'calories'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('calories')}
+                >
+                  Calories
+                </Th>
+                <Th
+                  sorted={sortBy === 'protein'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('protein')}
+                >
+                  Protein
+                </Th>
+                <Th
+                  sorted={sortBy === 'fat'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('fat')}
+                >
+                  Fat
+                </Th>
+                <Th
+                  sorted={sortBy === 'carbohydrates'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('carbohydrates')}
+                >
+                  Carbohydrates
+                </Th>
+              </>
+            )}
             <Table.Th>操作</Table.Th>
           </Table.Tr>
         </Table.Thead>
@@ -215,7 +223,7 @@ export function TableSort() {
             rows
           ) : (
             <Table.Tr>
-              <Table.Td colSpan={5}>
+              <Table.Td colSpan={isMobile ? 2 : 6}>
                 <Text fw={500} ta="center">
                   Nothing found
                 </Text>
