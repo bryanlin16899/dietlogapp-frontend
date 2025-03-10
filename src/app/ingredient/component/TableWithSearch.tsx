@@ -1,4 +1,6 @@
+import { fetchIngredientList, Ingredient } from '@/lib/api';
 import {
+  ActionIcon,
   Center,
   Group,
   ScrollArea,
@@ -8,9 +10,8 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChevronDown, IconChevronUp, IconSearch, IconSelector } from '@tabler/icons-react';
-import { useState, useEffect } from 'react';
-import { fetchIngredientList, Ingredient } from '@/lib/api';
+import { IconChevronDown, IconChevronUp, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 import classes from './TableWithSearch.module.css';
 
 interface ThProps {
@@ -119,11 +120,18 @@ export function TableSort() {
       <Table.Td>{ingredient.protein.toFixed(1)}</Table.Td>
       <Table.Td>{ingredient.fat.toFixed(1)}</Table.Td>
       <Table.Td>{ingredient.carbohydrates.toFixed(1)}</Table.Td>
+      <ActionIcon 
+        variant="subtle" 
+        color="red" 
+        // onClick={() => handleRemoveIntake(food.id)}
+      >
+        <IconTrash size={16} stroke={1.5} />
+      </ActionIcon>
     </Table.Tr>
   ));
 
   return (
-    <ScrollArea h={500} miw={400}>
+    <ScrollArea h={500} miw={800}>
       <TextInput
         placeholder="Search ingredients"
         mb="sm"
@@ -132,7 +140,7 @@ export function TableSort() {
         onChange={handleSearchChange}
       />
       <Table
-        miw={400} 
+        miw={800} 
         fz={isMobile ? 'xs' : 'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
       >
@@ -173,6 +181,7 @@ export function TableSort() {
             >
               Carbohydrates
             </Th>
+            <Table.Th>操作</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
