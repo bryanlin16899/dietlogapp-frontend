@@ -1,5 +1,6 @@
 import { Button, Menu, MenuTarget } from "@mantine/core";
 import { IconArrowsLeftRight, IconSettings, IconTrash } from "@tabler/icons-react";
+import Link from "next/link";
 
 export function NavMenu() {
     return (
@@ -10,7 +11,11 @@ export function NavMenu() {
 
             <Menu.Dropdown>
             <Menu.Label>Application</Menu.Label>
-            <Menu.Item leftSection={<IconSettings size={14} />}>
+            <Menu.Item 
+                leftSection={<IconSettings size={14} />} 
+                component={Link} 
+                href="/ingredient"
+            >
                 Ingredients
             </Menu.Item>
             {/* <Menu.Item leftSection={<IconMessageCircle size={14} />}>
