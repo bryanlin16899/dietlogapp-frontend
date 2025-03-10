@@ -168,3 +168,25 @@ export const createIngredient = async (ingredientData: CreateIngredientData) => 
     throw error;
   }
 };
+
+export const createIngredientByImage = async (imageFile: File, name: string) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    formData.append('name', name);
+
+    const response = await fetch(`${API_BASE_URL}/ingredient/add`, {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating ingredient by image:', error);
+    throw error;
+  }
+};
