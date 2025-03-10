@@ -7,7 +7,8 @@ import { fetchDietLog } from "@/lib/api";
 import {
   AppShell,
   AppShellMain,
-  Text
+  Text,
+  Box
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 
@@ -45,6 +46,15 @@ export default function Home() {
       padding="md" 
       className="h-screen flex flex-col"
     >
+      <Box 
+        pos="fixed" 
+        top={10} 
+        left={10} 
+        zIndex={100}
+      >
+        <ColorSchemesSwitcher />
+      </Box>
+      
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
@@ -64,13 +74,7 @@ export default function Home() {
             Log your diet, maintain your diet and keep track of your nutrition.
             Search for the food you eat and log it easily.
           </Text>
-          <div className="flex justify-center">
-            <ColorSchemesSwitcher />
-          </div>
         </div>
-        
-        {/* <div className="flex flex-col items-center max-w-[800px] w-full mx-auto px-4">
-        </div> */}
       </AppShellMain>
     </AppShell>
   );

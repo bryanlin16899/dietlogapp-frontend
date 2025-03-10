@@ -1,16 +1,28 @@
 "use client";
 
-import { useMantineColorScheme, Button, Group } from "@mantine/core";
+import { ActionIcon, Group } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core';
+import { IconSun, IconMoon } from '@tabler/icons-react';
 
 export function ColorSchemesSwitcher() {
-  const { setColorScheme, clearColorScheme } = useMantineColorScheme();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
 
   return (
     <Group>
-      <Button onClick={() => setColorScheme("light")}>Light</Button>
-      <Button onClick={() => setColorScheme("dark")}>Dark</Button>
-      <Button onClick={() => setColorScheme("auto")}>Auto</Button>
-      <Button onClick={clearColorScheme}>Clear</Button>
+      <ActionIcon 
+        variant={colorScheme === 'light' ? 'filled' : 'subtle'}
+        onClick={() => setColorScheme("light")} 
+        size="lg"
+      >
+        <IconSun />
+      </ActionIcon>
+      <ActionIcon 
+        variant={colorScheme === 'dark' ? 'filled' : 'subtle'}
+        onClick={() => setColorScheme("dark")} 
+        size="lg"
+      >
+        <IconMoon />
+      </ActionIcon>
     </Group>
   );
 }
