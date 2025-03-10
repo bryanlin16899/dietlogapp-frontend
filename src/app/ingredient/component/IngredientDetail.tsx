@@ -59,6 +59,30 @@ export function IngredientDetail({ ingredient, opened, onClose }: IngredientDeta
         
         <Divider my="sm" />
         
+        <Group grow>
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="blue">{ingredient.serving_calories?.toFixed(1) || ingredient.calories.toFixed(1)}</Text>
+            <Text size="sm" c="dimmed">Calories per Serving</Text>
+          </Stack>
+          
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="red">{ingredient.serving_protein?.toFixed(1) || ingredient.protein.toFixed(1)}g</Text>
+            <Text size="sm" c="dimmed">Protein per Serving</Text>
+          </Stack>
+          
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="yellow">{ingredient.serving_fat?.toFixed(1) || ingredient.fat.toFixed(1)}g</Text>
+            <Text size="sm" c="dimmed">Fat per Serving</Text>
+          </Stack>
+          
+          <Stack gap="xs">
+            <Text fw={700} size="lg" c="green">{ingredient.serving_carbohydrates?.toFixed(1) || ingredient.carbohydrates.toFixed(1)}g</Text>
+            <Text size="sm" c="dimmed">Carbs per Serving</Text>
+          </Stack>
+        </Group>
+        
+        <Divider my="sm" />
+        
         <Stack gap="xs">
           <Text fw={500}>Serving Size: {ingredient.serving_size_grams}g</Text>
         </Stack>
