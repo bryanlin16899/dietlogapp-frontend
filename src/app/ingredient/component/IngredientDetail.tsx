@@ -21,13 +21,13 @@ export function IngredientDetail({ ingredient, opened, onClose }: IngredientDeta
     <Modal 
       opened={opened} 
       onClose={onClose} 
-      title={<Title order={2}>Ingredient Details</Title>}
+      title={<Title order={3}>Ingredient Details</Title>}
       size="md"
       centered
     >
       <Stack>
         <Group justify="space-between" align="center">
-          <Title order={3}>{ingredient.name}</Title>
+          <Title order={2}>{ingredient.name}</Title>
           <Badge size="lg" color={ingredient.added_by_image ? 'green' : 'blue'}>
             {ingredient.added_by_image ? 'Image Scan' : 'Manual Entry'}
           </Badge>
