@@ -4,7 +4,7 @@ import {
     Group,
     Modal,
     NumberInput,
-    Select,
+    SegmentedControl,
     Stack,
     Text,
     TextInput
@@ -99,15 +99,19 @@ export function CreateIngredientModal({
     <Modal opened={opened} onClose={close} title="Add New Ingredient" size="lg">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
-          <Select
-            label="Add Ingredient Method"
-            placeholder="Select method"
-            data={[
-              { value: 'manual', label: 'Type Manually' },
-              { value: 'image', label: 'Add by Image' }
-            ]}
+          <SegmentedControl
             value={addMethod}
-            onChange={(value) => setAddMethod(value as AddMethodType)}
+            onChange={(value: AddMethodType) => {
+              setAddMethod(value);
+              // Reset form and image when switching methods
+              form.reset();
+              setImageFile(null);
+            }}
+            data={[
+              { label: 'Type Manually', value: 'manual' },
+              { label: 'Add by Image', value: 'image' }
+            ]}
+            fullWidth
           />
 
           <TextInput
