@@ -13,13 +13,13 @@ export function IntakeFoodDetail({ food, opened, onClose }: IntakeFoodDetailProp
     <Modal 
       opened={opened} 
       onClose={onClose} 
-      title={<Title order={3}>Food Details</Title>}
+      title={<Title order={2}>Food Details</Title>}
       size="md"
       centered
     >
       <Stack>
         <Group justify="space-between" align="center">
-          <Title order={4}>{food.name}</Title>
+          <Title order={3}>{food.name}</Title>
           <Badge size="lg" color="blue">{food.quantity} {food.unit_type === 'grams' ? 'g' : 'serving'}</Badge>
         </Group>
         
