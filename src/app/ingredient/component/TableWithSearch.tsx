@@ -15,8 +15,8 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconChevronDown, IconChevronUp, IconEdit, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import { IngredientDetail } from './IngredientDetail';
 import { EditIngredientModal } from './EditIngredientModal';
+import { IngredientDetail } from './IngredientDetail';
 import classes from './TableWithSearch.module.css';
 
 interface ThProps {
@@ -137,8 +137,8 @@ export function TableSort() {
 
       notifications.show({
         position: 'top-right',
-        title: 'Ingredient Deleted',
-        message: `${ingredientToDelete.name} successfully removed`,
+        title: '刪除食材',
+        message: `${ingredientToDelete.name} 成功刪除`,
         color: 'green',
       });
 
@@ -147,7 +147,7 @@ export function TableSort() {
       notifications.show({
         position: 'top-right',
         title: 'Error',
-        message: 'Failed to delete ingredient',
+        message: '刪除失敗',
         color: 'red',
       });
     }

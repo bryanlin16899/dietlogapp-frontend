@@ -1,7 +1,8 @@
-import { updateIngredient, Ingredient } from '@/lib/api';
-import { Button, Group, Modal, NumberInput, TextInput, Stack } from '@mantine/core';
+import { Ingredient, updateIngredient } from '@/lib/api';
+import { Button, Group, Modal, NumberInput, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import React from 'react';
 
 interface EditIngredientModalProps {
   ingredient: Ingredient | null;
@@ -75,43 +76,51 @@ export function EditIngredientModal({
     <Modal 
       opened={opened} 
       onClose={onClose} 
-      title="Edit Ingredient"
+      title="編輯食材"
       size="md"
     >
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack>
+        <Stack
+            gap='sm'
+        >
           <TextInput
-            label="Name"
-            placeholder="Ingredient name"
+            label="名稱"
+            placeholder="毛豆 🫛"
+            size='md'
             {...form.getInputProps('name')}
           />
           <NumberInput
-            label="Calories"
-            placeholder="Calories"
+            label="熱量"
+            placeholder=""
             precision={1}
+            size='md'
             {...form.getInputProps('calories')}
           />
           <NumberInput
-            label="Protein (g)"
-            placeholder="Protein"
+            label="蛋白質 (每100g)"
+            placeholder=""
             precision={1}
+            size='md'
             {...form.getInputProps('protein')}
           />
           <NumberInput
-            label="Fat (g)"
+            label="脂肪 (每100g)"
             placeholder="Fat"
             precision={1}
+            size='md'
             {...form.getInputProps('fat')}
           />
           <NumberInput
-            label="Carbohydrates (g)"
+            label="碳水化合物 (每100g)"
             placeholder="Carbohydrates"
             precision={1}
+            size='md'
             {...form.getInputProps('carbohydrates')}
           />
           <NumberInput
-            label="Serving Size (g)"
+            label="每份重量 (每100g)"
             placeholder="Serving Size"
+            size='md'
             {...form.getInputProps('serving_size_grams')}
           />
           <Group justify="flex-end" mt="md">

@@ -165,8 +165,8 @@ export function CreateIngredientModal({
               onReject={(files) => {
                 notifications.show({
                   position: 'top-right',
-                  title: 'Invalid file',
-                  message: 'Please upload a valid image file',
+                  title: '無效檔案',
+                  message: '請上傳圖片檔案',
                   color: 'red'
                 });
               }}
