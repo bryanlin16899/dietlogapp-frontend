@@ -110,10 +110,6 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
           label="Quantity"
           placeholder="Default 100"
           min={0}
-          style={{ 
-            width: { base: '100%', sm: 120 },
-            flexGrow: { base: 1, sm: 0 }
-          }}
         />
         <Select
           label="Unit Type"
@@ -123,10 +119,6 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
             { value: 'grams', label: 'Grams' },
             { value: 'servings', label: 'Servings' }
           ]}
-          style={{ 
-            width: { base: '100%', sm: 120 },
-            flexGrow: { base: 1, sm: 0 }
-          }}
         />
       </Flex>
       <Button onClick={handleIntake}>
