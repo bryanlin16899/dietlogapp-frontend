@@ -1,6 +1,7 @@
 "use client";
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
+import { GoogleAuth } from "@/components/GoogleAuth";
 import { IntakeFoodDetail } from "@/components/IntakeFoodDetail";
 import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
@@ -91,6 +92,7 @@ export default function Home() {
             ta="center"
             size="lg"
           >
+            <GoogleAuth />
             Log your diet, maintain your diet and keep track of your nutrition.
             Search for the food you eat and log it easily.
           </Text>
