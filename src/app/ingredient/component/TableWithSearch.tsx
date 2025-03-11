@@ -14,6 +14,7 @@ import { notifications } from '@mantine/notifications';
 import { IconChevronDown, IconChevronUp, IconEdit, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { IngredientDetail } from './IngredientDetail';
+import { EditIngredientModal } from './EditIngredientModal';
 import classes from './TableWithSearch.module.css';
 
 interface ThProps {
@@ -88,6 +89,8 @@ export function TableSort() {
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [detailModalOpened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
+  const [editModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
+  const [selectedIngredientForEdit, setSelectedIngredientForEdit] = useState<Ingredient | null>(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
@@ -169,6 +172,8 @@ export function TableSort() {
             color="blue" 
             onClick={(e) => {
               e.stopPropagation();
+              setSelectedIngredientForEdit(ingredient);
+              openEditModal();
             }}
           >
             <IconEdit size={16} stroke={1.5} />
@@ -266,6 +271,19 @@ export function TableSort() {
         ingredient={selectedIngredient} 
         opened={detailModalOpened} 
         onClose={closeDetailModal} 
+      />
+      <EditIngredientModal
+        ingredient={selectedIngredientForEdit}
+        opened={editModalOpened}
+        onClose={closeEditModal}
+        onUpdate={(updatedIngredient) => {
+          // Update the ingredient in the list
+          const updatedIngredients = ingredients.map(ing => 
+            ing.id === updatedIngredient.id ? updatedIngredient : ing
+          );
+          setIngredients(updatedIngredients);
+          setSortedData(updatedIngredients);
+        }}
       />
     </ScrollArea>
   );
