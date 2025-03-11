@@ -103,6 +103,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
           label="What was the last thing you ate?"
           placeholder="Apple, Fried rice, Pizza..."
           style={{ flexGrow: 1 }}
+          inputProps={{ style: { fontSize: '16px' } }}
         />
         <NumberInput
           value={quantity}
