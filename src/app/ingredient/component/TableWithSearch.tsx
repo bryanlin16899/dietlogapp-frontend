@@ -151,7 +151,9 @@ export function TableSort() {
         openDetailModal();
       }}
     >
-      <Table.Td>{ingredient.name}</Table.Td>
+      <Table.Td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {ingredient.name}
+      </Table.Td>
       <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
       {!isMobile && (
         <>
