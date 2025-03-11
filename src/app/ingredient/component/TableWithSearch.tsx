@@ -1,8 +1,10 @@
 import { deleteIngredient, fetchIngredientList, Ingredient } from '@/lib/api';
 import {
   ActionIcon,
+  Button,
   Center,
   Group,
+  Modal,
   ScrollArea,
   Table,
   Text,
@@ -91,6 +93,8 @@ export function TableSort() {
   const [detailModalOpened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
   const [editModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
   const [selectedIngredientForEdit, setSelectedIngredientForEdit] = useState<Ingredient | null>(null);
+  const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
+  const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
@@ -120,21 +124,25 @@ export function TableSort() {
     setSortedData(sortData(ingredients, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
-  const handleDeleteIngredient = async (ingredientId: number) => {
+  const handleDeleteIngredient = async () => {
+    if (!ingredientToDelete) return;
+
     try {
-      await deleteIngredient(ingredientId);
+      await deleteIngredient(ingredientToDelete.id);
       
       // Remove the deleted ingredient from the list
-      const updatedIngredients = ingredients.filter(ing => ing.id !== ingredientId);
+      const updatedIngredients = ingredients.filter(ing => ing.id !== ingredientToDelete.id);
       setIngredients(updatedIngredients);
       setSortedData(updatedIngredients);
 
       notifications.show({
         position: 'top-right',
         title: 'Ingredient Deleted',
-        message: 'Ingredient successfully removed',
+        message: `${ingredientToDelete.name} successfully removed`,
         color: 'green',
       });
+
+      closeDeleteModal();
     } catch (error) {
       notifications.show({
         position: 'top-right',
@@ -183,7 +191,8 @@ export function TableSort() {
             color="red" 
             onClick={(e) => {
               e.stopPropagation();
-              handleDeleteIngredient(ingredient.id);
+              setIngredientToDelete(ingredient);
+              openDeleteModal();
             }}
           >
             <IconTrash size={16} stroke={1.5} />
@@ -285,6 +294,24 @@ export function TableSort() {
           setSortedData(updatedIngredients);
         }}
       />
+      <Modal
+        opened={deleteModalOpened}
+        onClose={closeDeleteModal}
+        title="確認刪除食材"
+        centered
+      >
+        <Text mb="md">
+          您確定要刪除 <strong>{ingredientToDelete?.name}</strong> 嗎？
+        </Text>
+        <Group justify="flex-end">
+          <Button variant="default" onClick={closeDeleteModal}>
+            取消
+          </Button>
+          <Button color="red" onClick={handleDeleteIngredient}>
+            刪除
+          </Button>
+        </Group>
+      </Modal>
     </ScrollArea>
   );
 }
