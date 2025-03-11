@@ -190,3 +190,32 @@ export const createIngredientByImage = async (imageFile: File, name: string) => 
     throw error;
   }
 };
+
+export const updateIngredient = async (ingredientData: {
+  id: number;
+  name: string;
+  calories: number;
+  fat: number;
+  protein: number;
+  carbohydrates: number;
+  serving_size_grams: number;
+}) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ingredient/update`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(ingredientData)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating ingredient:', error);
+    throw error;
+  }
+};
