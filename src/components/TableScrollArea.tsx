@@ -35,15 +35,15 @@ export const TableScrollArea = forwardRef<
 
       notifications.show({
         position: 'top-right',
-        title: 'Intake Removed',
-        message: 'Food item successfully deleted',
+        title: '刪除',
+        message: '食物已成功刪除',
         color: 'green',
       });
     } catch (error) {
       notifications.show({
         position: 'top-right',
-        title: 'Error',
-        message: 'Failed to remove food item',
+        title: '錯誤',
+        message: '食物刪除失敗',
         color: 'red',
       });
     }

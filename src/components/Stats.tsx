@@ -40,7 +40,7 @@ export function StatsRing({ dietLog }: { dietLog: any }) {
             sections={[{ value: stat.progress, color: stat.color }]}
             label={
               <Center>
-                {stat.icon == 'up' ? <GiMeat/> : <FaBurn/>}
+                {stat.icon == 'up' ? <GiMeat size={20}/> : <FaBurn size={18}/>}
               </Center>
             }
           />
