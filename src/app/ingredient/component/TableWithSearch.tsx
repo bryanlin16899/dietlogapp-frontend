@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconChevronDown, IconChevronUp, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronUp, IconEdit, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { IngredientDetail } from './IngredientDetail';
 import classes from './TableWithSearch.module.css';
@@ -164,8 +164,16 @@ export function TableSort() {
         <Group gap={0} justify="flex-end">
           <ActionIcon 
             variant="subtle" 
+            color="blue" 
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <IconEdit size={16} stroke={1.5} />
+          </ActionIcon>
+          <ActionIcon 
+            variant="subtle" 
             color="red" 
-            className="delete-action"
             onClick={(e) => {
               e.stopPropagation();
               handleDeleteIngredient(ingredient.id);
@@ -181,7 +189,7 @@ export function TableSort() {
   return (
     <ScrollArea h={500} miw={isMobile ? 300 : 800}>
       <TextInput
-        placeholder="Search ingredients"
+        placeholder="搜尋食材"
         mb="sm"
         leftSection={<IconSearch size={16} stroke={1.5} />}
         value={search}
@@ -192,6 +200,7 @@ export function TableSort() {
         fz={isMobile ? 'xs' : 'sm'}
         verticalSpacing={isMobile ? 'xs' : 'md'}
         highlightOnHover
+        striped
       >
         <Table.Thead>
           <Table.Tr>
