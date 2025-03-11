@@ -23,6 +23,7 @@ export default function RootLayout({
     <html lang="en" {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="antialiased">
         <MantineProvider theme={theme}>

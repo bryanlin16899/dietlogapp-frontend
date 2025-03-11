@@ -100,30 +100,32 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
           data={data}
           onChange={handleChange}
           rightSection={loading ? <Loader size={16} /> : null}
-          label="What was the last thing you ate?"
-          placeholder="Apple, Fried rice, Pizza..."
+          label="🍪 吃了什麼？"
+          placeholder="Apple 🍎, Fries 🍟  ..."
+          size='md'
           style={{ flexGrow: 1 }}
-          inputProps={{ style: { fontSize: '16px' } }}
         />
         <NumberInput
           value={quantity}
           onChange={(val) => setQuantity(val)}
-          label="Quantity"
-          placeholder="Default 100"
+          label="數量"
+          placeholder="預設 100 g"
+          size='md'
           min={0}
         />
         <Select
-          label="Unit Type"
+          label="單位"
           value={unitType}
           onChange={(val) => setUnitType(val as UnitType)}
+          size='md'
           data={[
-            { value: 'grams', label: 'Grams' },
-            { value: 'servings', label: 'Servings' }
+            { value: 'grams', label: '克' },
+            { value: 'servings', label: '份' }
           ]}
         />
       </Flex>
       <Button onClick={handleIntake}>
-        Record Intake
+        紀錄
       </Button>
     </Flex>
   );

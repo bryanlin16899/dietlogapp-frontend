@@ -1,13 +1,13 @@
 import { createIngredient, createIngredientByImage, CreateIngredientData } from "@/lib/api";
 import {
-    Button,
-    Group,
-    Modal,
-    NumberInput,
-    SegmentedControl,
-    Stack,
-    Text,
-    TextInput
+  Button,
+  Group,
+  Modal,
+  NumberInput,
+  SegmentedControl,
+  Stack,
+  Text,
+  TextInput
 } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
@@ -70,7 +70,7 @@ export function CreateIngredientModal({
       notifications.show({
         position: 'top-right',
         title: 'Success',
-        message: 'Ingredient created successfully',
+        message: '食物新增成功',
         color: 'green',
       });
 
@@ -87,7 +87,7 @@ export function CreateIngredientModal({
       notifications.show({
         position: 'top-right',
         title: 'Error',
-        message: 'Failed to create ingredient',
+        message: '食物新增失敗',
         color: 'red',
       });
     } finally {
@@ -96,9 +96,9 @@ export function CreateIngredientModal({
   };
 
   return (
-    <Modal opened={opened} onClose={close} title="Add New Ingredient" size="lg">
+    <Modal opened={opened} onClose={close} title="新增食物" size="lg">
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack gap="md">
+        <Stack gap="sm">
           <SegmentedControl
             value={addMethod}
             onChange={(value: AddMethodType) => {
@@ -108,15 +108,16 @@ export function CreateIngredientModal({
               setImageFile(null);
             }}
             data={[
-              { label: 'Type Manually', value: 'manual' },
-              { label: 'Add by Image', value: 'image' }
+              { label: '手動輸入', value: 'manual' },
+              { label: '圖片', value: 'image' }
             ]}
             fullWidth
           />
 
           <TextInput
-            label="Name"
-            placeholder="Ingredient Name"
+            label="名稱"
+            placeholder="鳳梨Pizza 🍍🍕"
+            size="md"
             required
             {...form.getInputProps('name')}
           />
@@ -124,29 +125,33 @@ export function CreateIngredientModal({
           {addMethod === 'manual' && (
             <>
               <NumberInput
-                label="Calories (100g)"
-                placeholder="Calories"
+                label="熱量 (100g)"
+                size="md"
                 required
                 {...form.getInputProps('calories')}
               />
               <NumberInput
-                label="Protein (100g)"
+                label="蛋白質 (100g)"
+                size="md"
                 placeholder="Protein"
                 {...form.getInputProps('protein')}
               />
               <NumberInput
-                label="Fat"
+                label="脂肪 (100g)"
+                size="md"
                 placeholder="Fat (100g)"
                 {...form.getInputProps('fat')}
               />
               <NumberInput
-                label="Carbohydrates"
+                label="碳水化合物 (100g)"
+                size="md"
                 placeholder="Carbohydrates (100g)"
                 {...form.getInputProps('carbohydrates')}
               />
               <NumberInput
-                label="Serving Size (grams)"
-                placeholder="Serving Size"
+                label="每份重量(g)"
+                size="md"
+                placeholder="50"
                 {...form.getInputProps('serving_size_grams')}
               />
             </>
@@ -182,10 +187,10 @@ export function CreateIngredientModal({
 
                 <div>
                   <Text size="xl" inline>
-                    Drag image here or click to select file
+                    拖曳或點擊上傳圖片
                   </Text>
                   <Text size="sm" c="dimmed" inline mt={7}>
-                    File should not exceed 3MB
+                    檔案不超過 3MB
                   </Text>
                   {imageFile && (
                     <Text size="sm" c="green" inline mt={7}>
@@ -200,10 +205,11 @@ export function CreateIngredientModal({
           <Group justify="flex-end" mt="md">
             <Button 
               type="submit" 
+              w={120}
               loading={isLoading}
               disabled={isLoading || (addMethod === 'image' && !imageFile)}
             >
-              {addMethod === 'manual' ? 'Add Ingredient' : 'Add Image Ingredient'}
+              新增
             </Button>
           </Group>
         </Stack>

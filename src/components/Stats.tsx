@@ -1,5 +1,6 @@
 import { Center, Group, Paper, RingProgress, SimpleGrid, Text } from '@mantine/core';
-import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
+import { FaBurn } from 'react-icons/fa';
+import { GiMeat } from 'react-icons/gi';
 
 export function StatsRing({ dietLog }: { dietLog: any }) {
   const dietStats = {
@@ -13,28 +14,22 @@ export function StatsRing({ dietLog }: { dietLog: any }) {
 
   const statsData = [
     { 
-      label: 'Intake', 
-      stats: `${Math.round(dietStats.calories)} cal`, 
+      label: '熱量攝入', 
+      stats: `${dietStats.calories ? Math.round(dietStats.calories) : '-'} 大卡`, 
       progress: calculateProgress(dietStats.calories, 2000), 
       color: 'blue', 
-      icon: 'up' 
+      icon: 'up'
     },
     { 
-      label: 'Consumed', 
-      stats: `${Math.round(dietStats.consumption)} cal`, 
+      label: '熱量消耗', 
+      stats: `${dietStats.consumption ? Math.round(dietStats.consumption) : '-'} 大卡`, 
       progress: calculateProgress(dietStats.consumption, 2000), 
       color: 'teal', 
       icon: 'down' 
     },
   ];
 
-  const icons = {
-    up: IconArrowUpRight,
-    down: IconArrowDownRight,
-  };
-
   const stats = statsData.map((stat) => {
-    const Icon = icons[stat.icon]; 
     return (
       <Paper withBorder radius="md" p="xs" key={stat.label}>
         <Group>
@@ -45,7 +40,7 @@ export function StatsRing({ dietLog }: { dietLog: any }) {
             sections={[{ value: stat.progress, color: stat.color }]}
             label={
               <Center>
-                <Icon size={20} stroke={1.5} />
+                {stat.icon == 'up' ? <GiMeat/> : <FaBurn/>}
               </Center>
             }
           />

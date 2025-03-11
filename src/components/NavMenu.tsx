@@ -18,14 +18,14 @@ export function NavMenu() {
                 component={Link} 
                 href="/"
             >
-                Dashboard
+                主畫面
             </Menu.Item>
             <Menu.Item 
                 leftSection={<IconSettings size={14} />} 
                 component={Link} 
                 href="/ingredient"
             >
-                Ingredients
+                食材
             </Menu.Item>
 
             <Menu.Divider />
