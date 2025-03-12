@@ -128,3 +128,5 @@ export const TableScrollArea = forwardRef<
     </ScrollArea>
   );
 });
+
+TableScrollArea.displayName = 'TableScrollArea';
