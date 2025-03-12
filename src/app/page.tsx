@@ -6,6 +6,7 @@ import { IntakeFoodDetail } from "@/components/IntakeFoodDetail";
 import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
 import { TableScrollArea } from "@/components/TableScrollArea";
+import { useUser } from "@/context/userContext";
 import { fetchDietLog } from "@/lib/api";
 import {
   AppShell,
@@ -13,8 +14,8 @@ import {
   Box,
   Text
 } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -23,6 +24,7 @@ export default function Home() {
   const [selectedFood, setSelectedFood] = useState<any>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
+  const { userInfo, setUserInfo } = useUser();  
 
   useEffect(() => {
     const googleId = searchParams.get('id');
@@ -46,7 +48,10 @@ export default function Home() {
 
   const handleFetchDietLog = async () => {
     try {
-      const data = await fetchDietLog('Bryan', new Date().toISOString().split('T')[0]);
+      // if (!userInfo) {
+      //   return;
+      // }  
+      const data = await fetchDietLog(userInfo?.googleId, new Date().toISOString().split('T')[0]);
       setDietLog(data);
       setLoading(false);
     } catch (error) {
