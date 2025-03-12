@@ -8,7 +8,7 @@ export function GoogleAuth() {
 
     const handleGoogleLogin = () => {
         // Redirect to backend Google OAuth endpoint
-        const googleAuthUrl = 'https://dietlog.zeabur.app/auth/google/login';
+        const googleAuthUrl = 'https://dietlogapp.zeabur.app/auth/google/login';
         window.location.href = googleAuthUrl;
     };
 
