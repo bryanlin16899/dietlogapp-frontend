@@ -18,7 +18,7 @@ export const TableScrollArea = forwardRef<
   ({ dietLog, onRemoveIntake, onFoodRowClick }, ref) => {
     const [scrolled, setScrolled] = useState(false);
     const isMobile = useMediaQuery('(max-width: 768px)');
-    const { userInfo, setUserInfo } = useUser();
+    const { userInfo } = useUser();
 
     useImperativeHandle(ref, () => ({
       refreshDietLog: () => {
@@ -51,7 +51,7 @@ export const TableScrollArea = forwardRef<
         message: '食物已成功刪除',
         color: 'green',
       });
-    } catch (error) {
+    } catch {
       notifications.show({
         position: 'top-right',
         title: '錯誤',
