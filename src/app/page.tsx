@@ -63,8 +63,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    handleFetchDietLog();
-  }, []);
+    if (userInfo?.googleId) {
+      handleFetchDietLog();
+    }
+  }, [userInfo]);
 
   const handleIntakeSuccess = () => {
     handleFetchDietLog();
