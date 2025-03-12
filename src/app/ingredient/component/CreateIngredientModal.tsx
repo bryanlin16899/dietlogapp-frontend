@@ -101,8 +101,8 @@ export function CreateIngredientModal({
         <Stack gap="sm">
           <SegmentedControl
             value={addMethod}
-            onChange={(value: AddMethodType) => {
-              setAddMethod(value);
+            onChange={(value: string) => {
+              setAddMethod(value as AddMethodType);
               // Reset form and image when switching methods
               form.reset();
               setImageFile(null);
