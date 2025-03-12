@@ -23,7 +23,7 @@ export default function Home() {
   const [selectedFood, setSelectedFood] = useState<any>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
-  const { userInfo, setUserInfo } = useUser();
+  const { userInfo } = useUser();
 
   useEffect(() => {
     const googleId = searchParams.get('id');
