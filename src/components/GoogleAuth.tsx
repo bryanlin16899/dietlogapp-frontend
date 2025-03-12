@@ -32,7 +32,7 @@ export function GoogleAuth() {
 
                 // Redirect to a dashboard or home page
                 window.location.href = '/';
-            } catch (error) {
+            } catch {
                 notifications.show({
                     title: 'Login Failed',
                     message: 'Unable to complete login',

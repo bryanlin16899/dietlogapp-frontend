@@ -19,8 +19,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 // Component that uses useSearchParams
 function SearchParamsHandler() {
   const searchParams = useSearchParams();
-  const { userInfo } = useUser();
-
+  
   useEffect(() => {
     const googleId = searchParams.get('id');
     const userId = searchParams.get('user_id');

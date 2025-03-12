@@ -143,7 +143,7 @@ export function TableSort() {
       });
 
       closeDeleteModal();
-    } catch (error) {
+    } catch {
       notifications.show({
         position: 'top-right',
         title: 'Error',

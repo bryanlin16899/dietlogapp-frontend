@@ -12,18 +12,20 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   const [unitType, setUnitType] = useState<UnitType>('grams');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
-  const [ingredientList, setIngredientList] = useState<string[]>([]);
-  const { userInfo, setUserInfo } = useUser();
+  const [ingredientList, setIngredientList] = useState<any>([]);
+  const { userInfo } = useUser();
 
   const handleFetchIngredientList = async (searchTerm: string) => {
     try {
       const data = await fetchIngredientList(searchTerm);
+      console.log(ingredientList);
+      
       setIngredientList(data);
       
       // Transform ingredient data for Autocomplete
       const ingredientSuggestions = data.ingredients.map((ingredient: { name: string }) => ingredient.name);
       setData(ingredientSuggestions);
-    } catch (error) {
+    } catch {
       setIngredientList([]);
       setData([]);
     }
@@ -65,7 +67,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
         message: 'Food intake recorded',
         color: 'green',
       });
-    } catch (error) {
+    } catch {
       notifications.show({
         position: 'top-right',
         title: 'Error',

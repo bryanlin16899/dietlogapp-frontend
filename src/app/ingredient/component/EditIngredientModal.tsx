@@ -63,7 +63,7 @@ export function EditIngredientModal({
 
       onUpdate(updatedIngredient);
       onClose();
-    } catch (error) {
+    } catch {
       notifications.show({
         title: 'Update Failed',
         message: 'Unable to update ingredient',
@@ -92,28 +92,24 @@ export function EditIngredientModal({
           <NumberInput
             label="熱量"
             placeholder=""
-            precision={1}
             size='md'
             {...form.getInputProps('calories')}
           />
           <NumberInput
             label="蛋白質 (每100g)"
             placeholder=""
-            precision={1}
             size='md'
             {...form.getInputProps('protein')}
           />
           <NumberInput
             label="脂肪 (每100g)"
             placeholder="Fat"
-            precision={1}
             size='md'
             {...form.getInputProps('fat')}
           />
           <NumberInput
             label="碳水化合物 (每100g)"
             placeholder="Carbohydrates"
-            precision={1}
             size='md'
             {...form.getInputProps('carbohydrates')}
           />
