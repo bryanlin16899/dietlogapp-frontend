@@ -1,6 +1,6 @@
 import { useUser } from "@/context/userContext";
 import { Button, Menu } from "@mantine/core";
-import { IconArrowsLeftRight, IconArticle, IconLogout, IconSettings, IconTrash } from "@tabler/icons-react";
+import { IconArticle, IconLogout, IconSettings } from "@tabler/icons-react";
 import Link from "next/link";
 import { GoogleAuth } from "./GoogleAuth";
 
@@ -52,21 +52,6 @@ export function NavMenu() {
                 onClick={handleLogout}
             >
                 登出
-            </Menu.Item>
-
-            <Menu.Divider />
-
-            <Menu.Label>Danger zone</Menu.Label>
-            <Menu.Item
-                leftSection={<IconArrowsLeftRight size={14} />}
-            >
-                Transfer my data
-            </Menu.Item>
-            <Menu.Item
-                color="red"
-                leftSection={<IconTrash size={14} />}
-            >
-                Delete my account
             </Menu.Item>
         </Menu.Dropdown>
         </Menu>
