@@ -1,4 +1,5 @@
 "use client";
+import { useUser } from '@/context/userContext';
 import { fetchIngredientList, recordDietIntake, UnitType } from '@/lib/api';
 import { Autocomplete, Button, Flex, Loader, NumberInput, Select } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
@@ -12,6 +13,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
   const [ingredientList, setIngredientList] = useState<string[]>([]);
+  const { userInfo, setUserInfo } = useUser();
 
   const handleFetchIngredientList = async (searchTerm: string) => {
     try {
@@ -28,7 +30,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
   };
 
   const handleIntake = async () => {
-    if (!value) {
+    if (!value || !userInfo) {
       notifications.show({
         position: 'top-right',
         title: 'Error',
@@ -40,7 +42,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     
     try {
       const data = await recordDietIntake(
-        'Bryan', 
+        userInfo?.googleId, 
         value, 
         quantity ? Number(quantity) : 100, 
         unitType

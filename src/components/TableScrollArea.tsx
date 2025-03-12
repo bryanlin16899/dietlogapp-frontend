@@ -7,6 +7,7 @@ import cx from 'clsx';
 import { useState } from 'react';
 import classes from './TableScrollArea.module.css';
 
+import { useUser } from '@/context/userContext';
 import { removeIntakeById } from '@/lib/api';
 import { forwardRef, useImperativeHandle } from 'react';
 
@@ -17,6 +18,7 @@ export const TableScrollArea = forwardRef<
   ({ dietLog, onRemoveIntake, onFoodRowClick }, ref) => {
     const [scrolled, setScrolled] = useState(false);
     const isMobile = useMediaQuery('(max-width: 768px)');
+    const { userInfo, setUserInfo } = useUser();
 
     useImperativeHandle(ref, () => ({
       refreshDietLog: () => {
@@ -25,8 +27,18 @@ export const TableScrollArea = forwardRef<
     }));
 
   const handleRemoveIntake = async (foodId: number) => {
+    if (!userInfo?.googleId) {
+      notifications.show({
+        position: 'top-right',
+        title: '錯誤',
+        message: '請先登入',
+        color: 'red',
+      });
+      return;
+    }
+    
     try {
-      await removeIntakeById(foodId);
+      await removeIntakeById(userInfo?.googleId, foodId);
       
       // Trigger parent component to refresh diet log
       if (onRemoveIntake) {

@@ -1,4 +1,5 @@
-export const API_BASE_URL = 'http://192.168.18.8:8000';
+export const API_BASE_URL = 'http://localhost:8000';
+// export const API_BASE_URL = 'http://192.168.18.8:8000';
 
 export interface Ingredient {
   id: number;
@@ -43,7 +44,7 @@ export const fetchIngredientList = async (searchTerm: string): Promise<Ingredien
 export type UnitType = 'grams' | 'servings';
 
 export const recordDietIntake = async (
-  userName: string, 
+  googleId: string, 
   foodName: string, 
   quantity: number, 
   unitType: UnitType = 'grams'
@@ -55,7 +56,7 @@ export const recordDietIntake = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        user_name: userName,
+        google_id: googleId,
         food_name: foodName,
         quantity: quantity,
         unit_type: unitType
@@ -73,7 +74,7 @@ export const recordDietIntake = async (
   }
 };
 
-export const fetchDietLog = async (userName: string, date: string) => {
+export const fetchDietLog = async (googleId: string, date: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/diet/get_diet_log`, {
       method: 'POST',
@@ -82,7 +83,7 @@ export const fetchDietLog = async (userName: string, date: string) => {
       },
       body: JSON.stringify({
         date: date,
-        name: userName
+        google_id: googleId
       })
     });
 
@@ -97,14 +98,14 @@ export const fetchDietLog = async (userName: string, date: string) => {
   }
 };
 
-export const removeIntakeById = async (foodId: number) => {
+export const removeIntakeById = async (googleId: string, foodId: number) => {
   try {
     const response = await fetch(`${API_BASE_URL}/diet/remove_intake_by_id`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: foodId })
+      body: JSON.stringify({ google_id: googleId, id: foodId })
     });
     
     if (!response.ok) {

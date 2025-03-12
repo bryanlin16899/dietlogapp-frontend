@@ -1,3 +1,4 @@
+import { UserProvider } from "@/context/userContext";
 import {
   ColorSchemeScript,
   mantineHtmlProps,
@@ -26,6 +27,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="antialiased">
+        <UserProvider>
         <MantineProvider theme={theme}>
           {/* <Box 
             pos="fixed" 
@@ -38,6 +40,7 @@ export default function RootLayout({
           {/* <NavMenu/> */}
           {children}
         </MantineProvider>
+        </UserProvider>
       </body>
     </html>
   );
