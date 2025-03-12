@@ -14,15 +14,11 @@ import {
   Text
 } from "@mantine/core";
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
-export default function Home() {
+// Component that uses useSearchParams
+function SearchParamsHandler() {
   const searchParams = useSearchParams();
-  const [dietLog, setDietLog] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [selectedFood, setSelectedFood] = useState<any>(null);
-  const [detailModalOpened, setDetailModalOpened] = useState(false);
-  const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
   const { userInfo } = useUser();
 
   useEffect(() => {
@@ -44,6 +40,17 @@ export default function Home() {
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
     }
   }, [searchParams]);
+
+  return null;
+}
+
+export default function Home() {
+  const [dietLog, setDietLog] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedFood, setSelectedFood] = useState<any>(null);
+  const [detailModalOpened, setDetailModalOpened] = useState(false);
+  const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
+  const { userInfo } = useUser();
 
   const handleFetchDietLog = async () => {
     try {
@@ -86,6 +93,9 @@ export default function Home() {
       padding="md" 
       className="flex flex-col"
     >
+      <Suspense fallback={null}>
+        <SearchParamsHandler />
+      </Suspense>
       <Box 
         pos="fixed" 
         top={10} 
