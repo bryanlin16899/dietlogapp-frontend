@@ -93,7 +93,7 @@ export default function Home() {
       >
         <ColorSchemesSwitcher />
       </Box>
-      <Box 
+      <Box
         pos="fixed" 
         top={10} 
         right={10} 

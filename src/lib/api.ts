@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://localhost:8000';
+export const API_BASE_URL = 'https://dietlogapp.zeabur.app/';
 // export const API_BASE_URL = 'http://192.168.18.8:8000';
 
 export interface Ingredient {
