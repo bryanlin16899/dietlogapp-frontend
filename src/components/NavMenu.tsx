@@ -1,8 +1,11 @@
+import { useUser } from "@/context/userContext";
 import { Button, Menu } from "@mantine/core";
 import { IconArrowsLeftRight, IconArticle, IconSettings, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
 
 export function NavMenu() {
+    const { userInfo, setUserInfo } = useUser();
+    
     return (
         <Menu trigger="hover" shadow="md" radius="md">
             <Menu.Target>
