@@ -14,13 +14,35 @@ import {
   Text
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from 'next/navigation';
 
 export default function Home() {
+  const searchParams = useSearchParams();
   const [dietLog, setDietLog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedFood, setSelectedFood] = useState<any>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
+
+  useEffect(() => {
+    const googleId = searchParams.get('id');
+    const userId = searchParams.get('user_id');
+    const name = searchParams.get('name');
+    const email = searchParams.get('email');
+    const picture = searchParams.get('picture');
+
+    if (googleId && userId && name && email) {
+      const userInfo = {
+        googleId,
+        userId,
+        name: decodeURIComponent(name),
+        email,
+        picture
+      };
+
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    }
+  }, [searchParams]);
 
   const handleFetchDietLog = async () => {
     try {
