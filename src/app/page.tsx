@@ -48,10 +48,12 @@ export default function Home() {
 
   const handleFetchDietLog = async () => {
     try {
-      // if (!userInfo) {
-      //   return;
-      // }  
-      const data = await fetchDietLog(userInfo?.googleId, new Date().toISOString().split('T')[0]);
+      if (!userInfo?.googleId) {
+        console.warn('No user ID found');
+        setLoading(false);
+        return;
+      }
+      const data = await fetchDietLog(userInfo.googleId, new Date().toISOString().split('T')[0]);
       setDietLog(data);
       setLoading(false);
     } catch (error) {
