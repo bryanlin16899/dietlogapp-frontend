@@ -83,7 +83,7 @@ export function CreateIngredientModal({
       if (onIngredientCreated) {
         onIngredientCreated();
       }
-    } catch (error) {
+    } catch {
       notifications.show({
         position: 'top-right',
         title: 'Error',
@@ -162,7 +162,7 @@ export function CreateIngredientModal({
               onDrop={(files) => {
                 setImageFile(files[0]);
               }}
-              onReject={(files) => {
+              onReject={() => {
                 notifications.show({
                   position: 'top-right',
                   title: '無效檔案',
