@@ -8,34 +8,50 @@ export function GoogleAuth() {
 
     const handleGoogleLogin = () => {
         // Redirect to backend Google OAuth endpoint
-        const googleAuthUrl = 'https://dietlogapp.zeabur.app/auth/google/login';
+        const googleAuthUrl = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/auth/google/login` : 'http://localhost:8000/auth/google/login';
         window.location.href = googleAuthUrl;
     };
 
     // Check for OAuth callback and handle user session
     const handleOAuthCallback = async () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        const googleId = urlParams.get('id');
+        const existsUserInfo = localStorage.getItem('userInfo');
 
-        if (token) {
+        if (googleId && !existsUserInfo) {
             try {
                 setIsLoading(true);
                 // You might want to store the token in localStorage or a state management solution
-                localStorage.setItem('authToken', token);
+                const userId = urlParams.get('user_id');
+                const name = urlParams.get('name');
+                const email = urlParams.get('email');
+                const picture = urlParams.get('picture');
 
-                // Optional: Fetch user details or set user state
-                notifications.show({
-                    title: 'Login Successful',
-                    message: 'You have been logged in with Google',
-                    color: 'green'
-                });
+                if (googleId && userId && name && email) {
+                    const userInfo = {
+                        googleId,
+                        userId,
+                        name: decodeURIComponent(name),
+                        email,
+                        picture
+                    };
 
-                // Redirect to a dashboard or home page
-                window.location.href = '/';
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    // Optional: Fetch user details or set user state
+                    notifications.show({
+                        title: '登入成功',
+                        message: `${name}, 歡迎回來!`,
+                        color: 'green'
+                    });
+                }
+
+
+                // // Redirect to a dashboard or home page
+                // window.location.href = '/';
             } catch {
                 notifications.show({
-                    title: 'Login Failed',
-                    message: 'Unable to complete login',
+                    title: '登入失敗',
+                    message: '無法登入',
                     color: 'red'
                 });
             } finally {

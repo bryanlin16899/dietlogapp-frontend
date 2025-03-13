@@ -56,8 +56,8 @@ export function EditIngredientModal({
       });
 
       notifications.show({
-        title: 'Ingredient Updated',
-        message: `${values.name} has been successfully updated`,
+        title: '食材已修改',
+        message: `${values.name} 已成功修改`,
         color: 'green',
       });
 
@@ -65,8 +65,8 @@ export function EditIngredientModal({
       onClose();
     } catch {
       notifications.show({
-        title: 'Update Failed',
-        message: 'Unable to update ingredient',
+        title: '食材修改失敗',
+        message: '無法成功修改食材',
         color: 'red',
       });
     }
@@ -121,7 +121,7 @@ export function EditIngredientModal({
           />
           <Group justify="flex-end" mt="md">
             <Button type="submit" color="blue">
-              Update Ingredient
+              編輯
             </Button>
           </Group>
         </Stack>

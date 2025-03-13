@@ -18,35 +18,34 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
-import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Component that uses useSearchParams
-function SearchParamsHandler() {
-  const searchParams = useSearchParams();
+// function SearchParamsHandler() {
+//   const searchParams = useSearchParams();
   
-  useEffect(() => {
-    const googleId = searchParams.get('id');
-    const userId = searchParams.get('user_id');
-    const name = searchParams.get('name');
-    const email = searchParams.get('email');
-    const picture = searchParams.get('picture');
+//   useEffect(() => {
+//     const googleId = searchParams.get('id');
+//     const userId = searchParams.get('user_id');
+//     const name = searchParams.get('name');
+//     const email = searchParams.get('email');
+//     const picture = searchParams.get('picture');
 
-    if (googleId && userId && name && email) {
-      const userInfo = {
-        googleId,
-        userId,
-        name: decodeURIComponent(name),
-        email,
-        picture
-      };
+//     if (googleId && userId && name && email) {
+//       const userInfo = {
+//         googleId,
+//         userId,
+//         name: decodeURIComponent(name),
+//         email,
+//         picture
+//       };
 
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
-    }
-  }, [searchParams]);
+//       localStorage.setItem('userInfo', JSON.stringify(userInfo));
+//     }
+//   }, [searchParams]);
 
-  return null;
-}
+//   return null;
+// }
 
 export default function Home() {
   const [dietLog, setDietLog] = useState<any>(null);
@@ -95,16 +94,16 @@ export default function Home() {
   return (
     <AppShell 
       header={{ height: 100 }} 
-      padding="md" 
+      padding="md"
       className="flex flex-col"
     >
-      <Suspense fallback={null}>
+      {/* <Suspense fallback={null}>
         <SearchParamsHandler />
-      </Suspense>
+      </Suspense> */}
       <Box 
-        pos="fixed" 
-        top={10} 
-        left={10} 
+        pos="fixed"
+        top={10}
+        left={10}
       >
         <ColorSchemesSwitcher />
       </Box>

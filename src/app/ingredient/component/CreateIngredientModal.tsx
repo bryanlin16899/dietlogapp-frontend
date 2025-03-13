@@ -177,7 +177,7 @@ export function CreateIngredientModal({
                 {...form.getInputProps('serving_size_grams')}
               />
               <Group justify="space-between" align="center" mb={5}>
-                <Text size="md" fw={500}>產品圖片 (選填)</Text>
+                <Text size="md" fw={500}>產品圖片</Text>
                 <Button 
                   variant="subtle" 
                   onClick={toggleImageUpload}

@@ -20,7 +20,8 @@ export function IntakeFoodDetail({ food, opened, onClose }: IntakeFoodDetailProp
       <Stack>
         <Group justify="space-between" align="center">
           <Title order={3}>{food.name}</Title>
-          <Badge size="lg" color="blue">{food.quantity} {food.unit_type === 'g' ? '克' : '份'}</Badge>
+          {/* need type safe */}
+          <Badge size="lg" color="blue">{food.quantity} {food.unit_type === 'grams' ? '克' : '份'}</Badge>
         </Group>
         
         <Divider my="sm" />
