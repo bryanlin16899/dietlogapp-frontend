@@ -63,15 +63,15 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
 
       notifications.show({
         position: 'top-right',
-        title: 'Success',
-        message: 'Food intake recorded',
+        title: '新增',
+        message: '食物已成功紀錄',
         color: 'green',
       });
     } catch {
       notifications.show({
         position: 'top-right',
-        title: 'Error',
-        message: 'Failed to record intake',
+        title: '錯誤',
+        message: '食物紀錄失敗',
         color: 'red',
       });
     }
@@ -93,7 +93,7 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
     }
   };
   return (
-    <Flex className='mb-2' direction="column" gap="xs">
+    <Flex className='mb-1' direction="column" gap="xs">
       <Flex 
         gap="xs" 
         direction={{ base: 'column', sm: 'row' }} 

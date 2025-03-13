@@ -118,8 +118,8 @@ export default function Home() {
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
-          <div className="w-full mb-4">
-            <Group justify="center" className="w-full relative py-2">
+          <div className="w-full mb-2">
+            <Group justify="center" className="w-full relative py-1">
               <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200 dark:bg-gray-700"></div>
               <Button 
                 onClick={toggle}
@@ -127,7 +127,7 @@ export default function Home() {
                 variant="subtle"
                 className="z-10 bg-white dark:bg-dark-700 hover:bg-white dark:hover:bg-dark-700"
               >
-                {opened ? 'Hide' : 'Show'} Stats
+                {opened ? '隱藏' : '顯示'} 狀態
               </Button>
             </Group>
             <Collapse in={opened}>

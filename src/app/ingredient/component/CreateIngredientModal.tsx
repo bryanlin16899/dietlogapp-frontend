@@ -11,9 +11,9 @@ import {
   Text,
   TextInput
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconChevronDown, IconChevronUp, IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
 import { useState } from "react";
@@ -85,8 +85,7 @@ export function CreateIngredientModal({
 
         await createIngredient(ingredientData);
       } else if (addMethod === 'image' && imageFile) {
-        const base64Image = await fileToBase64(imageFile);
-        await createIngredientByImage(base64Image, values.name);
+        await createIngredientByImage(imageFile, values.name);
       }
 
       notifications.show({
@@ -181,7 +180,6 @@ export function CreateIngredientModal({
                 <Text size="md" fw={500}>產品圖片 (選填)</Text>
                 <Button 
                   variant="subtle" 
-                  compact 
                   onClick={toggleImageUpload}
                   rightSection={imageUploadOpened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
                 >

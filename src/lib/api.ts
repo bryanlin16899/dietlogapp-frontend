@@ -1,5 +1,3 @@
-export const API_BASE_URL = 'https://dietlogapp.zeabur.app';
-// export const API_BASE_URL = 'http://192.168.18.8:8000';
 
 export interface Ingredient {
   id: number;
@@ -22,7 +20,7 @@ export interface IngredientListResponse {
 
 export const fetchIngredientList = async (searchTerm: string): Promise<IngredientListResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/ingredient/get_ingredient_list`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/get_ingredient_list`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +48,7 @@ export const recordDietIntake = async (
   unitType: UnitType = 'grams'
 ) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/diet/intake`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/intake`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +74,7 @@ export const recordDietIntake = async (
 
 export const fetchDietLog = async (googleId: string, date: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/diet/get_diet_log`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/get_diet_log`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -100,7 +98,7 @@ export const fetchDietLog = async (googleId: string, date: string) => {
 
 export const removeIntakeById = async (googleId: string, foodId: number) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/diet/remove_intake_by_id`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/remove_intake_by_id`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -121,7 +119,7 @@ export const removeIntakeById = async (googleId: string, foodId: number) => {
 
 export const deleteIngredient = async (ingredientId: number) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/ingredient/delete`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/delete`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,11 +145,12 @@ export interface CreateIngredientData {
   protein: number;
   carbohydrates: number;
   serving_size_grams: number;
+  image_base64?: string;
 }
 
 export const createIngredient = async (ingredientData: CreateIngredientData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/ingredient/add`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -176,7 +175,7 @@ export const createIngredientByImage = async (imageFile: File, name: string) => 
     formData.append('image', imageFile);
     formData.append('name', name);
 
-    const response = await fetch(`${API_BASE_URL}/ingredient/add`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/add`, {
       method: 'POST',
       body: formData
     });
@@ -202,7 +201,7 @@ export const updateIngredient = async (ingredientData: {
   serving_size_grams: number;
 }) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/ingredient/update`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/update`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

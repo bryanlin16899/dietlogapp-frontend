@@ -1,0 +1,4 @@
+{
+    "build_command": "yarn build:production",
+    "start_command": "yarn start:production"
+}
