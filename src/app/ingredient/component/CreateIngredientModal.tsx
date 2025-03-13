@@ -154,6 +154,35 @@ export function CreateIngredientModal({
                 placeholder="50"
                 {...form.getInputProps('serving_size_grams')}
               />
+              <Dropzone
+                // upload product image
+              >
+                <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+                  <Dropzone.Accept>
+                    <IconUpload size={50} stroke={1.5} />
+                  </Dropzone.Accept>
+                  <Dropzone.Reject>
+                    <IconX size={50} stroke={1.5} />
+                  </Dropzone.Reject>
+                  <Dropzone.Idle>
+                    <IconPhoto size={50} stroke={1.5} />
+                  </Dropzone.Idle>
+
+                  <div>
+                    <Text size="xl" inline>
+                      拖曳或點擊上傳圖片
+                    </Text>
+                    <Text size="sm" c="dimmed" inline mt={7}>
+                      檔案不超過 3MB
+                    </Text>
+                    {imageFile && (
+                      <Text size="sm" c="green" inline mt={7}>
+                        Selected: {imageFile.name}
+                      </Text>
+                    )}
+                  </div>
+                </Group>
+              </Dropzone>
             </>
           )}
 
