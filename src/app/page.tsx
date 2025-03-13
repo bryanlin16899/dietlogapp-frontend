@@ -13,8 +13,10 @@ import {
   Box,
   Button,
   Collapse,
+  Group,
   Text
 } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -117,9 +119,15 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
           <div className="w-full mb-4">
-            <Button onClick={toggle}>
-              {opened ? 'Hide' : 'Show'} Stats
-            </Button>
+            <Group justify="center" className="w-full">
+              <Button 
+                onClick={toggle}
+                rightSection={opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
+                variant="subtle"
+              >
+                {opened ? 'Hide' : 'Show'} Stats
+              </Button>
+            </Group>
             <Collapse in={opened}>
               <StatsRing dietLog={dietLog} />
             </Collapse>
