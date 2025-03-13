@@ -2,13 +2,13 @@ import { createIngredient, createIngredientByImage, CreateIngredientData } from 
 import {
   Button,
   Group,
+  Image,
   Modal,
   NumberInput,
   SegmentedControl,
   Stack,
   Text,
-  TextInput,
-  Image
+  TextInput
 } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
