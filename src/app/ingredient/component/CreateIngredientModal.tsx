@@ -1,6 +1,7 @@
 import { createIngredient, createIngredientByImage, CreateIngredientData } from "@/lib/api";
 import {
   Button,
+  Collapse,
   Group,
   Image,
   Modal,
@@ -10,10 +11,11 @@ import {
   Text,
   TextInput
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp, IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 type AddMethodType = 'manual' | 'image';
@@ -31,6 +33,7 @@ export function CreateIngredientModal({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageUploadOpened, { toggle: toggleImageUpload }] = useDisclosure(false);
 
   // Function to convert File to base64
   const fileToBase64 = (file: File): Promise<string> => {
@@ -174,62 +177,81 @@ export function CreateIngredientModal({
                 placeholder="50"
                 {...form.getInputProps('serving_size_grams')}
               />
-              <Text size="md" fw={500} mb={5}>產品圖片 (選填)</Text>
-              <Dropzone
-                onDrop={(files) => {
-                  setImageFile(files[0]);
-                  const imageUrl = URL.createObjectURL(files[0]);
-                  setImagePreview(imageUrl);
-                }}
-                onReject={() => {
-                  notifications.show({
-                    position: 'top-right',
-                    title: '無效檔案',
-                    message: '請上傳圖片檔案',
-                    color: 'red'
-                  });
-                }}
-                maxSize={3 * 1024 * 1024}
-                accept={IMAGE_MIME_TYPE}
-                disabled={isLoading}
-              >
-                <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
-                  {!imagePreview ? (
-                    <>
-                      <Dropzone.Accept>
-                        <IconUpload size={50} stroke={1.5} />
-                      </Dropzone.Accept>
-                      <Dropzone.Reject>
-                        <IconX size={50} stroke={1.5} />
-                      </Dropzone.Reject>
-                      <Dropzone.Idle>
-                        <IconPhoto size={50} stroke={1.5} />
-                      </Dropzone.Idle>
+              <Group justify="space-between" align="center" mb={5}>
+                <Text size="md" fw={500}>產品圖片 (選填)</Text>
+                <Button 
+                  variant="subtle" 
+                  compact 
+                  onClick={toggleImageUpload}
+                  rightSection={imageUploadOpened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
+                >
+                  {imageUploadOpened ? '收起' : '展開'}
+                </Button>
+              </Group>
+              
+              <Collapse in={imageUploadOpened}>
+                <Dropzone
+                  onDrop={(files) => {
+                    setImageFile(files[0]);
+                    const imageUrl = URL.createObjectURL(files[0]);
+                    setImagePreview(imageUrl);
+                  }}
+                  onReject={() => {
+                    notifications.show({
+                      position: 'top-right',
+                      title: '無效檔案',
+                      message: '請上傳圖片檔案',
+                      color: 'red'
+                    });
+                  }}
+                  maxSize={3 * 1024 * 1024}
+                  accept={IMAGE_MIME_TYPE}
+                  disabled={isLoading}
+                >
+                  <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+                    {!imagePreview ? (
+                      <>
+                        <Dropzone.Accept>
+                          <IconUpload size={50} stroke={1.5} />
+                        </Dropzone.Accept>
+                        <Dropzone.Reject>
+                          <IconX size={50} stroke={1.5} />
+                        </Dropzone.Reject>
+                        <Dropzone.Idle>
+                          <IconPhoto size={50} stroke={1.5} />
+                        </Dropzone.Idle>
 
-                      <div>
-                        <Text size="xl" inline>
-                          拖曳或點擊上傳圖片
-                        </Text>
-                        <Text size="sm" c="dimmed" inline mt={7}>
-                          檔案不超過 3MB
+                        <div>
+                          <Text size="xl" inline>
+                            拖曳或點擊上傳圖片
+                          </Text>
+                          <Text size="sm" c="dimmed" inline mt={7}>
+                            檔案不超過 3MB
+                          </Text>
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ width: '100%', textAlign: 'center' }}>
+                        <Image 
+                          src={imagePreview} 
+                          alt="Product preview" 
+                          fit="contain"
+                          h={180}
+                        />
+                        <Text size="sm" c="green" mt={7}>
+                          已選擇: {imageFile?.name}
                         </Text>
                       </div>
-                    </>
-                  ) : (
-                    <div style={{ width: '100%', textAlign: 'center' }}>
-                      <Image 
-                        src={imagePreview} 
-                        alt="Product preview" 
-                        fit="contain"
-                        h={180}
-                      />
-                      <Text size="sm" c="green" mt={7}>
-                        已選擇: {imageFile?.name}
-                      </Text>
-                    </div>
-                  )}
-                </Group>
-              </Dropzone>
+                    )}
+                  </Group>
+                </Dropzone>
+              </Collapse>
+              
+              {imageFile && !imageUploadOpened && (
+                <Text size="sm" c="green" mt={2} mb={5}>
+                  已選擇圖片: {imageFile.name}
+                </Text>
+              )}
             </>
           )}
 
