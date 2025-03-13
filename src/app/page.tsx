@@ -16,8 +16,8 @@ import {
   Group,
   Text
 } from "@mantine/core";
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from "react";
 
