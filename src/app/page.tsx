@@ -119,11 +119,13 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
           <div className="w-full mb-4">
-            <Group justify="center" className="w-full">
+            <Group justify="center" className="w-full relative py-2">
+              <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200 dark:bg-gray-700"></div>
               <Button 
                 onClick={toggle}
                 rightSection={opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
                 variant="subtle"
+                className="z-10 bg-white dark:bg-dark-700 hover:bg-white dark:hover:bg-dark-700"
               >
                 {opened ? 'Hide' : 'Show'} Stats
               </Button>
