@@ -12,6 +12,7 @@ export interface Ingredient {
   serving_fat: number;
   serving_carbohydrates: number;
   added_by_image: boolean;
+  image_base64?: string;
 }
 
 export interface IngredientListResponse {
@@ -199,6 +200,7 @@ export const updateIngredient = async (ingredientData: {
   protein: number;
   carbohydrates: number;
   serving_size_grams: number;
+  image_base64?: string;
 }) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/update`, {

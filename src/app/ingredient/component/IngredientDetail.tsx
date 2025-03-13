@@ -1,5 +1,5 @@
 import { Ingredient } from "@/lib/api";
-import { Badge, Divider, Group, Modal, Stack, Text, Title } from "@mantine/core";
+import { Badge, Divider, Group, Image, Modal, Stack, Text, Title } from "@mantine/core";
 
 interface IngredientDetailProps {
   ingredient: Ingredient | null;
@@ -81,7 +81,11 @@ export function IngredientDetail({ ingredient, opened, onClose }: IngredientDeta
         </Group>
         
         <Divider my="sm" />
-        
+        {ingredient.image_base64 && (
+          <Stack gap="xs">
+            <Image src={ingredient.image_base64} alt={ingredient.name} width={200} height={200} />
+          </Stack>
+        )}
       </Stack>
     </Modal>
   );

@@ -39,6 +39,7 @@ export function GoogleAuth() {
                     localStorage.setItem('userInfo', JSON.stringify(userInfo));
                     // Optional: Fetch user details or set user state
                     notifications.show({
+                        position: 'top-right',
                         title: '登入成功',
                         message: `${name}, 歡迎回來!`,
                         color: 'green'

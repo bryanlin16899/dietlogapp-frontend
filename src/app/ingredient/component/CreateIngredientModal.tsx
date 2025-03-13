@@ -57,6 +57,7 @@ export function CreateIngredientModal({
       serving_protein: 0,
       serving_fat: 0,
       serving_carbohydrates: 0,
+      image_base64: '',
     },
     validate: {
       name: (value) => value.trim() === '' ? 'Name is required' : null,
@@ -75,6 +76,7 @@ export function CreateIngredientModal({
           fat: values.fat,
           carbohydrates: values.carbohydrates,
           serving_size_grams: values.serving_size_grams,
+          image_base64: values.image_base64,
         };
 
         // Add image_base64 if an image was uploaded
@@ -98,6 +100,7 @@ export function CreateIngredientModal({
       // Reset form and close modal
       form.reset();
       setImageFile(null);
+      setImagePreview(null);
       close();
 
       // Trigger callback to refresh ingredient list
@@ -202,7 +205,7 @@ export function CreateIngredientModal({
                       color: 'red'
                     });
                   }}
-                  maxSize={3 * 1024 * 1024}
+                  maxSize={5 * 1024 * 1024}
                   accept={IMAGE_MIME_TYPE}
                   disabled={isLoading}
                 >
@@ -224,7 +227,7 @@ export function CreateIngredientModal({
                             拖曳或點擊上傳圖片
                           </Text>
                           <Text size="sm" c="dimmed" inline mt={7}>
-                            檔案不超過 3MB
+                            檔案不超過 5MB
                           </Text>
                         </div>
                       </>
@@ -266,7 +269,7 @@ export function CreateIngredientModal({
                   color: 'red'
                 });
               }}
-              maxSize={3 * 1024 * 1024}
+              maxSize={5 * 1024 * 1024}
               accept={IMAGE_MIME_TYPE}
               disabled={isLoading}
             >
@@ -286,7 +289,7 @@ export function CreateIngredientModal({
                     拖曳或點擊上傳圖片
                   </Text>
                   <Text size="sm" c="dimmed" inline mt={7}>
-                    檔案不超過 3MB
+                    檔案不超過 5MB
                   </Text>
                   {imageFile && (
                     <Text size="sm" c="green" inline mt={7}>

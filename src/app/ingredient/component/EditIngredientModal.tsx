@@ -1,20 +1,19 @@
 import { Ingredient, updateIngredient } from '@/lib/api';
-import { 
-  Button, 
-  Collapse, 
-  Group, 
-  Image, 
-  Modal, 
-  NumberInput, 
-  Stack, 
-  Text, 
-  TextInput 
+import {
+  Button,
+  Collapse,
+  Group,
+  Image,
+  Modal,
+  NumberInput,
+  Stack,
+  Text,
+  TextInput
 } from '@mantine/core';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconChevronDown, IconChevronUp, IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronUp, IconPhoto } from '@tabler/icons-react';
 import React, { useState } from 'react';
 
 interface EditIngredientModalProps {
@@ -52,6 +51,7 @@ export function EditIngredientModal({
       fat: 0,
       carbohydrates: 0,
       serving_size_grams: 0,
+      image_base64: '',
     },
     validate: {
       name: (value) => value.trim().length > 0 ? null : 'Name is required',
@@ -69,11 +69,12 @@ export function EditIngredientModal({
         fat: ingredient.fat,
         carbohydrates: ingredient.carbohydrates,
         serving_size_grams: ingredient.serving_size_grams,
+        image_base64: ingredient.image_base64,
       });
       
       // Reset image state when ingredient changes
       setImageFile(null);
-      setImagePreview(null);
+      setImagePreview(ingredient?.image_base64 || null);
     }
   }, [ingredient]);
 
@@ -91,11 +92,14 @@ export function EditIngredientModal({
       if (imageFile) {
         const base64Image = await fileToBase64(imageFile);
         updateData.image_base64 = base64Image;
+      } else {
+        updateData.image_base64 = "";
       }
 
       const updatedIngredient = await updateIngredient(updateData);
 
       notifications.show({
+        position: 'top-right',
         title: '食材已修改',
         message: `${values.name} 已成功修改`,
         color: 'green',
@@ -109,6 +113,7 @@ export function EditIngredientModal({
       setImagePreview(null);
     } catch {
       notifications.show({
+        position: 'top-right',
         title: '食材修改失敗',
         message: '無法成功修改食材',
         color: 'red',
@@ -167,7 +172,7 @@ export function EditIngredientModal({
           />
           
           <Group justify="space-between" align="center" mb={5}>
-            <Text size="md" fw={500}>產品圖片 (選填)</Text>
+            <Text size="md" fw={500}>產品圖片</Text>
             <Button 
               variant="subtle" 
               onClick={toggleImageUpload}
@@ -209,7 +214,7 @@ export function EditIngredientModal({
                     上傳產品圖片
                   </Text>
                   <Text size="sm" c="dimmed" mb={3}>
-                    檔案不超過 3MB
+                    檔案不超過 5MB
                   </Text>
                   <input
                     type="file"
@@ -219,11 +224,11 @@ export function EditIngredientModal({
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        if (file.size > 3 * 1024 * 1024) {
+                        if (file.size > 5 * 1024 * 1024) {
                           notifications.show({
                             position: 'top-right',
                             title: '檔案過大',
-                            message: '請上傳小於 3MB 的圖片',
+                            message: '請上傳小於 5MB 的圖片',
                             color: 'red'
                           });
                           return;

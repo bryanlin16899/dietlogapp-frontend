@@ -63,7 +63,17 @@ export default function Home() {
         setLoading(false);
         return;
       }
-      const data = await fetchDietLog(userInfo.googleId, new Date().toISOString().split('T')[0]);
+
+      // Get date in Taiwan timezone (UTC+8)           
+      const taiwanDate = new Date(                     
+        new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' })                                 
+      );  
+
+      // Format the date as YYYY-MM-DD                 
+      const formattedDate = taiwanDate.getFullYear() + '-' +
+        String(taiwanDate.getMonth() + 1).padStart(2, '0') + '-' +                                      
+        String(taiwanDate.getDate()).padStart(2, '0');
+      const data = await fetchDietLog(userInfo.googleId, formattedDate);
       setDietLog(data);
       setLoading(false);
     } catch (error) {
