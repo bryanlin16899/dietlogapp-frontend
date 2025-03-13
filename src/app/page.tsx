@@ -11,8 +11,11 @@ import {
   AppShell,
   AppShellMain,
   Box,
+  Button,
+  Collapse,
   Text
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from "react";
 
@@ -49,6 +52,7 @@ export default function Home() {
   const [selectedFood, setSelectedFood] = useState<any>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
+  const [opened, { toggle }] = useDisclosure(false);
   const { userInfo } = useUser();
 
   const handleFetchDietLog = async () => {
@@ -113,7 +117,12 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
           <div className="w-full mb-4">
-            <StatsRing dietLog={dietLog} />
+            <Button onClick={toggle}>
+              {opened ? 'Hide' : 'Show'} Stats
+            </Button>
+            <Collapse in={opened}>
+              <StatsRing dietLog={dietLog} />
+            </Collapse>
           </div>
           <TableScrollArea 
             ref={tableScrollAreaRef} 
