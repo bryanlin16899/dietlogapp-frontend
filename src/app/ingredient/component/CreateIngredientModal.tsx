@@ -7,7 +7,8 @@ import {
   SegmentedControl,
   Stack,
   Text,
-  TextInput
+  TextInput,
+  Image
 } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
@@ -28,7 +29,18 @@ export function CreateIngredientModal({
 }) {
   const [addMethod, setAddMethod] = useState<AddMethodType>('manual');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Function to convert File to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
 
   const form = useForm({
     initialValues: {
@@ -62,9 +74,16 @@ export function CreateIngredientModal({
           serving_size_grams: values.serving_size_grams,
         };
 
+        // Add image_base64 if an image was uploaded
+        if (imageFile) {
+          const base64Image = await fileToBase64(imageFile);
+          ingredientData.image_base64 = base64Image;
+        }
+
         await createIngredient(ingredientData);
       } else if (addMethod === 'image' && imageFile) {
-        await createIngredientByImage(imageFile, values.name);
+        const base64Image = await fileToBase64(imageFile);
+        await createIngredientByImage(base64Image, values.name);
       }
 
       notifications.show({
@@ -106,6 +125,7 @@ export function CreateIngredientModal({
               // Reset form and image when switching methods
               form.reset();
               setImageFile(null);
+              setImagePreview(null);
             }}
             data={[
               { label: '手動輸入', value: 'manual' },
@@ -154,33 +174,60 @@ export function CreateIngredientModal({
                 placeholder="50"
                 {...form.getInputProps('serving_size_grams')}
               />
+              <Text size="md" fw={500} mb={5}>產品圖片 (選填)</Text>
               <Dropzone
-                // upload product image
+                onDrop={(files) => {
+                  setImageFile(files[0]);
+                  const imageUrl = URL.createObjectURL(files[0]);
+                  setImagePreview(imageUrl);
+                }}
+                onReject={() => {
+                  notifications.show({
+                    position: 'top-right',
+                    title: '無效檔案',
+                    message: '請上傳圖片檔案',
+                    color: 'red'
+                  });
+                }}
+                maxSize={3 * 1024 * 1024}
+                accept={IMAGE_MIME_TYPE}
+                disabled={isLoading}
               >
                 <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
-                  <Dropzone.Accept>
-                    <IconUpload size={50} stroke={1.5} />
-                  </Dropzone.Accept>
-                  <Dropzone.Reject>
-                    <IconX size={50} stroke={1.5} />
-                  </Dropzone.Reject>
-                  <Dropzone.Idle>
-                    <IconPhoto size={50} stroke={1.5} />
-                  </Dropzone.Idle>
+                  {!imagePreview ? (
+                    <>
+                      <Dropzone.Accept>
+                        <IconUpload size={50} stroke={1.5} />
+                      </Dropzone.Accept>
+                      <Dropzone.Reject>
+                        <IconX size={50} stroke={1.5} />
+                      </Dropzone.Reject>
+                      <Dropzone.Idle>
+                        <IconPhoto size={50} stroke={1.5} />
+                      </Dropzone.Idle>
 
-                  <div>
-                    <Text size="xl" inline>
-                      拖曳或點擊上傳圖片
-                    </Text>
-                    <Text size="sm" c="dimmed" inline mt={7}>
-                      檔案不超過 3MB
-                    </Text>
-                    {imageFile && (
-                      <Text size="sm" c="green" inline mt={7}>
-                        Selected: {imageFile.name}
+                      <div>
+                        <Text size="xl" inline>
+                          拖曳或點擊上傳圖片
+                        </Text>
+                        <Text size="sm" c="dimmed" inline mt={7}>
+                          檔案不超過 3MB
+                        </Text>
+                      </div>
+                    </>
+                  ) : (
+                    <div style={{ width: '100%', textAlign: 'center' }}>
+                      <Image 
+                        src={imagePreview} 
+                        alt="Product preview" 
+                        fit="contain"
+                        h={180}
+                      />
+                      <Text size="sm" c="green" mt={7}>
+                        已選擇: {imageFile?.name}
                       </Text>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </Group>
               </Dropzone>
             </>
