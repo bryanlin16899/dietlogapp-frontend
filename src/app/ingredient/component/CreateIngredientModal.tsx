@@ -10,9 +10,10 @@ import {
   Text,
   TextInput
 } from "@mantine/core";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { IconPhoto } from "@tabler/icons-react";
+import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 type AddMethodType = 'manual' | 'image';
@@ -174,142 +175,107 @@ export function CreateIngredientModal({
                 {...form.getInputProps('serving_size_grams')}
               />
               <Text size="md" fw={500} mb={5}>產品圖片 (選填)</Text>
-              <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md p-4">
-                {imagePreview ? (
-                  <div style={{ width: '100%', textAlign: 'center' }}>
-                    <Image 
-                      src={imagePreview} 
-                      alt="Product preview" 
-                      fit="contain"
-                      h={180}
-                    />
-                    <Text size="sm" c="green" mt={7}>
-                      已選擇: {imageFile?.name}
-                    </Text>
-                    <Button 
-                      variant="subtle" 
-                      color="red" 
-                      onClick={() => {
-                        setImageFile(null);
-                        setImagePreview(null);
-                      }}
-                      mt={5}
-                    >
-                      移除圖片
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <IconPhoto size={50} stroke={1.5} className="mx-auto mb-2" />
-                    <Text size="xl" mb={2}>
-                      上傳產品圖片
-                    </Text>
-                    <Text size="sm" c="dimmed" mb={3}>
-                      檔案不超過 3MB
-                    </Text>
-                    <input
-                      type="file"
-                      id="imageUpload"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          if (file.size > 3 * 1024 * 1024) {
-                            notifications.show({
-                              position: 'top-right',
-                              title: '檔案過大',
-                              message: '請上傳小於 3MB 的圖片',
-                              color: 'red'
-                            });
-                            return;
-                          }
-                          
-                          setImageFile(file);
-                          const imageUrl = URL.createObjectURL(file);
-                          setImagePreview(imageUrl);
-                        }
-                      }}
-                    />
-                    <Button 
-                      variant="outline" 
-                      onClick={() => document.getElementById('imageUpload')?.click()}
-                    >
-                      選擇圖片
-                    </Button>
-                  </div>
-                )}
-              </div>
+              <Dropzone
+                onDrop={(files) => {
+                  setImageFile(files[0]);
+                  const imageUrl = URL.createObjectURL(files[0]);
+                  setImagePreview(imageUrl);
+                }}
+                onReject={() => {
+                  notifications.show({
+                    position: 'top-right',
+                    title: '無效檔案',
+                    message: '請上傳圖片檔案',
+                    color: 'red'
+                  });
+                }}
+                maxSize={3 * 1024 * 1024}
+                accept={IMAGE_MIME_TYPE}
+                disabled={isLoading}
+              >
+                <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+                  {!imagePreview ? (
+                    <>
+                      <Dropzone.Accept>
+                        <IconUpload size={50} stroke={1.5} />
+                      </Dropzone.Accept>
+                      <Dropzone.Reject>
+                        <IconX size={50} stroke={1.5} />
+                      </Dropzone.Reject>
+                      <Dropzone.Idle>
+                        <IconPhoto size={50} stroke={1.5} />
+                      </Dropzone.Idle>
+
+                      <div>
+                        <Text size="xl" inline>
+                          拖曳或點擊上傳圖片
+                        </Text>
+                        <Text size="sm" c="dimmed" inline mt={7}>
+                          檔案不超過 3MB
+                        </Text>
+                      </div>
+                    </>
+                  ) : (
+                    <div style={{ width: '100%', textAlign: 'center' }}>
+                      <Image 
+                        src={imagePreview} 
+                        alt="Product preview" 
+                        fit="contain"
+                        h={180}
+                      />
+                      <Text size="sm" c="green" mt={7}>
+                        已選擇: {imageFile?.name}
+                      </Text>
+                    </div>
+                  )}
+                </Group>
+              </Dropzone>
             </>
           )}
 
           {addMethod === 'image' && (
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md p-4">
-              {imagePreview ? (
-                <div style={{ width: '100%', textAlign: 'center' }}>
-                  <Image 
-                    src={imagePreview} 
-                    alt="Product preview" 
-                    fit="contain"
-                    h={180}
-                  />
-                  <Text size="sm" c="green" mt={7}>
-                    已選擇: {imageFile?.name}
+            <Dropzone
+              onDrop={(files) => {
+                setImageFile(files[0]);
+              }}
+              onReject={() => {
+                notifications.show({
+                  position: 'top-right',
+                  title: '無效檔案',
+                  message: '請上傳圖片檔案',
+                  color: 'red'
+                });
+              }}
+              maxSize={3 * 1024 * 1024}
+              accept={IMAGE_MIME_TYPE}
+              disabled={isLoading}
+            >
+              <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+                <Dropzone.Accept>
+                  <IconUpload size={50} stroke={1.5} />
+                </Dropzone.Accept>
+                <Dropzone.Reject>
+                  <IconX size={50} stroke={1.5} />
+                </Dropzone.Reject>
+                <Dropzone.Idle>
+                  <IconPhoto size={50} stroke={1.5} />
+                </Dropzone.Idle>
+
+                <div>
+                  <Text size="xl" inline>
+                    拖曳或點擊上傳圖片
                   </Text>
-                  <Button 
-                    variant="subtle" 
-                    color="red" 
-                    onClick={() => {
-                      setImageFile(null);
-                      setImagePreview(null);
-                    }}
-                    mt={5}
-                  >
-                    移除圖片
-                  </Button>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <IconPhoto size={50} stroke={1.5} className="mx-auto mb-2" />
-                  <Text size="xl" mb={2}>
-                    上傳產品圖片
-                  </Text>
-                  <Text size="sm" c="dimmed" mb={3}>
+                  <Text size="sm" c="dimmed" inline mt={7}>
                     檔案不超過 3MB
                   </Text>
-                  <input
-                    type="file"
-                    id="imageUploadByImage"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        if (file.size > 3 * 1024 * 1024) {
-                          notifications.show({
-                            position: 'top-right',
-                            title: '檔案過大',
-                            message: '請上傳小於 3MB 的圖片',
-                            color: 'red'
-                          });
-                          return;
-                        }
-                        
-                        setImageFile(file);
-                        const imageUrl = URL.createObjectURL(file);
-                        setImagePreview(imageUrl);
-                      }
-                    }}
-                  />
-                  <Button 
-                    variant="outline" 
-                    onClick={() => document.getElementById('imageUploadByImage')?.click()}
-                  >
-                    選擇圖片
-                  </Button>
+                  {imageFile && (
+                    <Text size="sm" c="green" inline mt={7}>
+                      Selected: {imageFile.name}
+                    </Text>
+                  )}
                 </div>
-              )}
-            </div>
+              </Group>
+            </Dropzone>
           )}
 
           <Group justify="flex-end" mt="md">
