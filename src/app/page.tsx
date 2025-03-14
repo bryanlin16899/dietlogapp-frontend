@@ -6,7 +6,7 @@ import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
 import { TableScrollArea } from "@/components/TableScrollArea";
 import { useUser } from "@/context/userContext";
-import { fetchDietLog } from "@/lib/api";
+import { fetchDietLog, GetDietLogResponse, IntakeFood } from "@/lib/api";
 import {
   AppShell,
   AppShellMain,
@@ -48,9 +48,9 @@ import { useEffect, useRef, useState } from "react";
 // }
 
 export default function Home() {
-  const [dietLog, setDietLog] = useState<any>(null);
+  const [dietLog, setDietLog] = useState<GetDietLogResponse|null>(null);
   const [loading, setLoading] = useState(false);
-  const [selectedFood, setSelectedFood] = useState<any>(null);
+  const [selectedFood, setSelectedFood] = useState<IntakeFood|null>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
   const [opened, { toggle }] = useDisclosure(false);
@@ -92,7 +92,7 @@ export default function Home() {
     handleFetchDietLog();
   };
 
-  const handleFoodRowClick = (food: any) => {
+  const handleFoodRowClick = (food: IntakeFood) => {
     setSelectedFood(food);
     setDetailModalOpened(true);
   };

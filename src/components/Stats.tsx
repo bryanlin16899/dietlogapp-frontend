@@ -1,8 +1,9 @@
+import { GetDietLogResponse } from '@/lib/api';
 import { Center, Group, Paper, RingProgress, SimpleGrid, Text } from '@mantine/core';
 import { FaBurn } from 'react-icons/fa';
 import { GiMeat } from 'react-icons/gi';
 
-export function StatsRing({ dietLog }: { dietLog: any }) {
+export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
   const dietStats = {
     calories: dietLog?.calories || 0,
     consumption: dietLog?.consumption || 0,

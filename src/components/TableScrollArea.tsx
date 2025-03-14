@@ -8,12 +8,12 @@ import { useState } from 'react';
 import classes from './TableScrollArea.module.css';
 
 import { useUser } from '@/context/userContext';
-import { removeIntakeById } from '@/lib/api';
+import { GetDietLogResponse, IntakeFood, removeIntakeById } from '@/lib/api';
 import { forwardRef, useImperativeHandle } from 'react';
 
 export const TableScrollArea = forwardRef<
   { refreshDietLog: () => void }, 
-  { dietLog: any, onRemoveIntake: () => void, onFoodRowClick?: (food: any) => void }
+  { dietLog: GetDietLogResponse|null, onRemoveIntake: () => void, onFoodRowClick?: (food: IntakeFood) => void }
 >(
   ({ dietLog, onRemoveIntake, onFoodRowClick }, ref) => {
     const [scrolled, setScrolled] = useState(false);
@@ -61,7 +61,7 @@ export const TableScrollArea = forwardRef<
     }
   };
 
-  const rows = dietLog?.intake_foods?.map((food: any) => (
+  const rows = dietLog?.intake_foods?.map((food: IntakeFood) => (
     <Table.Tr 
       key={food.id} 
       style={{ cursor: 'pointer' }}
@@ -78,7 +78,7 @@ export const TableScrollArea = forwardRef<
           <Table.Td>{food.protein}</Table.Td>
           <Table.Td>{food.fat}</Table.Td>
           <Table.Td>{food.carbohydrates}</Table.Td>
-          <Table.Td>{food.quantity} {food.unit_type == 'grams' ? '(g)' : '(serving)'}</Table.Td>
+          <Table.Td>{food.quantity} {food.unit_type == 'grams' ? '(克)' : '(份)'}</Table.Td>
         </>
       )}
         <Table.Td>

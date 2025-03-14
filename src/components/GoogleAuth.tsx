@@ -14,6 +14,7 @@ export function GoogleAuth() {
 
     // Check for OAuth callback and handle user session
     const handleOAuthCallback = async () => {
+        if (typeof window === 'undefined') return;
         const urlParams = new URLSearchParams(window.location.search);
         const googleId = urlParams.get('id');
         const existsUserInfo = localStorage.getItem('userInfo');

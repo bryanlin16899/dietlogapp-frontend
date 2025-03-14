@@ -19,6 +19,24 @@ export interface IngredientListResponse {
   ingredients: Ingredient[];
 }
 
+export interface IntakeFood {
+  id: number;
+  name: string;
+  calories: number;
+  protein: number;
+  fat: number;
+  carbohydrates: number;
+  quantity: number;
+  unit_type: string;
+  date: string;
+}
+export interface GetDietLogResponse {
+  date: string;
+  calories: number;
+  consumption: number;
+  intake_foods: [IntakeFood]
+}
+
 export const fetchIngredientList = async (searchTerm: string): Promise<IngredientListResponse> => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/get_ingredient_list`, {

@@ -1,7 +1,8 @@
+import { IntakeFood } from "@/lib/api";
 import { Badge, Divider, Group, Modal, Stack, Text, Title } from "@mantine/core";
 
 interface IntakeFoodDetailProps {
-  food: any;
+  food: IntakeFood|null;
   opened: boolean;
   onClose: () => void;
 }
