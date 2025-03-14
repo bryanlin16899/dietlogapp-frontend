@@ -174,7 +174,7 @@ export function CreateIngredientModal({
                 {...form.getInputProps('carbohydrates')}
               />
               <NumberInput
-                label="每份重量(g)"
+                label="每份重量 (g)"
                 size="md"
                 placeholder="50"
                 {...form.getInputProps('serving_size_grams')}
