@@ -3,6 +3,7 @@ import { Button, Menu } from "@mantine/core";
 import { IconArticle, IconLogout, IconSettings } from "@tabler/icons-react";
 import Link from "next/link";
 import { GoogleAuth } from "./GoogleAuth";
+import { GoogleLoginButton } from "./GoogleLoginButton";
 
 export function NavMenu() {
     const { userInfo, setUserInfo } = useUser();

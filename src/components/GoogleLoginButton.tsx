@@ -23,7 +23,7 @@ export function GoogleLoginButton({
       
       // Call your backend Google OAuth endpoint
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google/login`, {
-        method: 'POST',
+        method: 'GET',
         credentials: 'include', // Important for cookies
         headers: {
           'Content-Type': 'application/json',
