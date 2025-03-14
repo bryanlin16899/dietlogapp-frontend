@@ -9,10 +9,11 @@ import '@mantine/notifications/styles.css';
 import type { Metadata } from "next";
 import "./globals.css";
 import theme from "./theme";
+import { CaloriesGoalDialog } from "@/components/CaloriesGoalDialog";
 
 export const metadata: Metadata = {
-  title: "Next App Mantine Tailwind Template",
-  description: "Next App Mantine Tailwind Template",
+  title: "DietLog",
+  description: "Maintain your diet and keep track of your nutrition.",
 };
 
 export default function RootLayout({
@@ -29,16 +30,9 @@ export default function RootLayout({
       <body className="antialiased">
         <UserProvider>
         <MantineProvider theme={theme}>
-          {/* <Box 
-            pos="fixed" 
-            top={10} 
-            left={10} 
-          >
-            <ColorSchemesSwitcher />
-          </Box> */}
           <Notifications />
-          {/* <NavMenu/> */}
           {children}
+          <CaloriesGoalDialog />
         </MantineProvider>
         </UserProvider>
       </body>

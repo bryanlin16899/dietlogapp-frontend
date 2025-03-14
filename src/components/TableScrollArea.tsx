@@ -75,9 +75,9 @@ export const TableScrollArea = forwardRef<
       <Table.Td>{food.calories}</Table.Td>
       {!isMobile && (
         <>
-          <Table.Td>{food.protein}</Table.Td>
-          <Table.Td>{food.fat}</Table.Td>
-          <Table.Td>{food.carbohydrates}</Table.Td>
+          <Table.Td>{food.protein > 0 ? food.protein : "-"}</Table.Td>
+          <Table.Td>{food.fat > 0 ? food.fat : "-"}</Table.Td>
+          <Table.Td>{food.carbohydrates > 0 ? food.carbohydrates : "-"}</Table.Td>
           <Table.Td>{food.quantity} {food.unit_type == 'grams' ? '(克)' : '(份)'}</Table.Td>
         </>
       )}
