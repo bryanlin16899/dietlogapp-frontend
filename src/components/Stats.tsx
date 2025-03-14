@@ -1,9 +1,11 @@
 import { GetDietLogResponse } from '@/lib/api';
 import { Center, Group, Paper, RingProgress, SimpleGrid, Text } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { FaBurn } from 'react-icons/fa';
 import { GiMeat } from 'react-icons/gi';
 
 export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
+  const [caloriesGoal, setCaloriesGoal] = useState<string>("2000");
   const dietStats = {
     calories: dietLog?.calories || 0,
     consumption: dietLog?.consumption || 0,
@@ -13,18 +15,23 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
     return total > 0 ? Math.min(Math.round((current / total) * 100), 100) : 0;
   };
 
+  useEffect(() => {
+    const goal = localStorage.getItem('calories-goal');
+    if (goal) setCaloriesGoal(goal);
+  }, [])
+
   const statsData = [
     { 
       label: '熱量攝入', 
       stats: `${dietStats.calories ? Math.round(dietStats.calories) : '-'} 大卡`, 
-      progress: calculateProgress(dietStats.calories, 2000), 
+      progress: calculateProgress(dietStats.calories, Number(caloriesGoal)), 
       color: 'blue', 
       icon: 'up'
     },
     { 
       label: '熱量消耗', 
       stats: `${dietStats.consumption ? Math.round(dietStats.consumption) : '-'} 大卡`, 
-      progress: calculateProgress(dietStats.consumption, 2000), 
+      progress: calculateProgress(dietStats.consumption, 1000), 
       color: 'teal', 
       icon: 'down' 
     },
@@ -38,6 +45,7 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
             size={80}
             roundCaps
             thickness={8}
+            transitionDuration={1000}
             sections={[{ value: stat.progress, color: stat.color }]}
             label={
               <Center>

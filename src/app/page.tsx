@@ -53,7 +53,7 @@ export default function Home() {
   const [selectedFood, setSelectedFood] = useState<IntakeFood|null>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle }] = useDisclosure(true);
   const { userInfo } = useUser();
 
   const handleFetchDietLog = async () => {
@@ -160,7 +160,6 @@ export default function Home() {
             size="lg"
           >
             Log your diet, maintain your diet and keep track of your nutrition.
-            Search for the food you eat and log it easily.
           </Text>
         </div>
       </AppShellMain>

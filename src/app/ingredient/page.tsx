@@ -67,7 +67,6 @@ export default function Ingredients() {
             size="lg"
           >
             Log you diet, mantain your diet and keep track of your diet.
-            you can search for the food you eat and log it.
           </Text>
         </div>
       </AppShellMain>
