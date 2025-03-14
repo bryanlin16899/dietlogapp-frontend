@@ -1,5 +1,5 @@
 import { GetDietLogResponse } from '@/lib/api';
-import { Center, Group, Paper, RingProgress, SimpleGrid, Text } from '@mantine/core';
+import { Center, Group, Paper, RingProgress, SimpleGrid, Text, Tooltip } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { FaBurn } from 'react-icons/fa';
 import { GiMeat } from 'react-icons/gi';
@@ -54,6 +54,15 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
             }
           />
 
+          <Tooltip
+            label={`還剩 ${(Number(caloriesGoal)-dietStats.calories).toFixed(1)} 🫠`}
+            offset={10}                                                                                                                         
+             events={{                                                                                                                           
+               hover: true,                                                                                                                      
+               focus: true,                                                                                                                      
+               touch: true
+             }}
+          >
           <div>
             <Text c="dimmed" size="xs" tt="uppercase" fw={700}>
               {stat.label}
@@ -62,6 +71,7 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
               {stat.stats}
             </Text>
           </div>
+          </Tooltip>
         </Group>
       </Paper>
     );
