@@ -96,7 +96,7 @@ export default function Home() {
     if (userInfo?.googleId) {
       handleFetchDietLog();
     }
-  }, [userInfo]);
+  }, [userInfo, logDate]);
 
   const handleIntakeSuccess = () => {
     handleFetchDietLog();
@@ -138,7 +138,7 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           {userInfo?.googleId && (
             <Group
-              className="w-full mb-1"
+              className="w-full"
               justify="space-between"
             >
               <Title>
@@ -151,11 +151,11 @@ export default function Home() {
                 aria-label="日期"
                 min={"2025/01/01"}
                 placeholder=""
-                className="w-auto text-right"
+                className="w-auto text-right pt-2"
               />
             </Group>
           )}
-          <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
+          <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess} logDate={logDate}/>
           <div className="w-full mb-2">
             <Group justify="center" className="w-full relative py-1">
               <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200 dark:bg-gray-700"></div>

@@ -64,7 +64,8 @@ export const recordDietIntake = async (
   googleId: string, 
   foodName: string, 
   quantity: number, 
-  unitType: UnitType = 'grams'
+  unitType: UnitType = 'grams',
+  logDate: string
 ) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/intake`, {
@@ -76,7 +77,8 @@ export const recordDietIntake = async (
         google_id: googleId,
         food_name: foodName,
         quantity: quantity,
-        unit_type: unitType
+        unit_type: unitType,
+        log_date: logDate
       })
     });
     
