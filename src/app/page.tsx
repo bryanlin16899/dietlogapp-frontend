@@ -53,7 +53,12 @@ import { useEffect, useRef, useState } from "react";
 export default function Home() {
   const [dietLog, setDietLog] = useState<GetDietLogResponse|null>(null);
   const [loading, setLoading] = useState(false);
-  const [logDate, setLogDate] = useState<Date | null>(null);
+  const [logDate, setLogDate] = useState<Date | null>(() => {
+    const taiwanDate = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' })
+    );
+    return taiwanDate;
+  });
   const [selectedFood, setSelectedFood] = useState<IntakeFood|null>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
@@ -74,9 +79,10 @@ export default function Home() {
       );  
 
       // Format the date as YYYY-MM-DD                 
-      const formattedDate = taiwanDate.getFullYear() + '-' +
-        String(taiwanDate.getMonth() + 1).padStart(2, '0') + '-' +                                      
-        String(taiwanDate.getDate()).padStart(2, '0');
+      const dateToFetch = logDate || taiwanDate;
+      const formattedDate = dateToFetch.getFullYear() + '-' +
+        String(dateToFetch.getMonth() + 1).padStart(2, '0') + '-' +                                      
+        String(dateToFetch.getDate()).padStart(2, '0');
       const data = await fetchDietLog(userInfo.googleId, formattedDate);
       setDietLog(data);
       setLoading(false);
