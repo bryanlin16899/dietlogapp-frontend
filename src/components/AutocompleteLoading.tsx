@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from '@/context/userContext';
 import { fetchIngredientList, recordDietIntake, UnitType } from '@/lib/api';
-import { Autocomplete, Button, Flex, Loader, NumberInput, Select } from '@mantine/core';
+import { Autocomplete, Button, Flex, Loader, NumberInput, SegmentedControl } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useRef, useState } from 'react';
 
@@ -41,7 +41,7 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
       const data = await recordDietIntake(
         userInfo?.googleId, 
         value, 
-        quantity ? Number(quantity) : 100, 
+        quantity ? Number(quantity) : unitType === 'grams' ? 100 : 1, 
         unitType,
         logDate ? 
           logDate.getFullYear() + '-' +
@@ -116,12 +116,13 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
           value={quantity}
           onChange={(val) => setQuantity(val)}
           label="數量"
-          placeholder="預設 100 g"
+          placeholder={`${unitType === 'grams' ?  "100 克" : "1 份"}`}
           size='md'
           min={0}
         />
-        <Select
+        {/* <Select
           label="單位"
+          allowDeselect={false}
           value={unitType}
           onChange={(val) => setUnitType(val as UnitType)}
           size='md'
@@ -129,6 +130,12 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
             { value: 'grams', label: '克' },
             { value: 'servings', label: '份' }
           ]}
+        /> */}
+        <SegmentedControl 
+          data={['份' as UnitType, '克' as UnitType]}
+          size='md'
+          value={unitType === 'grams' ? "克" : '份'}
+          onChange={(val) => setUnitType(val === '克' ? 'grams' as UnitType : '份' as UnitType)}
         />
       </Flex>
       <Button onClick={handleIntake}>
