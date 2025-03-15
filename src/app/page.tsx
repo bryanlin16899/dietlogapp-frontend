@@ -151,8 +151,7 @@ export default function Home() {
                 aria-label="日期"
                 min={"2025/01/01"}
                 placeholder=""
-                className="w-auto"
-
+                className="w-auto text-right"
               />
             </Group>
           )}
