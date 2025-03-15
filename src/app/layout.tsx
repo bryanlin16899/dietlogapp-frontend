@@ -1,3 +1,4 @@
+import { CaloriesGoalDialog } from "@/components/CaloriesGoalDialog";
 import { UserProvider } from "@/context/userContext";
 import {
   ColorSchemeScript,
@@ -9,7 +10,6 @@ import '@mantine/notifications/styles.css';
 import type { Metadata } from "next";
 import "./globals.css";
 import theme from "./theme";
-import { CaloriesGoalDialog } from "@/components/CaloriesGoalDialog";
 
 export const metadata: Metadata = {
   title: "DietLog",
@@ -26,6 +26,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" href="icon.png"/>
       </head>
       <body className="antialiased">
         <UserProvider>
