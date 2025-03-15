@@ -5,7 +5,7 @@ import { Autocomplete, Button, Flex, Loader, NumberInput, Select } from '@mantin
 import { notifications } from '@mantine/notifications';
 import { useRef, useState } from 'react';
 
-export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () => void }) {
+export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSuccess?: () => void, logDate: Date|null }) {
   const timeoutRef = useRef<number>(-1);
   const [value, setValue] = useState('');
   const [quantity, setQuantity] = useState<string | number>('');
@@ -42,7 +42,8 @@ export function AutocompleteLoading({ onIntakeSuccess }: { onIntakeSuccess?: () 
         userInfo?.googleId, 
         value, 
         quantity ? Number(quantity) : 100, 
-        unitType
+        unitType,
+        logDate ? logDate.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }) : new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' })
       );
       console.log('Intake recorded:', data);
       
