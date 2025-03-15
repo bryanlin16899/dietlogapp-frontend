@@ -137,7 +137,7 @@ export default function Home() {
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           {userInfo?.googleId && (
-            <>
+            <div className="flex w-full items-center justify-between">
               <Title>
                 Hi {userInfo.name} 👋
               </Title>
@@ -148,8 +148,9 @@ export default function Home() {
                 aria-label="日期"
                 min={"2025/01/01"}
                 placeholder=""
+                className="w-auto"
               />
-            </>
+            </div>
           )}
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
           <div className="w-full mb-2">
