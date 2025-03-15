@@ -2,11 +2,11 @@
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
 import { NavMenu } from "@/components/NavMenu";
 import {
-    AppShell,
-    AppShellMain,
-    Box,
-    Button,
-    Text
+  AppShell,
+  AppShellMain,
+  Box,
+  Button,
+  Text
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";

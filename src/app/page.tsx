@@ -14,8 +14,11 @@ import {
   Button,
   Collapse,
   Group,
-  Text
+  Text,
+  Title
 } from "@mantine/core";
+import { DateInput } from '@mantine/dates';
+import '@mantine/dates/styles.css';
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
@@ -50,6 +53,7 @@ import { useEffect, useRef, useState } from "react";
 export default function Home() {
   const [dietLog, setDietLog] = useState<GetDietLogResponse|null>(null);
   const [loading, setLoading] = useState(false);
+  const [logDate, setLogDate] = useState<Date | null>(null);
   const [selectedFood, setSelectedFood] = useState<IntakeFood|null>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
@@ -66,7 +70,7 @@ export default function Home() {
 
       // Get date in Taiwan timezone (UTC+8)           
       const taiwanDate = new Date(                     
-        new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' })                                 
+        new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' })
       );  
 
       // Format the date as YYYY-MM-DD                 
@@ -126,6 +130,21 @@ export default function Home() {
       </Box>
       <AppShellMain className="flex flex-col justify-between h-full overflow-hidden gap-0.5">
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
+          {userInfo?.googleId && (
+            <>
+              <Title>
+                Hi {userInfo.name} 👋
+              </Title>
+              <DateInput
+                variant="unstyled"
+                value={logDate}
+                onChange={setLogDate}
+                aria-label="日期"
+                min={"2025/01/01"}
+                placeholder=""
+              />
+            </>
+          )}
           <AutocompleteLoading onIntakeSuccess={handleIntakeSuccess}/>
           <div className="w-full mb-2">
             <Group justify="center" className="w-full relative py-1">

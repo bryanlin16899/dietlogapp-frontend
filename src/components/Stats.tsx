@@ -26,14 +26,15 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
       stats: `${dietStats.calories ? Math.round(dietStats.calories) : '-'} 大卡`, 
       progress: calculateProgress(dietStats.calories, Number(caloriesGoal)), 
       color: 'blue', 
-      icon: 'up'
+      icon: 'up',
+      tooltipMsg: `還剩 ${(Number(caloriesGoal)-dietStats.calories).toFixed(0)} 大卡 🫠`
     },
     { 
       label: '熱量消耗', 
       stats: `${dietStats.consumption ? Math.round(dietStats.consumption) : '-'} 大卡`, 
       progress: calculateProgress(dietStats.consumption, 1000), 
       color: 'teal', 
-      icon: 'down' 
+      icon: 'down'
     },
   ];
 
@@ -55,13 +56,14 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
           />
 
           <Tooltip
-            label={`還剩 ${(Number(caloriesGoal)-dietStats.calories).toFixed(1)} 🫠`}
+            label={stat.tooltipMsg}
             offset={10}                                                                                                                         
              events={{                                                                                                                           
                hover: true,                                                                                                                      
                focus: true,                                                                                                                      
                touch: true
              }}
+            hidden={stat.tooltipMsg ? false : true}
           >
           <div>
             <Text c="dimmed" size="xs" tt="uppercase" fw={700}>

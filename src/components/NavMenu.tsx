@@ -1,6 +1,6 @@
 import { useUser } from "@/context/userContext";
 import { Button, Menu } from "@mantine/core";
-import { IconArticle, IconLogout, IconSettings } from "@tabler/icons-react";
+import { IconArticle, IconHome, IconLibrary, IconLogout } from "@tabler/icons-react";
 import Link from "next/link";
 import { GoogleAuth } from "./GoogleAuth";
 
@@ -30,14 +30,14 @@ export function NavMenu() {
             <Menu.Dropdown>
             <Menu.Label>Application</Menu.Label>
             <Menu.Item 
-                leftSection={<IconSettings size={14} />} 
+                leftSection={<IconHome size={14} />} 
                 component={Link} 
                 href="/"
             >
                 主畫面
             </Menu.Item>
             <Menu.Item 
-                leftSection={<IconSettings size={14} />} 
+                leftSection={<IconLibrary size={14} />} 
                 component={Link} 
                 href="/ingredient"
             >
