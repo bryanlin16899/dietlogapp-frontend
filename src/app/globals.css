@@ -1,2 +1,9 @@
 @import "tailwind-preset-mantine";
 @import "./theme.css";
+
+#custom-date-input {
+    text-align: right;
+    @media (width < 48em /* 768px */) {
+        text-align: left;
+    }
+}

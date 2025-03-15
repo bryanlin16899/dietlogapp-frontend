@@ -40,7 +40,7 @@ export function CaloriesGoalDialog() {
                 max={6000} 
                 suffix=' 大卡🔥' 
                 allowNegative={false} 
-                hideControls step={100}
+                hideControls
                 thousandSeparator=","
                 style={{ flex: 1 }}
                 onChange={(val) => setValue(val)} 

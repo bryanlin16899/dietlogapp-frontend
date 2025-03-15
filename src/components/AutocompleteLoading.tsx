@@ -119,18 +119,8 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
           placeholder={`${unitType === 'grams' ?  "100 克" : "1 份"}`}
           size='md'
           min={0}
+          step={10}
         />
-        {/* <Select
-          label="單位"
-          allowDeselect={false}
-          value={unitType}
-          onChange={(val) => setUnitType(val as UnitType)}
-          size='md'
-          data={[
-            { value: 'grams', label: '克' },
-            { value: 'servings', label: '份' }
-          ]}
-        /> */}
         <SegmentedControl 
           data={[
             { label: '克', value: 'grams' },
