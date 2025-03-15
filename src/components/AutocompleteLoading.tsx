@@ -138,7 +138,7 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
           ]}
           size='md'
           value={unitType}
-          onChange={(val) => setUnitType(val as UnitType)}
+          onClick={() => setUnitType(unitType === 'grams' ? 'servings' : 'grams')}
         />
       </Flex>
       <Button onClick={handleIntake}>
