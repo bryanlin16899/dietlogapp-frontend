@@ -270,9 +270,9 @@ export function TableSort() {
                   >
                     碳水化合物
                   </Th>
-                  <Table.Th>單位</Table.Th>
                 </>
               )}
+              <Table.Th>單位</Table.Th>
               <Table.Th>操作</Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -281,7 +281,7 @@ export function TableSort() {
               rows
             ) : (
               <Table.Tr>
-                <Table.Td colSpan={isMobile ? 2 : 6}>
+                <Table.Td colSpan={isMobile ? 4 : 7}>
                   <Text fw={500} ta="center">
                     無
                   </Text>
