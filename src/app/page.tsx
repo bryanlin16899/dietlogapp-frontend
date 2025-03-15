@@ -138,20 +138,23 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           {userInfo?.googleId && (
             <Group
-              className="w-full"
+              className="w-full mb-1"
               justify="space-between"
             >
               <Title>
                 Hi {userInfo.name} 👋
               </Title>
               <DateInput
+                size="md"
                 variant="unstyled"
                 value={logDate}
                 onChange={setLogDate}
                 aria-label="日期"
                 min={"2025/01/01"}
                 placeholder=""
-                className="w-auto text-right pt-2"
+                valueFormat="YYYY / MM / DD"
+                className="w-auto pt-1"
+                inputMode='none'
               />
             </Group>
           )}
