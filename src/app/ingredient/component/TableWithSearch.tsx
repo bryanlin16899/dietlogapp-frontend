@@ -5,7 +5,9 @@ import {
   Center,
   Group,
   Modal,
+  Pagination,
   ScrollArea,
+  Stack,
   Table,
   Text,
   TextInput,
@@ -89,6 +91,9 @@ export function TableSort() {
   const [sortedData, setSortedData] = useState<Ingredient[]>([]);
   const [sortBy, setSortBy] = useState<keyof Ingredient | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);  
+  const PAGE_SIZE = 10;
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [detailModalOpened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
   const [editModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
@@ -100,16 +105,20 @@ export function TableSort() {
   useEffect(() => {
     const loadIngredients = async () => {
       try {
-        const data = await fetchIngredientList('');
+        const data = await fetchIngredientList('', {
+          page: currentPage,
+          page_size: PAGE_SIZE
+        });
         setIngredients(data.ingredients);
         setSortedData(data.ingredients);
+        setTotalPages(data.total_pages)
       } catch (error) {
         console.error('Failed to fetch ingredients', error);
       }
     };
 
     loadIngredients();
-  }, []);
+  }, [currentPage]);
 
   const setSorting = (field: keyof Ingredient) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -165,14 +174,17 @@ export function TableSort() {
       <Table.Td style={{ maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         {ingredient.name}
       </Table.Td>
-      <Table.Td>{ingredient.calories.toFixed(1)}</Table.Td>
+      <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.calories.toFixed(1) : ingredient.serving_calories.toFixed(1)}</Table.Td>
       {!isMobile && (
         <>
-          <Table.Td>{ingredient.protein.toFixed(1)}</Table.Td>
-          <Table.Td>{ingredient.fat.toFixed(1)}</Table.Td>
-          <Table.Td>{ingredient.carbohydrates.toFixed(1)}</Table.Td>
+          <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.protein.toFixed(1) : ingredient.serving_protein}</Table.Td>
+          <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.fat.toFixed(1) : ingredient.serving_fat}</Table.Td>
+          <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.carbohydrates.toFixed(1) : ingredient.serving_carbohydrates}</Table.Td>
         </>
       )}
+      <Table.Td>
+        {ingredient.unit_type === 'grams' ? '百克' : '每份'}
+      </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
           <ActionIcon 
@@ -203,115 +215,123 @@ export function TableSort() {
   ));
 
   return (
-    <ScrollArea h={500} miw={isMobile ? 300 : 800}>
-      <TextInput
-        placeholder="搜尋食材"
-        mb="sm"
-        leftSection={<IconSearch size={16} stroke={1.5} />}
-        value={search}
-        onChange={handleSearchChange}
-      />
-      <Table
-        miw={isMobile ? 300 : 800} 
-        fz={isMobile ? 'xs' : 'sm'}
-        verticalSpacing={isMobile ? 'xs' : 'md'}
-        highlightOnHover
-        striped
-      >
-        <Table.Thead>
-          <Table.Tr>
-            <Th
-              sorted={sortBy === 'name'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('name')}
-            >
-              名稱
-            </Th>
-            <Th
-              sorted={sortBy === 'calories'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('calories')}
-            >
-              熱量
-            </Th>
-            {!isMobile && (
-              <>
-                <Th
-                  sorted={sortBy === 'protein'}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting('protein')}
-                >
-                  蛋白質
-                </Th>
-                <Th
-                  sorted={sortBy === 'fat'}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting('fat')}
-                >
-                  脂肪
-                </Th>
-                <Th
-                  sorted={sortBy === 'carbohydrates'}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting('carbohydrates')}
-                >
-                  碳水化合物
-                </Th>
-              </>
-            )}
-            <Table.Th>操作</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {rows.length > 0 ? (
-            rows
-          ) : (
+    <Stack>
+      <ScrollArea h={500} miw={isMobile ? 300 : 800}>
+        <TextInput
+          placeholder="搜尋食材"
+          mb="sm"
+          leftSection={<IconSearch size={16} stroke={1.5} />}
+          value={search}
+          onChange={handleSearchChange}
+        />
+        <Table
+          miw={isMobile ? 300 : 800} 
+          fz={isMobile ? 'xs' : 'sm'}
+          verticalSpacing={isMobile ? 'xs' : 'md'}
+          highlightOnHover
+          striped
+        >
+          <Table.Thead>
             <Table.Tr>
-              <Table.Td colSpan={isMobile ? 2 : 6}>
-                <Text fw={500} ta="center">
-                  無
-                </Text>
-              </Table.Td>
+              <Th
+                sorted={sortBy === 'name'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('name')}
+              >
+                名稱
+              </Th>
+              <Th
+                sorted={sortBy === 'calories'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('calories')}
+              >
+                熱量
+              </Th>
+              {!isMobile && (
+                <>
+                  <Th
+                    sorted={sortBy === 'protein'}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting('protein')}
+                  >
+                    蛋白質
+                  </Th>
+                  <Th
+                    sorted={sortBy === 'fat'}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting('fat')}
+                  >
+                    脂肪
+                  </Th>
+                  <Th
+                    sorted={sortBy === 'carbohydrates'}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting('carbohydrates')}
+                  >
+                    碳水化合物
+                  </Th>
+                  <Table.Th>單位</Table.Th>
+                </>
+              )}
+              <Table.Th>操作</Table.Th>
             </Table.Tr>
-          )}
-        </Table.Tbody>
-      </Table>
-      <IngredientDetail 
-        ingredient={selectedIngredient} 
-        opened={detailModalOpened} 
-        onClose={closeDetailModal} 
+          </Table.Thead>
+          <Table.Tbody>
+            {rows.length > 0 ? (
+              rows
+            ) : (
+              <Table.Tr>
+                <Table.Td colSpan={isMobile ? 2 : 6}>
+                  <Text fw={500} ta="center">
+                    無
+                  </Text>
+                </Table.Td>
+              </Table.Tr>
+            )}
+          </Table.Tbody>
+        </Table>
+        <IngredientDetail 
+          ingredient={selectedIngredient} 
+          opened={detailModalOpened} 
+          onClose={closeDetailModal} 
+        />
+        <EditIngredientModal
+          ingredient={selectedIngredientForEdit}
+          opened={editModalOpened}
+          onClose={closeEditModal}
+          onUpdate={(updatedIngredient) => {
+            // Update the ingredient in the list
+            const updatedIngredients = ingredients.map(ing => 
+              ing.id === updatedIngredient.id ? updatedIngredient : ing
+            );
+            setIngredients(updatedIngredients);
+            setSortedData(updatedIngredients);
+          }}
+        />
+        <Modal
+          opened={deleteModalOpened}
+          onClose={closeDeleteModal}
+          title="確認刪除食材"
+          centered
+        >
+          <Text mb="md">
+            您確定要刪除 <strong>{ingredientToDelete?.name}</strong> 嗎？
+          </Text>
+          <Group justify="flex-end">
+            <Button variant="default" onClick={closeDeleteModal}>
+              取消
+            </Button>
+            <Button color="red" onClick={handleDeleteIngredient}>
+              刪除
+            </Button>
+          </Group>
+        </Modal>
+      </ScrollArea>
+      <Pagination
+        total={totalPages}
+        value={currentPage}
+        onChange={setCurrentPage}
       />
-      <EditIngredientModal
-        ingredient={selectedIngredientForEdit}
-        opened={editModalOpened}
-        onClose={closeEditModal}
-        onUpdate={(updatedIngredient) => {
-          // Update the ingredient in the list
-          const updatedIngredients = ingredients.map(ing => 
-            ing.id === updatedIngredient.id ? updatedIngredient : ing
-          );
-          setIngredients(updatedIngredients);
-          setSortedData(updatedIngredients);
-        }}
-      />
-      <Modal
-        opened={deleteModalOpened}
-        onClose={closeDeleteModal}
-        title="確認刪除食材"
-        centered
-      >
-        <Text mb="md">
-          您確定要刪除 <strong>{ingredientToDelete?.name}</strong> 嗎？
-        </Text>
-        <Group justify="flex-end">
-          <Button variant="default" onClick={closeDeleteModal}>
-            取消
-          </Button>
-          <Button color="red" onClick={handleDeleteIngredient}>
-            刪除
-          </Button>
-        </Group>
-      </Modal>
-    </ScrollArea>
+    </Stack>
   );
 }

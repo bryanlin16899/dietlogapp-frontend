@@ -33,22 +33,22 @@ export function IngredientDetail({ ingredient, opened, onClose }: IngredientDeta
         </Stack>
         <Group grow>
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="blue">{ingredient.calories.toFixed(1)}</Text>
+            <Text fw={700} size="lg" c="blue">{ingredient.calories ? ingredient.calories.toFixed(1) : '-'}</Text>
             <Text size="sm" c="dimmed">熱量</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="red">{ingredient.protein.toFixed(1)}g</Text>
+            <Text fw={700} size="lg" c="red">{ingredient.protein ? `${ingredient.protein.toFixed(1)}g` : '-'}</Text>
             <Text size="sm" c="dimmed">蛋白質</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="yellow">{ingredient.fat.toFixed(1)}g</Text>
+            <Text fw={700} size="lg" c="yellow">{ingredient.fat ? `${ingredient.fat.toFixed(1)}g` : '-'}</Text>
             <Text size="sm" c="dimmed">脂肪</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="green">{ingredient.carbohydrates.toFixed(1)}g</Text>
+            <Text fw={700} size="lg" c="green">{ingredient.carbohydrates ? `${ingredient.carbohydrates.toFixed(1)}g` : '-'}</Text>
             <Text size="sm" c="dimmed">碳水化合物</Text>
           </Stack>
         </Group>

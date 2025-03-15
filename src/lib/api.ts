@@ -13,6 +13,7 @@ export interface Ingredient {
   serving_carbohydrates: number;
   added_by_image: boolean;
   image_base64?: string;
+  unit_type: string
 }
 
 export interface IngredientListResponse {
@@ -39,7 +40,10 @@ export interface GetDietLogResponse {
 
 export interface IngredientListResponse {
   ingredients: Ingredient[];
-  total: number;
+  total_count: number;
+  total_pages: number;
+  current_page: number;
+  page_size: number
 }
 
 export const fetchIngredientList = async (
@@ -176,12 +180,13 @@ export const deleteIngredient = async (ingredientId: number) => {
 };
 
 export interface CreateIngredientData {
+  unit_type: UnitType;
   name: string;
   calories: number;
   fat: number;
   protein: number;
   carbohydrates: number;
-  serving_size_grams: number;
+  serving_size_grams: number|null;
   image_base64?: string;
 }
 

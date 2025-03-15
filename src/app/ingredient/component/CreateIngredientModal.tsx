@@ -1,4 +1,4 @@
-import { createIngredient, createIngredientByImage, CreateIngredientData } from "@/lib/api";
+import { createIngredient, createIngredientByImage, CreateIngredientData, UnitType } from "@/lib/api";
 import {
   Button,
   Collapse,
@@ -45,7 +45,7 @@ export function CreateIngredientModal({
     });
   };
 
-  const [unitType, setUnitType] = useState<'grams' | 'servings'>('grams');
+  const [unitType, setUnitType] = useState<UnitType>('grams');
 
   const form = useForm({
     initialValues: {
@@ -54,7 +54,7 @@ export function CreateIngredientModal({
       protein: 0,
       fat: 0,
       carbohydrates: 0,
-      serving_size_grams: 100,
+      serving_size_grams: null,
       serving_calories: 0,
       serving_protein: 0,
       serving_fat: 0,
@@ -77,7 +77,7 @@ export function CreateIngredientModal({
           protein: values.protein,
           fat: values.fat,
           carbohydrates: values.carbohydrates,
-          serving_size_grams: unitType === 'grams' ? values.serving_size_grams : 100,
+          serving_size_grams: unitType === 'grams' ? values.serving_size_grams : null,
           unit_type: unitType,
           image_base64: values.image_base64,
         };
@@ -153,9 +153,8 @@ export function CreateIngredientModal({
           {addMethod === 'manual' && (
             <>
               <SegmentedControl
-                label="單位類型"
                 value={unitType}
-                onChange={(value: 'grams' | 'servings') => setUnitType(value)}
+                onChange={(value) => setUnitType(value as UnitType)}
                 data={[
                   { label: '克', value: 'grams' },
                   { label: '份', value: 'servings' }
@@ -193,6 +192,7 @@ export function CreateIngredientModal({
                   label="每份重量 (g)"
                   size="md"
                   placeholder="50"
+                  required={unitType === 'grams'}
                   {...form.getInputProps('serving_size_grams')}
                 />
               )}
