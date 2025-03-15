@@ -43,7 +43,14 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
         value, 
         quantity ? Number(quantity) : 100, 
         unitType,
-        logDate ? logDate.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }) : new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' })
+        logDate ? 
+          logDate.getFullYear() + '-' +
+          String(logDate.getMonth() + 1).padStart(2, '0') + '-' +                                      
+          String(logDate.getDate()).padStart(2, '0') 
+        : 
+          new Date().getFullYear() + '-' +
+          String(new Date().getMonth() + 1).padStart(2, '0') + '-' +                                      
+          String(new Date().getDate()).padStart(2, '0')
       );
       console.log('Intake recorded:', data);
       
