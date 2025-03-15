@@ -1,7 +1,7 @@
 "use client";
 
+import { Button, Dialog, Group, NumberInput, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Dialog, Group, Button, Text, NumberInput } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
 export function CaloriesGoalDialog() {
@@ -35,6 +35,7 @@ export function CaloriesGoalDialog() {
             <Group align="flex-end">
             <NumberInput 
                 placeholder="1,200 大卡🔥" 
+                size='md'
                 min={1000} 
                 max={6000} 
                 suffix=' 大卡🔥' 
@@ -44,7 +45,7 @@ export function CaloriesGoalDialog() {
                 style={{ flex: 1 }}
                 onChange={(val) => setValue(val)} 
             />
-            <Button onClick={handleConfirm}>確定</Button>
+            <Button size='md' onClick={handleConfirm}>確定</Button>
             </Group>
         </Dialog>
         </>
