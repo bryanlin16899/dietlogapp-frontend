@@ -153,7 +153,7 @@ export default function Home() {
                 min={"2025/01/01"}
                 placeholder=""
                 valueFormat="YYYY / MM / DD"
-                className="custom-date-input w-auto pt-0 max-sm:text-center"
+                className="custom-date-input w-auto pt-0 max-sm:text-center text-right"
                 inputMode='none'
               />
             </Group>
