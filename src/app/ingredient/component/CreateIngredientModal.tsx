@@ -45,6 +45,8 @@ export function CreateIngredientModal({
     });
   };
 
+  const [unitType, setUnitType] = useState<'grams' | 'servings'>('grams');
+
   const form = useForm({
     initialValues: {
       name: '',
@@ -75,7 +77,8 @@ export function CreateIngredientModal({
           protein: values.protein,
           fat: values.fat,
           carbohydrates: values.carbohydrates,
-          serving_size_grams: values.serving_size_grams,
+          serving_size_grams: unitType === 'grams' ? values.serving_size_grams : 100,
+          unit_type: unitType,
           image_base64: values.image_base64,
         };
 
@@ -149,36 +152,50 @@ export function CreateIngredientModal({
 
           {addMethod === 'manual' && (
             <>
+              <SegmentedControl
+                label="單位類型"
+                value={unitType}
+                onChange={(value: 'grams' | 'servings') => setUnitType(value)}
+                data={[
+                  { label: '克', value: 'grams' },
+                  { label: '份', value: 'servings' }
+                ]}
+                fullWidth
+                mb="sm"
+              />
+
               <NumberInput
-                label="熱量 (100g)"
+                label={`熱量 (${unitType === 'grams' ? '100g' : '每份'})`}
                 size="md"
                 required
                 {...form.getInputProps('calories')}
               />
               <NumberInput
-                label="蛋白質 (100g)"
+                label={`蛋白質 (${unitType === 'grams' ? '100g' : '每份'})`}
                 size="md"
                 placeholder="Protein"
                 {...form.getInputProps('protein')}
               />
               <NumberInput
-                label="脂肪 (100g)"
+                label={`脂肪 (${unitType === 'grams' ? '100g' : '每份'})`}
                 size="md"
-                placeholder="Fat (100g)"
+                placeholder="Fat"
                 {...form.getInputProps('fat')}
               />
               <NumberInput
-                label="碳水化合物 (100g)"
+                label={`碳水化合物 (${unitType === 'grams' ? '100g' : '每份'})`}
                 size="md"
-                placeholder="Carbohydrates (100g)"
+                placeholder="Carbohydrates"
                 {...form.getInputProps('carbohydrates')}
               />
-              <NumberInput
-                label="每份重量 (g)"
-                size="md"
-                placeholder="50"
-                {...form.getInputProps('serving_size_grams')}
-              />
+              {unitType === 'grams' && (
+                <NumberInput
+                  label="每份重量 (g)"
+                  size="md"
+                  placeholder="50"
+                  {...form.getInputProps('serving_size_grams')}
+                />
+              )}
               <Group justify="space-between" align="center" mb={5}>
                 <Text size="md" fw={500}>產品圖片</Text>
                 <Button 
