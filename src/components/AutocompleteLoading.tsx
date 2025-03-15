@@ -132,10 +132,13 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
           ]}
         /> */}
         <SegmentedControl 
-          data={['份' as UnitType, '克' as UnitType]}
+          data={[
+            { label: '份', value: 'servings' }, 
+            { label: '克', value: 'grams' }
+          ]}
           size='md'
-          value={unitType === 'grams' ? "克" : '份'}
-          onChange={(val) => setUnitType(val === '克' ? 'grams' as UnitType : '份' as UnitType)}
+          value={unitType}
+          onChange={(val) => setUnitType(val as UnitType)}
         />
       </Flex>
       <Button onClick={handleIntake}>
