@@ -138,10 +138,10 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           {userInfo?.googleId && (
             <Group
-              className="w-full mb-1"
+              className="w-full mb-1 max-sm:flex-col max-sm:items-center"
               justify="space-between"
             >
-              <Title>
+              <Title className="max-sm:text-center">
                 Hi {userInfo.name} 👋
               </Title>
               <DateInput
@@ -153,7 +153,7 @@ export default function Home() {
                 min={"2025/01/01"}
                 placeholder=""
                 valueFormat="YYYY / MM / DD"
-                className="w-auto pt-1"
+                className="w-auto pt-1 max-sm:text-center"
                 inputMode='none'
               />
             </Group>
