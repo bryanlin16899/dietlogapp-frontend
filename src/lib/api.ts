@@ -37,14 +37,30 @@ export interface GetDietLogResponse {
   intake_foods: [IntakeFood]
 }
 
-export const fetchIngredientList = async (searchTerm: string): Promise<IngredientListResponse> => {
+export interface IngredientListResponse {
+  ingredients: Ingredient[];
+  total: number;
+}
+
+export const fetchIngredientList = async (
+  searchTerm: string, 
+  options: { 
+    page?: number; 
+    page_size?: number; 
+  } = {}
+): Promise<IngredientListResponse> => {
   try {
+    const { page = 1, page_size = 10 } = options;
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/get_ingredient_list`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: searchTerm })
+      body: JSON.stringify({ 
+        name: searchTerm,
+        page,
+        page_size
+      })
     });
     
     if (!response.ok) {
