@@ -46,44 +46,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   );
 }
 
-function sortData(
-  data: Ingredient[],
-  payload: { sortBy: keyof Ingredient | null; reversed: boolean; search: string }
-) {
-  const { sortBy, search } = payload;
-  const query = search.toLowerCase().trim();
-
-  const filteredData = data.filter((item) => 
-    Object.values(item).some(
-      (value) => 
-        value && 
-        value.toString().toLowerCase().includes(query)
-    )
-  );
-
-  if (!sortBy) {
-    return filteredData;
-  }
-
-  return filteredData.sort((a, b) => {
-    const valueA = a[sortBy];
-    const valueB = b[sortBy];
-
-    if (typeof valueA === 'string' && typeof valueB === 'string') {
-      return payload.reversed 
-        ? valueB.localeCompare(valueA) 
-        : valueA.localeCompare(valueB);
-    }
-
-    if (typeof valueA === 'number' && typeof valueB === 'number') {
-      return payload.reversed 
-        ? valueB - valueA 
-        : valueA - valueB;
-    }
-
-    return 0;
-  });
-}
+// Removed sortData function as we're now using API-side filtering
 
 export function TableSort() {
   const [search, setSearch] = useState('');
@@ -120,17 +83,39 @@ export function TableSort() {
     loadIngredients();
   }, [currentPage]);
 
-  const setSorting = (field: keyof Ingredient) => {
+  const setSorting = async (field: keyof Ingredient) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(ingredients, { sortBy: field, reversed, search }));
+    
+    try {
+      const data = await fetchIngredientList(search, {
+        page: currentPage,
+        page_size: PAGE_SIZE
+      });
+      setIngredients(data.ingredients);
+      setSortedData(data.ingredients);
+      setTotalPages(data.total_pages);
+    } catch (error) {
+      console.error('Failed to fetch sorted ingredients', error);
+    }
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
-    setSortedData(sortData(ingredients, { sortBy, reversed: reverseSortDirection, search: value }));
+    
+    try {
+      const data = await fetchIngredientList(value, {
+        page: currentPage,
+        page_size: PAGE_SIZE
+      });
+      setIngredients(data.ingredients);
+      setSortedData(data.ingredients);
+      setTotalPages(data.total_pages);
+    } catch (error) {
+      console.error('Failed to search ingredients', error);
+    }
   };
 
   const handleDeleteIngredient = async () => {
