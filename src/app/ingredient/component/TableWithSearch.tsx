@@ -68,7 +68,7 @@ export function TableSort() {
   useEffect(() => {
     const loadIngredients = async () => {
       try {
-        const data = await fetchIngredientList('', {
+        const data = await fetchIngredientList(search, {
           page: currentPage,
           page_size: PAGE_SIZE
         });

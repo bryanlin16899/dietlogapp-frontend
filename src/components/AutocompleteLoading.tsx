@@ -30,8 +30,8 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
     if (!value || !userInfo) {
       notifications.show({
         position: 'top-right',
-        title: 'Error',
-        message: 'Please enter both food name and quantity',
+        title: '錯誤',
+        message: '請輸入食物名稱與數量',
         color: 'red',
       });
       return;
