@@ -16,7 +16,10 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
 
   const handleFetchIngredientList = async (searchTerm: string) => {
     try {
-      const data = await fetchIngredientList(searchTerm);
+      const data = await fetchIngredientList(searchTerm, {
+        page: 1,
+        page_size: 1000
+      });
       
       // Transform ingredient data for Autocomplete
       const ingredientSuggestions = data.ingredients.map((ingredient: { name: string }) => ingredient.name);

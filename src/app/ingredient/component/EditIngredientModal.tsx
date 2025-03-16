@@ -1,4 +1,4 @@
-import { Ingredient, updateIngredient } from '@/lib/api';
+import { Ingredient, UnitType, updateIngredient } from '@/lib/api';
 import {
   Button,
   Collapse,
@@ -6,6 +6,7 @@ import {
   Image,
   Modal,
   NumberInput,
+  SegmentedControl,
   Stack,
   Text,
   TextInput
@@ -32,6 +33,7 @@ export function EditIngredientModal({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [unitType, setUnitType] = useState<UnitType>('grams');
   const [imageUploadOpened, { toggle: toggleImageUpload }] = useDisclosure(false);
 
   // Function to convert File to base64
@@ -51,12 +53,11 @@ export function EditIngredientModal({
       fat: 0,
       carbohydrates: 0,
       serving_size_grams: 0,
-      image_base64: '',
+      image_base64: ''
     },
     validate: {
       name: (value) => value.trim().length > 0 ? null : 'Name is required',
-      calories: (value) => value >= 0 ? null : 'Calories must be non-negative',
-      serving_size_grams: (value) => value > 0 ? null : 'Serving size must be positive',
+      calories: (value) => value >= 0 ? null : 'Calories must be non-negative'
     },
   });
 
@@ -64,19 +65,20 @@ export function EditIngredientModal({
     if (ingredient) {
       form.setValues({
         name: ingredient.name,
-        calories: ingredient.calories,
-        protein: ingredient.protein,
-        fat: ingredient.fat,
-        carbohydrates: ingredient.carbohydrates,
+        calories: unitType === 'grams' ? ingredient.calories : ingredient.serving_calories,
+        protein: unitType === 'grams' ? ingredient.protein : ingredient.serving_protein,
+        fat: unitType === 'grams' ? ingredient.fat : ingredient.serving_fat,
+        carbohydrates: unitType === 'grams' ? ingredient.carbohydrates : ingredient.serving_carbohydrates,
         serving_size_grams: ingredient.serving_size_grams,
         image_base64: ingredient.image_base64,
       });
       
+      setUnitType(ingredient.unit_type as UnitType);
       // Reset image state when ingredient changes
       setImageFile(null);
       setImagePreview(ingredient?.image_base64 || null);
     }
-  }, [ingredient]);
+  }, [ingredient, unitType]);
 
   const handleSubmit = async (values: typeof form.values) => {
     if (!ingredient) return;
@@ -97,7 +99,7 @@ export function EditIngredientModal({
       }
 
       const updatedIngredient = await updateIngredient(updateData);
-
+      
       notifications.show({
         position: 'top-right',
         title: '食材已修改',
@@ -140,6 +142,16 @@ export function EditIngredientModal({
             size='md'
             {...form.getInputProps('name')}
           />
+          <SegmentedControl
+            disabled
+            value={unitType}
+            data={[
+              { label: '克', value: 'grams' },
+              { label: '份', value: 'servings' }
+            ]}
+            fullWidth
+            mb="sm"
+          />
           <NumberInput
             label="熱量"
             placeholder=""
@@ -147,29 +159,31 @@ export function EditIngredientModal({
             {...form.getInputProps('calories')}
           />
           <NumberInput
-            label="蛋白質 (每100g)"
+            label={`蛋白質 (${unitType === 'grams' ? '100g' : '每份'})`}
             placeholder=""
             size='md'
             {...form.getInputProps('protein')}
           />
           <NumberInput
-            label="脂肪 (每100g)"
+            label={`脂肪 (${unitType === 'grams' ? '100g' : '每份'})`}
             placeholder="Fat"
             size='md'
             {...form.getInputProps('fat')}
           />
           <NumberInput
-            label="碳水化合物 (每100g)"
+            label={`碳水化合物 (${unitType === 'grams' ? '100g' : '每份'})`}
             placeholder="Carbohydrates"
             size='md'
             {...form.getInputProps('carbohydrates')}
           />
-          <NumberInput
-            label="每份重量 (每100g)"
-            placeholder="Serving Size"
-            size='md'
-            {...form.getInputProps('serving_size_grams')}
-          />
+          { unitType === 'grams' && (
+            <NumberInput
+              label="每份重量 (每100g)"
+              placeholder="Serving Size"
+              size='md'
+              {...form.getInputProps('serving_size_grams')}
+            />
+          ) }
           
           <Group justify="space-between" align="center" mb={5}>
             <Text size="md" fw={500}>產品圖片</Text>
