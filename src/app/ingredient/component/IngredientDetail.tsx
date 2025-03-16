@@ -83,7 +83,7 @@ export function IngredientDetail({ ingredient, opened, onClose }: IngredientDeta
         <Divider my="sm" />
         {ingredient.image_base64 && (
           <Stack gap="xs">
-            <Image src={ingredient.image_base64} alt={ingredient.name} width={200} height={200} />
+            <Image src={ingredient.image_base64} alt={ingredient.name}/>
           </Stack>
         )}
       </Stack>
