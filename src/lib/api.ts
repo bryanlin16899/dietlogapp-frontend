@@ -80,6 +80,26 @@ export const fetchIngredientList = async (
   }
 };
 
+export const fetchIngredientById = async (ingredientId: number): Promise<Ingredient> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingredient/get_ingredient?id=${ingredientId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching ingredient by ID:', error);
+    throw error;
+  }
+};
+
 export type UnitType = 'grams' | 'servings';
 
 export const recordDietIntake = async (
