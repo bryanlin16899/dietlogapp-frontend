@@ -48,6 +48,7 @@ export interface IngredientListResponse {
 
 export const fetchIngredientList = async (
   searchTerm: string, 
+  withImage: boolean,
   options: { 
     page?: number; 
     page_size?: number; 
@@ -62,6 +63,7 @@ export const fetchIngredientList = async (
       },
       body: JSON.stringify({ 
         name: searchTerm,
+        with_image: withImage,
         page,
         page_size
       })
