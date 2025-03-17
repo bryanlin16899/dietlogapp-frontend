@@ -5,10 +5,27 @@ interface IngredientDetailProps {
   ingredient: Ingredient | null;
   opened: boolean;
   onClose: () => void;
+  loading?: boolean;
 }
 
-export function IngredientDetail({ ingredient, opened, onClose }: IngredientDetailProps) {
+export function IngredientDetail({ ingredient, opened, onClose, loading = false }: IngredientDetailProps) {
   if (!ingredient) return null;
+
+  if (loading) {
+    return (
+      <Modal 
+        opened={opened} 
+        onClose={onClose} 
+        title={<Title order={3}>食材資訊</Title>}
+        size="md"
+        centered
+      >
+        <Center h={200}>
+          <Loader />
+        </Center>
+      </Modal>
+    );
+  }
 
   return (
     <Modal 

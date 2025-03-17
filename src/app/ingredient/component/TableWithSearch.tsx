@@ -59,6 +59,7 @@ export function TableSort() {
   const PAGE_SIZE = 10;
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [detailModalOpened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
+  const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [editModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
   const [selectedIngredientForEdit, setSelectedIngredientForEdit] = useState<Ingredient | null>(null);
   const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
@@ -160,9 +161,22 @@ export function TableSort() {
     <Table.Tr 
       key={ingredient.id} 
       style={{ cursor: 'pointer' }}
-      onClick={() => {
-        setSelectedIngredient(ingredient);
-        openDetailModal();
+      onClick={async () => {
+        setIsLoadingDetail(true);
+        try {
+          const fullIngredientDetail = await fetchIngredientById(ingredient.id);
+          setSelectedIngredient(fullIngredientDetail);
+          openDetailModal();
+        } catch (error) {
+          notifications.show({
+            position: 'top-right',
+            title: '載入失敗',
+            message: '無法取得食材詳細資訊',
+            color: 'red',
+          });
+        } finally {
+          setIsLoadingDetail(false);
+        }
       }}
     >
       <Table.Td style={{ maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -288,6 +302,7 @@ export function TableSort() {
           ingredient={selectedIngredient} 
           opened={detailModalOpened} 
           onClose={closeDetailModal} 
+          loading={isLoadingDetail}
         />
         <EditIngredientModal
           ingredient={selectedIngredientForEdit}
