@@ -68,10 +68,13 @@ export function TableSort() {
   useEffect(() => {
     const loadIngredients = async () => {
       try {
-        const data = await fetchIngredientList(search, {
-          page: currentPage,
-          page_size: PAGE_SIZE
-        });
+        const data = await fetchIngredientList(
+          search, 
+          false, // 不拿圖片
+          {
+            page: currentPage,
+            page_size: PAGE_SIZE
+          });
         setIngredients(data.ingredients);
         setSortedData(data.ingredients);
         setTotalPages(data.total_pages)
@@ -89,10 +92,13 @@ export function TableSort() {
     setSortBy(field);
     
     try {
-      const data = await fetchIngredientList(search, {
-        page: currentPage,
-        page_size: PAGE_SIZE
-      });
+      const data = await fetchIngredientList(
+        search, 
+        false, // 不拿圖片
+        {
+          page: currentPage,
+          page_size: PAGE_SIZE
+        });
       setIngredients(data.ingredients);
       setSortedData(data.ingredients);
       setTotalPages(data.total_pages);
@@ -106,10 +112,13 @@ export function TableSort() {
     setSearch(value);
     
     try {
-      const data = await fetchIngredientList(value, {
-        page: currentPage,
-        page_size: PAGE_SIZE
-      });
+      const data = await fetchIngredientList(
+        value, 
+        false,
+        {
+          page: currentPage,
+          page_size: PAGE_SIZE
+        });
       setIngredients(data.ingredients);
       setSortedData(data.ingredients);
       setTotalPages(data.total_pages);
