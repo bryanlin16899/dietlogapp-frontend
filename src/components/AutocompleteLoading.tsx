@@ -16,7 +16,10 @@ export function AutocompleteLoading({ onIntakeSuccess, logDate }: { onIntakeSucc
 
   const handleFetchIngredientList = async (searchTerm: string) => {
     try {
-      const data = await fetchIngredientList(searchTerm, {
+      const data = await fetchIngredientList(
+        searchTerm, 
+        false, // 不拿圖片
+        {
         page: 1,
         page_size: 1000
       });

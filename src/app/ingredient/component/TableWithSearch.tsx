@@ -1,4 +1,4 @@
-import { deleteIngredient, fetchIngredientList, Ingredient } from '@/lib/api';
+import { deleteIngredient, fetchIngredientById, fetchIngredientList, Ingredient } from '@/lib/api';
 import {
   ActionIcon,
   Button,

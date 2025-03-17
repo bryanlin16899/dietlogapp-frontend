@@ -1,5 +1,5 @@
 import { Ingredient } from "@/lib/api";
-import { Badge, Divider, Group, Image, Modal, Stack, Text, Title } from "@mantine/core";
+import { Badge, Center, Divider, Group, Image, Loader, Modal, Stack, Text, Title } from "@mantine/core";
 
 interface IngredientDetailProps {
   ingredient: Ingredient | null;
