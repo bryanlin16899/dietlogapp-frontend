@@ -167,7 +167,7 @@ export function TableSort() {
           const fullIngredientDetail = await fetchIngredientById(ingredient.id);
           setSelectedIngredient(fullIngredientDetail);
           openDetailModal();
-        } catch (error) {
+        } catch {
           notifications.show({
             position: 'top-right',
             title: '載入失敗',
