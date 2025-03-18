@@ -37,9 +37,19 @@ export function IngredientDetail({ ingredient, opened, onClose, loading = false 
         size="md"
         centered
       >
-        <Center h={200}>
-          <Loader />
-        </Center>
+        <Stack>
+          <Skeleton height={50} />
+          <Skeleton height={20} />
+          <Group grow>
+            {[1, 2, 3, 4].map((item) => (
+              <Stack key={item} gap="xs">
+                <Skeleton height={30} />
+                <Skeleton height={15} />
+              </Stack>
+            ))}
+          </Group>
+          <Skeleton height={200} />
+        </Stack>
       </Modal>
     );
   }
