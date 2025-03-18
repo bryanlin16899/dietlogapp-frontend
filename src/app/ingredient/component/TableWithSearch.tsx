@@ -14,7 +14,7 @@ import {
   TextInput,
   UnstyledButton
 } from '@mantine/core';
-import { useDisclosure, useMediaQuery, useDebouncedValue } from '@mantine/hooks';
+import { useDebouncedValue, useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconChevronDown, IconChevronUp, IconEdit, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
