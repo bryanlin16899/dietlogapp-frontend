@@ -345,7 +345,6 @@ export function TableSort() {
       <Pagination
         total={totalPages}
         value={currentPage}
-        siblings={2}
         onChange={setCurrentPage}
       />
     </Stack>
