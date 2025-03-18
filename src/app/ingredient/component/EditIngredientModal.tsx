@@ -1,4 +1,4 @@
-import { Ingredient, UnitType, updateIngredient } from '@/lib/api';
+import { Ingredient, UnitType, updateIngredient, fetchIngredientById } from '@/lib/api';
 import {
   Button,
   Collapse,
@@ -62,22 +62,37 @@ export function EditIngredientModal({
   });
 
   React.useEffect(() => {
-    if (ingredient) {
-      form.setValues({
-        name: ingredient.name,
-        calories: unitType === 'grams' ? ingredient.calories : ingredient.serving_calories,
-        protein: unitType === 'grams' ? ingredient.protein : ingredient.serving_protein,
-        fat: unitType === 'grams' ? ingredient.fat : ingredient.serving_fat,
-        carbohydrates: unitType === 'grams' ? ingredient.carbohydrates : ingredient.serving_carbohydrates,
-        serving_size_grams: ingredient.serving_size_grams,
-        image_base64: ingredient.image_base64,
-      });
-      
-      setUnitType(ingredient.unit_type as UnitType);
-      // Reset image state when ingredient changes
-      setImageFile(null);
-      setImagePreview(ingredient?.image_base64 || null);
-    }
+    const loadIngredientDetails = async () => {
+      if (ingredient) {
+        try {
+          const fullIngredient = await fetchIngredientById(ingredient.id);
+          
+          form.setValues({
+            name: fullIngredient.name,
+            calories: unitType === 'grams' ? fullIngredient.calories : fullIngredient.serving_calories,
+            protein: unitType === 'grams' ? fullIngredient.protein : fullIngredient.serving_protein,
+            fat: unitType === 'grams' ? fullIngredient.fat : fullIngredient.serving_fat,
+            carbohydrates: unitType === 'grams' ? fullIngredient.carbohydrates : fullIngredient.serving_carbohydrates,
+            serving_size_grams: fullIngredient.serving_size_grams,
+            image_base64: fullIngredient.image_base64,
+          });
+          
+          setUnitType(fullIngredient.unit_type as UnitType);
+          // Reset image state when ingredient changes
+          setImageFile(null);
+          setImagePreview(fullIngredient?.image_base64 || null);
+        } catch (error) {
+          notifications.show({
+            position: 'top-right',
+            title: '載入失敗',
+            message: '無法取得食材詳細資訊',
+            color: 'red',
+          });
+        }
+      }
+    };
+
+    loadIngredientDetails();
   }, [ingredient, unitType]);
 
   const handleSubmit = async (values: typeof form.values) => {
