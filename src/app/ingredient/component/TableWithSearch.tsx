@@ -185,9 +185,9 @@ export function TableSort() {
       <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.calories.toFixed(1) : ingredient.serving_calories.toFixed(1)}</Table.Td>
       {!isMobile && (
         <>
-          <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.protein.toFixed(1) : ingredient.serving_protein}</Table.Td>
-          <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.fat.toFixed(1) : ingredient.serving_fat}</Table.Td>
-          <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.carbohydrates.toFixed(1) : ingredient.serving_carbohydrates}</Table.Td>
+          <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.protein > 0 ? ingredient.protein.toFixed(1) : '-') : (ingredient.serving_protein > 0 ? ingredient.serving_protein.toFixed(1) : '-')}</Table.Td>
+          <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.fat > 0 ? ingredient.fat.toFixed(1) : '-') : (ingredient.serving_fat > 0 ? ingredient.serving_fat.toFixed(1) : '-')}</Table.Td>
+          <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.carbohydrates > 0 ? ingredient.carbohydrates.toFixed(1) : '-') : (ingredient.serving_carbohydrates > 0 ? ingredient.serving_carbohydrates.toFixed(1) : '-')}</Table.Td>
         </>
       )}
       <Table.Td>
