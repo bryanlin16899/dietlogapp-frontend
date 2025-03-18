@@ -224,10 +224,10 @@ export function TableSort() {
 
   return (
     <Stack>
-      <ScrollArea h={500} miw={isMobile ? 300 : 800}>
+      <ScrollArea h={isMobile ? 380 : 720} miw={isMobile ? 300 : 800}>
         <TextInput
           placeholder="搜尋食材"
-          mb="sm"
+          mb="md"
           leftSection={<IconSearch size={16} stroke={1.5} />}
           value={search}
           onChange={handleSearchChange}
