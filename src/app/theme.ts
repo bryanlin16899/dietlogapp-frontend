@@ -10,16 +10,16 @@ const theme = createTheme({
   },
   colors: {
     brand: [
-      "#e6f7ff",
-      "#bae7ff",
-      "#91d5ff",
-      "#69c0ff",
-      "#40a9ff",
-      "#1890ff",
-      "#096dd9",
-      "#0050b3",
-      "#003a8c",
-      "#002766",
+      "#fffae6",  // Lightest
+      "#fff3c4",
+      "#ffeca0",
+      "#ffe57f",
+      "#ffd43b",  // Main color
+      "#ffc53d",
+      "#faad14",
+      "#d48806",
+      "#ad6800",
+      "#874d00",  // Darkest
     ],
   },
 });
