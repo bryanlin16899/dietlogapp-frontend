@@ -7,6 +7,7 @@ import {
   Modal,
   Pagination,
   ScrollArea,
+  Skeleton,
   Stack,
   Table,
   Text,
@@ -57,6 +58,7 @@ export function TableSort() {
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);  
+  const [isLoadingIngredients, setIsLoadingIngredients] = useState(false);
   const PAGE_SIZE = 10;
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [detailModalOpened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
@@ -69,6 +71,7 @@ export function TableSort() {
 
   useEffect(() => {
     const loadIngredients = async () => {
+      setIsLoadingIngredients(true);
       try {
         const data = await fetchIngredientList(
           debouncedSearch, 
@@ -82,6 +85,8 @@ export function TableSort() {
         setTotalPages(data.total_pages)
       } catch (error) {
         console.error('Failed to fetch ingredients', error);
+      } finally {
+        setIsLoadingIngredients(false);
       }
     };
 
@@ -143,76 +148,97 @@ export function TableSort() {
     }
   };
 
-  const rows = sortedData.map((ingredient) => (
-    <Table.Tr 
-      key={ingredient.id} 
-      style={{ cursor: 'pointer' }}
-      onClick={() => {
-        // Immediately open modal with minimal data
-        setSelectedIngredient(ingredient);
-        openDetailModal();
-        
-        // Start loading full details
-        setIsLoadingDetail(true);
-        fetchIngredientById(ingredient.id)
-          .then((fullIngredientDetail) => {
-            setSelectedIngredient(fullIngredientDetail);
-          })
-          .catch(() => {
-            notifications.show({
-              position: 'top-right',
-              title: '載入失敗',
-              message: '無法取得食材詳細資訊',
-              color: 'red',
-            });
-          })
-          .finally(() => {
-            setIsLoadingDetail(false);
-          });
-      }}
-    >
-      <Table.Td style={{ maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {ingredient.name}
-      </Table.Td>
-      <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.calories.toFixed(1) : ingredient.serving_calories.toFixed(1)}</Table.Td>
-      {!isMobile && (
-        <>
-          <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.protein > 0 ? ingredient.protein.toFixed(1) : '-') : (ingredient.serving_protein > 0 ? ingredient.serving_protein.toFixed(1) : '-')}</Table.Td>
-          <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.fat > 0 ? ingredient.fat.toFixed(1) : '-') : (ingredient.serving_fat > 0 ? ingredient.serving_fat.toFixed(1) : '-')}</Table.Td>
-          <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.carbohydrates > 0 ? ingredient.carbohydrates.toFixed(1) : '-') : (ingredient.serving_carbohydrates > 0 ? ingredient.serving_carbohydrates.toFixed(1) : '-')}</Table.Td>
-        </>
-      )}
-      <Table.Td>
-        {ingredient.unit_type === 'grams' ? '百克' : '每份'}
-      </Table.Td>
-      <Table.Td>
-        <Group gap={0} justify="flex-end">
-          <ActionIcon 
-            variant="subtle" 
-            color="blue" 
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedIngredientForEdit(ingredient);
-              openEditModal();
-            }}
-          >
-            <IconEdit size={16} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon 
-            variant="subtle" 
-            color="red" 
-            onClick={(e) => {
-              e.stopPropagation();
-              setIngredientToDelete(ingredient);
-              openDeleteModal();
-            }}
-          >
-            <IconTrash size={16} stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </Table.Td>
-    </Table.Tr>
-  ));
+  const rows = isLoadingIngredients 
+    ? Array(PAGE_SIZE).fill(0).map((_, index) => (
+        <Table.Tr key={`skeleton-${index}`}>
+          <Table.Td><Skeleton height={20} /></Table.Td>
+          <Table.Td><Skeleton height={20} /></Table.Td>
+          {!isMobile && (
+            <>
+              <Table.Td><Skeleton height={20} /></Table.Td>
+              <Table.Td><Skeleton height={20} /></Table.Td>
+              <Table.Td><Skeleton height={20} /></Table.Td>
+            </>
+          )}
+          <Table.Td><Skeleton height={20} /></Table.Td>
+          <Table.Td>
+            <Group gap={0} justify="flex-end">
+              <Skeleton height={20} width={40} />
+              <Skeleton height={20} width={40} />
+            </Group>
+          </Table.Td>
+        </Table.Tr>
+      ))
+    : sortedData.map((ingredient) => (
+        <Table.Tr 
+          key={ingredient.id} 
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            // Immediately open modal with minimal data
+            setSelectedIngredient(ingredient);
+            openDetailModal();
+            
+            // Start loading full details
+            setIsLoadingDetail(true);
+            fetchIngredientById(ingredient.id)
+              .then((fullIngredientDetail) => {
+                setSelectedIngredient(fullIngredientDetail);
+              })
+              .catch(() => {
+                notifications.show({
+                  position: 'top-right',
+                  title: '載入失敗',
+                  message: '無法取得食材詳細資訊',
+                  color: 'red',
+                });
+              })
+              .finally(() => {
+                setIsLoadingDetail(false);
+              });
+          }}
+        >
+          <Table.Td style={{ maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {ingredient.name}
+          </Table.Td>
+          <Table.Td>{ingredient.unit_type === 'grams' ? ingredient.calories.toFixed(1) : ingredient.serving_calories.toFixed(1)}</Table.Td>
+          {!isMobile && (
+            <>
+              <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.protein > 0 ? ingredient.protein.toFixed(1) : '-') : (ingredient.serving_protein > 0 ? ingredient.serving_protein.toFixed(1) : '-')}</Table.Td>
+              <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.fat > 0 ? ingredient.fat.toFixed(1) : '-') : (ingredient.serving_fat > 0 ? ingredient.serving_fat.toFixed(1) : '-')}</Table.Td>
+              <Table.Td>{ingredient.unit_type === 'grams' ? (ingredient.carbohydrates > 0 ? ingredient.carbohydrates.toFixed(1) : '-') : (ingredient.serving_carbohydrates > 0 ? ingredient.serving_carbohydrates.toFixed(1) : '-')}</Table.Td>
+            </>
+          )}
+          <Table.Td>
+            {ingredient.unit_type === 'grams' ? '百克' : '每份'}
+          </Table.Td>
+          <Table.Td>
+            <Group gap={0} justify="flex-end">
+              <ActionIcon 
+                variant="subtle" 
+                color="blue" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedIngredientForEdit(ingredient);
+                  openEditModal();
+                }}
+              >
+                <IconEdit size={16} stroke={1.5} />
+              </ActionIcon>
+              <ActionIcon 
+                variant="subtle" 
+                color="red" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIngredientToDelete(ingredient);
+                  openDeleteModal();
+                }}
+              >
+                <IconTrash size={16} stroke={1.5} />
+              </ActionIcon>
+            </Group>
+          </Table.Td>
+        </Table.Tr>
+      ));
 
   return (
     <Stack>
@@ -277,7 +303,7 @@ export function TableSort() {
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {rows.length > 0 ? (
+            {isLoadingIngredients || rows.length > 0 ? (
               rows
             ) : (
               <Table.Tr>
