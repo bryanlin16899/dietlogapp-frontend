@@ -46,7 +46,7 @@ export default function Ingredients() {
         <div className="flex flex-col items-center justify-center flex-grow">
             <Button
                 onClick={open}
-                className="mb-2"
+                className="mb-1"
             >
                 <IconPlus size={16} stroke={1.5} />
                  新增食材

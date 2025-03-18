@@ -242,7 +242,7 @@ export function TableSort() {
 
   return (
     <Stack>
-      <ScrollArea h={isMobile ? 380 : 720} miw={isMobile ? 300 : 800}>
+      <ScrollArea h={isMobile ? 380 : 600} miw={isMobile ? 300 : 800}>
         <TextInput
           placeholder="搜尋食材"
           mb="md"
