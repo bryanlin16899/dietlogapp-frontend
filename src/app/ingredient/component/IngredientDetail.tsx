@@ -50,22 +50,22 @@ export function IngredientDetail({ ingredient, opened, onClose, loading = false 
         </Stack>
         <Group grow>
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="blue">{ingredient.calories ? ingredient.calories.toFixed(1) : '-'}</Text>
+            <Text fw={700} size="lg" c="blue">{ingredient.calories > 0 ? ingredient.calories.toFixed(1) : '-'}</Text>
             <Text size="sm" c="dimmed">熱量</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="red">{ingredient.protein ? `${ingredient.protein.toFixed(1)}g` : '-'}</Text>
+            <Text fw={700} size="lg" c="red">{ingredient.protein > 0 ? `${ingredient.protein.toFixed(1)}g` : '-'}</Text>
             <Text size="sm" c="dimmed">蛋白質</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="yellow">{ingredient.fat ? `${ingredient.fat.toFixed(1)}g` : '-'}</Text>
+            <Text fw={700} size="lg" c="yellow">{ingredient.fat > 0 ? `${ingredient.fat.toFixed(1)}g` : '-'}</Text>
             <Text size="sm" c="dimmed">脂肪</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="green">{ingredient.carbohydrates ? `${ingredient.carbohydrates.toFixed(1)}g` : '-'}</Text>
+            <Text fw={700} size="lg" c="green">{ingredient.carbohydrates > 0 ? `${ingredient.carbohydrates.toFixed(1)}g` : '-'}</Text>
             <Text size="sm" c="dimmed">碳水化合物</Text>
           </Stack>
         </Group>
@@ -77,22 +77,22 @@ export function IngredientDetail({ ingredient, opened, onClose, loading = false 
         </Stack>
         <Group grow>
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="blue">{ingredient.serving_calories.toFixed(1) || ingredient.calories.toFixed(1)}</Text>
+            <Text fw={700} size="lg" c="blue">{(ingredient.serving_calories > 0 ? ingredient.serving_calories.toFixed(1) : (ingredient.calories > 0 ? ingredient.calories.toFixed(1) : '-'))}</Text>
             <Text size="sm" c="dimmed">熱量</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="red">{ingredient.serving_protein.toFixed(1) || ingredient.protein.toFixed(1)}g</Text>
+            <Text fw={700} size="lg" c="red">{(ingredient.serving_protein > 0 ? `${ingredient.serving_protein.toFixed(1)}g` : (ingredient.protein > 0 ? `${ingredient.protein.toFixed(1)}g` : '-'))}</Text>
             <Text size="sm" c="dimmed">蛋白質</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="yellow">{ingredient.serving_fat.toFixed(1) || ingredient.fat.toFixed(1)}g</Text>
+            <Text fw={700} size="lg" c="yellow">{(ingredient.serving_fat > 0 ? `${ingredient.serving_fat.toFixed(1)}g` : (ingredient.fat > 0 ? `${ingredient.fat.toFixed(1)}g` : '-'))}</Text>
             <Text size="sm" c="dimmed">脂肪</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="green">{ingredient.serving_carbohydrates.toFixed(1) || ingredient.carbohydrates.toFixed(1)}g</Text>
+            <Text fw={700} size="lg" c="green">{(ingredient.serving_carbohydrates > 0 ? `${ingredient.serving_carbohydrates.toFixed(1)}g` : (ingredient.carbohydrates > 0 ? `${ingredient.carbohydrates.toFixed(1)}g` : '-'))}</Text>
             <Text size="sm" c="dimmed">碳水化合物</Text>
           </Stack>
         </Group>
