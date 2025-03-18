@@ -13,7 +13,7 @@ import {
   TextInput,
   UnstyledButton
 } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery, useDebouncedValue } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconChevronDown, IconChevronUp, IconEdit, IconSearch, IconSelector, IconTrash } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
@@ -50,6 +50,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 
 export function TableSort() {
   const [search, setSearch] = useState('');
+  const [debouncedSearch] = useDebouncedValue(search, 300);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [sortedData, setSortedData] = useState<Ingredient[]>([]);
   const [sortBy, setSortBy] = useState<keyof Ingredient | null>(null);
@@ -70,7 +71,7 @@ export function TableSort() {
     const loadIngredients = async () => {
       try {
         const data = await fetchIngredientList(
-          search, 
+          debouncedSearch, 
           false, // 不拿圖片
           {
             page: currentPage,
@@ -85,7 +86,7 @@ export function TableSort() {
     };
 
     loadIngredients();
-  }, [currentPage]);
+  }, [currentPage, debouncedSearch]);
 
   const setSorting = async (field: keyof Ingredient) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -108,24 +109,9 @@ export function TableSort() {
     }
   };
 
-  const handleSearchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
-    
-    try {
-      const data = await fetchIngredientList(
-        value, 
-        false,
-        {
-          page: currentPage,
-          page_size: PAGE_SIZE
-        });
-      setIngredients(data.ingredients);
-      setSortedData(data.ingredients);
-      setTotalPages(data.total_pages);
-    } catch (error) {
-      console.error('Failed to search ingredients', error);
-    }
   };
 
   const handleDeleteIngredient = async () => {
