@@ -162,22 +162,28 @@ export function TableSort() {
     <Table.Tr 
       key={ingredient.id} 
       style={{ cursor: 'pointer' }}
-      onClick={async () => {
+      onClick={() => {
+        // Immediately open modal with minimal data
+        setSelectedIngredient(ingredient);
+        openDetailModal();
+        
+        // Start loading full details
         setIsLoadingDetail(true);
-        try {
-          const fullIngredientDetail = await fetchIngredientById(ingredient.id);
-          setSelectedIngredient(fullIngredientDetail);
-          openDetailModal();
-        } catch {
-          notifications.show({
-            position: 'top-right',
-            title: '載入失敗',
-            message: '無法取得食材詳細資訊',
-            color: 'red',
+        fetchIngredientById(ingredient.id)
+          .then((fullIngredientDetail) => {
+            setSelectedIngredient(fullIngredientDetail);
+          })
+          .catch(() => {
+            notifications.show({
+              position: 'top-right',
+              title: '載入失敗',
+              message: '無法取得食材詳細資訊',
+              color: 'red',
+            });
+          })
+          .finally(() => {
+            setIsLoadingDetail(false);
           });
-        } finally {
-          setIsLoadingDetail(false);
-        }
       }}
     >
       <Table.Td style={{ maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
