@@ -1,6 +1,23 @@
 import { Ingredient } from "@/lib/api";
 import { Badge, Center, Divider, Group, Image, Loader, Modal, Stack, Text, Title } from "@mantine/core";
 
+// Helper function to format nutrition values
+const formatNutritionValue = (
+  servingValue: number | undefined, 
+  baseValue: number, 
+  unit: 'calories' | 'protein' | 'fat' | 'carbohydrates'
+): string => {
+  const value = servingValue && servingValue > 0 ? servingValue : baseValue;
+  
+  if (value <= 0) return '-';
+  
+  const formattedValue = value.toFixed(1);
+  
+  return unit === 'calories' 
+    ? formattedValue 
+    : `${formattedValue}g`;
+};
+
 interface IngredientDetailProps {
   ingredient: Ingredient | null;
   opened: boolean;
@@ -50,22 +67,22 @@ export function IngredientDetail({ ingredient, opened, onClose, loading = false 
         </Stack>
         <Group grow>
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="blue">{ingredient.calories > 0 ? ingredient.calories.toFixed(1) : '-'}</Text>
+            <Text fw={700} size="lg" c="blue">{formatNutritionValue(undefined, ingredient.calories, 'calories')}</Text>
             <Text size="sm" c="dimmed">熱量</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="red">{ingredient.protein > 0 ? `${ingredient.protein.toFixed(1)}g` : '-'}</Text>
+            <Text fw={700} size="lg" c="red">{formatNutritionValue(undefined, ingredient.protein, 'protein')}</Text>
             <Text size="sm" c="dimmed">蛋白質</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="yellow">{ingredient.fat > 0 ? `${ingredient.fat.toFixed(1)}g` : '-'}</Text>
+            <Text fw={700} size="lg" c="yellow">{formatNutritionValue(undefined, ingredient.fat, 'fat')}</Text>
             <Text size="sm" c="dimmed">脂肪</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="green">{ingredient.carbohydrates > 0 ? `${ingredient.carbohydrates.toFixed(1)}g` : '-'}</Text>
+            <Text fw={700} size="lg" c="green">{formatNutritionValue(undefined, ingredient.carbohydrates, 'carbohydrates')}</Text>
             <Text size="sm" c="dimmed">碳水化合物</Text>
           </Stack>
         </Group>
@@ -77,22 +94,22 @@ export function IngredientDetail({ ingredient, opened, onClose, loading = false 
         </Stack>
         <Group grow>
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="blue">{(ingredient.serving_calories > 0 ? ingredient.serving_calories.toFixed(1) : (ingredient.calories > 0 ? ingredient.calories.toFixed(1) : '-'))}</Text>
+            <Text fw={700} size="lg" c="blue">{formatNutritionValue(ingredient.serving_calories, ingredient.calories, 'calories')}</Text>
             <Text size="sm" c="dimmed">熱量</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="red">{(ingredient.serving_protein > 0 ? `${ingredient.serving_protein.toFixed(1)}g` : (ingredient.protein > 0 ? `${ingredient.protein.toFixed(1)}g` : '-'))}</Text>
+            <Text fw={700} size="lg" c="red">{formatNutritionValue(ingredient.serving_protein, ingredient.protein, 'protein')}</Text>
             <Text size="sm" c="dimmed">蛋白質</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="yellow">{(ingredient.serving_fat > 0 ? `${ingredient.serving_fat.toFixed(1)}g` : (ingredient.fat > 0 ? `${ingredient.fat.toFixed(1)}g` : '-'))}</Text>
+            <Text fw={700} size="lg" c="yellow">{formatNutritionValue(ingredient.serving_fat, ingredient.fat, 'fat')}</Text>
             <Text size="sm" c="dimmed">脂肪</Text>
           </Stack>
           
           <Stack gap="xs">
-            <Text fw={700} size="lg" c="green">{(ingredient.serving_carbohydrates > 0 ? `${ingredient.serving_carbohydrates.toFixed(1)}g` : (ingredient.carbohydrates > 0 ? `${ingredient.carbohydrates.toFixed(1)}g` : '-'))}</Text>
+            <Text fw={700} size="lg" c="green">{formatNutritionValue(ingredient.serving_carbohydrates, ingredient.carbohydrates, 'carbohydrates')}</Text>
             <Text size="sm" c="dimmed">碳水化合物</Text>
           </Stack>
         </Group>
