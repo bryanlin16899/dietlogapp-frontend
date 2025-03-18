@@ -1,5 +1,5 @@
 import { Ingredient } from "@/lib/api";
-import { Badge, Center, Divider, Group, Image, Loader, Modal, Stack, Text, Title } from "@mantine/core";
+import { Badge, Divider, Group, Image, Modal, Skeleton, Stack, Text, Title } from "@mantine/core";
 
 // Helper function to format nutrition values
 const formatNutritionValue = (
@@ -38,13 +38,23 @@ export function IngredientDetail({ ingredient, opened, onClose, loading = false 
         centered
       >
         <Stack>
-          <Skeleton height={50} />
+          <Group justify="space-between">
+            <Skeleton height={50} width={150} />
+            <Skeleton height={50} width={100} />
+          </Group>
           <Skeleton height={20} />
           <Group grow>
             {[1, 2, 3, 4].map((item) => (
               <Stack key={item} gap="xs">
                 <Skeleton height={30} />
-                <Skeleton height={15} />
+              </Stack>
+            ))}
+          </Group>
+          <Skeleton height={20} />
+          <Group grow>
+            {[1, 2, 3, 4].map((item) => (
+              <Stack key={item} gap="xs">
+                <Skeleton height={30} />
               </Stack>
             ))}
           </Group>

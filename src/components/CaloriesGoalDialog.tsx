@@ -12,7 +12,7 @@ export function CaloriesGoalDialog() {
         const caloriesGoal = localStorage.getItem('calories-goal')
         const userInfo = localStorage.getItem('userInfo');
         if (!caloriesGoal && userInfo) open()
-    }, [])
+    })
 
     const handleConfirm = () => {
         localStorage.setItem('calories-goal', String(value));

@@ -7,12 +7,11 @@ import {
   Modal,
   Pagination,
   ScrollArea,
-  Skeleton,
   Stack,
   Table,
   Text,
   TextInput,
-  UnstyledButton,
+  UnstyledButton
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
@@ -346,6 +345,7 @@ export function TableSort() {
       <Pagination
         total={totalPages}
         value={currentPage}
+        siblings={2}
         onChange={setCurrentPage}
       />
     </Stack>

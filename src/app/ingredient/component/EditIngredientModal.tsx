@@ -1,4 +1,4 @@
-import { Ingredient, UnitType, updateIngredient, fetchIngredientById } from '@/lib/api';
+import { fetchIngredientById, Ingredient, UnitType, updateIngredient } from '@/lib/api';
 import {
   Button,
   Collapse,
@@ -81,7 +81,7 @@ export function EditIngredientModal({
           // Reset image state when ingredient changes
           setImageFile(null);
           setImagePreview(fullIngredient?.image_base64 || null);
-        } catch (error) {
+        } catch {
           notifications.show({
             position: 'top-right',
             title: '載入失敗',

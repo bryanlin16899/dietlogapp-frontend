@@ -95,7 +95,7 @@ export function CreateIngredientModal({
 
       notifications.show({
         position: 'top-right',
-        title: 'Success',
+        title: '成功',
         message: '食物新增成功',
         color: 'green',
       });

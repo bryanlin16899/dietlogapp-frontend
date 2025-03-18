@@ -138,7 +138,7 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center flex-grow max-w-[800px] w-full mx-auto px-4">
           {userInfo?.googleId && (
             <Group
-              className="w-full mb-1 max-sm:flex-col max-sm:items-start max-sm:ml-2.5"
+              className="w-full mb-1 max-sm:flex-col max-sm:items-start max-sm:ml-0.5"
               justify="space-between"
             >
               <Title className="max-sm:text-center max-sm:-mb-1.5">
