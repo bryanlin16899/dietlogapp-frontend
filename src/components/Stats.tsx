@@ -25,7 +25,7 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
       label: '熱量攝入', 
       stats: `${dietStats.calories ? Math.round(dietStats.calories) : '-'} 大卡`, 
       progress: calculateProgress(dietStats.calories, Number(caloriesGoal)), 
-      color: 'blue', 
+      color: 'yellow', 
       icon: 'up',
       tooltipMsg: `還剩 ${(Number(caloriesGoal)-dietStats.calories).toFixed(0)} 大卡 🫠`
     },
@@ -33,7 +33,7 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
       label: '熱量消耗', 
       stats: `${dietStats.consumption ? Math.round(dietStats.consumption) : '-'} 大卡`, 
       progress: calculateProgress(dietStats.consumption, 1000), 
-      color: 'teal', 
+      color: 'skyBlue', 
       icon: 'down'
     },
   ];

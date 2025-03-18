@@ -10,18 +10,19 @@ const theme = createTheme({
   },
   colors: {
     brand: [
-      "#fffae6",  // Lightest
-      "#fff3c4",
-      "#ffeca0",
-      "#ffe57f",
-      "#ffd43b",  // Main color
-      "#ffc53d",
-      "#faad14",
-      "#d48806",
-      "#ad6800",
-      "#874d00",  // Darkest
+      "#fff9db",
+      "#fff3bf",
+      "#ffec99",
+      "#ffe066",
+      "#ffd43b",
+      "#fcc419",
+      "#fab005",
+      "#f59f00",
+      "#f08c00",
+      "#e67700",
     ],
   },
+  primaryColor: "brand",
 });
 
 export default theme;
