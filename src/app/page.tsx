@@ -22,6 +22,9 @@ import '@mantine/dates/styles.css';
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
+import { Modal, TextInput, NumberInput, Group, Button, SegmentedControl } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 
 export default function Home() {
   const [dietLog, setDietLog] = useState<GetDietLogResponse|null>(null);
@@ -34,6 +37,7 @@ export default function Home() {
   });
   const [selectedFood, setSelectedFood] = useState<IntakeFood|null>(null);
   const [detailModalOpened, setDetailModalOpened] = useState(false);
+  const [manualIntakeModalOpened, setManualIntakeModalOpened] = useState(false);
   const tableScrollAreaRef = useRef<{ refreshDietLog: () => void }>(null);
   const [opened, { toggle }] = useDisclosure(true);
   const { userInfo } = useUser();
@@ -78,6 +82,74 @@ export default function Home() {
   const handleFoodRowClick = (food: IntakeFood) => {
     setSelectedFood(food);
     setDetailModalOpened(true);
+  };
+
+  const handleAddFood = () => {
+    setManualIntakeModalOpened(true);
+  };
+
+  const manualIntakeForm = useForm({
+    initialValues: {
+      foodName: '',
+      calories: 0,
+      quantity: 0,
+      unitType: 'grams' as UnitType
+    },
+    validate: {
+      foodName: (value) => value.trim() === '' ? '食物名稱不能為空' : null,
+      calories: (value) => value <= 0 ? '卡路里必須大於0' : null,
+      quantity: (value) => value <= 0 ? '份量必須大於0' : null,
+    }
+  });
+
+  const submitManualIntake = async () => {
+    if (!userInfo?.googleId) {
+      notifications.show({
+        position: 'top-right',
+        title: '錯誤',
+        message: '請先登入',
+        color: 'red',
+      });
+      return;
+    }
+
+    const formValues = manualIntakeForm.validate();
+    if (formValues.hasErrors) {
+      return;
+    }
+
+    try {
+      const formattedDate = logDate ? 
+        `${logDate.getFullYear()}-${String(logDate.getMonth() + 1).padStart(2, '0')}-${String(logDate.getDate()).padStart(2, '0')}` : 
+        new Date().toISOString().split('T')[0];
+
+      await recordDietIntakeManually(
+        userInfo.googleId, 
+        formattedDate, 
+        manualIntakeForm.values.foodName, 
+        manualIntakeForm.values.calories, 
+        manualIntakeForm.values.quantity, 
+        manualIntakeForm.values.unitType
+      );
+
+      notifications.show({
+        position: 'top-right',
+        title: '成功',
+        message: '食物已成功新增',
+        color: 'green',
+      });
+
+      setManualIntakeModalOpened(false);
+      handleFetchDietLog();
+      manualIntakeForm.reset();
+    } catch (error) {
+      notifications.show({
+        position: 'top-right',
+        title: '錯誤',
+        message: '新增食物失敗',
+        color: 'red',
+      });
+    }
   };
 
   if (loading) {
@@ -154,12 +226,57 @@ export default function Home() {
             dietLog={dietLog} 
             onRemoveIntake={handleFetchDietLog}
             onFoodRowClick={handleFoodRowClick}
+            onAddFood={handleAddFood}
           />
           <IntakeFoodDetail
             food={selectedFood}
             opened={detailModalOpened}
             onClose={() => setDetailModalOpened(false)}
           />
+          <Modal 
+            opened={manualIntakeModalOpened} 
+            onClose={() => {
+              setManualIntakeModalOpened(false);
+              manualIntakeForm.reset();
+            }} 
+            title="手動新增食物"
+            size="md"
+          >
+            <form onSubmit={manualIntakeForm.onSubmit(submitManualIntake)}>
+              <TextInput
+                label="食物名稱"
+                placeholder="輸入食物名稱"
+                {...manualIntakeForm.getInputProps('foodName')}
+                mb="md"
+              />
+              <NumberInput
+                label="卡路里"
+                placeholder="輸入卡路里"
+                {...manualIntakeForm.getInputProps('calories')}
+                mb="md"
+                min={0}
+              />
+              <NumberInput
+                label="份量"
+                placeholder="輸入份量"
+                {...manualIntakeForm.getInputProps('quantity')}
+                mb="md"
+                min={0}
+              />
+              <SegmentedControl
+                label="單位"
+                {...manualIntakeForm.getInputProps('unitType')}
+                data={[
+                  { label: '克', value: 'grams' },
+                  { label: '份', value: 'servings' }
+                ]}
+                mb="md"
+              />
+              <Group justify="flex-end" mt="md">
+                <Button type="submit" variant="filled">新增</Button>
+              </Group>
+            </form>
+          </Modal>
           <Text
             className="text-center text-gray-700 dark:text-gray-300 mb-2"
             ta="center"
