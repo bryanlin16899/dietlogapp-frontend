@@ -6,7 +6,7 @@ import { IntakeFoodsTable } from "@/components/IntakeFoodsTable";
 import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
 import { useUser } from "@/context/userContext";
-import { fetchDietLog, GetDietLogResponse, IntakeFood } from "@/lib/api";
+import { fetchDietLog, GetDietLogResponse, IntakeFood, recordDietIntakeManually, UnitType } from "@/lib/api";
 import {
   AppShell,
   AppShellMain,
@@ -14,17 +14,19 @@ import {
   Button,
   Collapse,
   Group,
+  Modal,
+  NumberInput, SegmentedControl,
   Text,
+  TextInput,
   Title
 } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
 import '@mantine/dates/styles.css';
+import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { Modal, TextInput, NumberInput, Group, Button, SegmentedControl } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
 
 export default function Home() {
   const [dietLog, setDietLog] = useState<GetDietLogResponse|null>(null);
@@ -123,14 +125,18 @@ export default function Home() {
         `${logDate.getFullYear()}-${String(logDate.getMonth() + 1).padStart(2, '0')}-${String(logDate.getDate()).padStart(2, '0')}` : 
         new Date().toISOString().split('T')[0];
 
-      await recordDietIntakeManually(
-        userInfo.googleId, 
-        formattedDate, 
-        manualIntakeForm.values.foodName, 
-        manualIntakeForm.values.calories, 
-        manualIntakeForm.values.quantity, 
-        manualIntakeForm.values.unitType
-      );
+      const data = {
+        googleId: userInfo.googleId,
+        logDate: formattedDate,
+        foodName: manualIntakeForm.values.foodName, 
+        calories: manualIntakeForm.values.calories, 
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+        quantity: manualIntakeForm.values.quantity, 
+        unitType: manualIntakeForm.values.unitType
+      }
+      await recordDietIntakeManually(data);
 
       notifications.show({
         position: 'top-right',
@@ -250,21 +256,20 @@ export default function Home() {
                 mb="md"
               />
               <NumberInput
-                label="卡路里"
+                label="熱量"
                 placeholder="輸入卡路里"
                 {...manualIntakeForm.getInputProps('calories')}
                 mb="md"
                 min={0}
               />
               <NumberInput
-                label="份量"
+                label="數量"
                 placeholder="輸入份量"
                 {...manualIntakeForm.getInputProps('quantity')}
                 mb="md"
                 min={0}
               />
               <SegmentedControl
-                label="單位"
                 {...manualIntakeForm.getInputProps('unitType')}
                 data={[
                   { label: '克', value: 'grams' },
