@@ -33,7 +33,7 @@ export interface IntakeFood {
 }
 export interface GetDietLogResponse {
   date: string;
-  calories: number;
+  intake: number;
   consumption: number;
   intake_foods: [IntakeFood]
 }
@@ -135,7 +135,7 @@ export const recordDietIntake = async (
   }
 };
 
-export const fetchDietLog = async (googleId: string, date: string) => {
+export const fetchDietLog = async (googleId: string, date: string): Promise<GetDietLogResponse> => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/get_diet_log`, {
       method: 'POST',
@@ -143,7 +143,7 @@ export const fetchDietLog = async (googleId: string, date: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        date: date,
+        log_date: date,
         google_id: googleId
       })
     });
@@ -292,7 +292,7 @@ export const recordDietIntakeManually = async (
   calories: number,
   quantity: number, 
   unitType: UnitType = 'grams'
-) => {
+): Promise<GetDietLogResponse> => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/intake-manually`, {
       method: 'POST',

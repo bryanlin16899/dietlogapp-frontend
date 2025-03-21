@@ -11,7 +11,7 @@ import { useUser } from '@/context/userContext';
 import { GetDietLogResponse, IntakeFood, removeIntakeById } from '@/lib/api';
 import { forwardRef, useImperativeHandle } from 'react';
 
-export const TableScrollArea = forwardRef<
+export const IntakeFoodsTable = forwardRef<
   { refreshDietLog: () => void }, 
   { dietLog: GetDietLogResponse|null, onRemoveIntake: () => void, onFoodRowClick?: (food: IntakeFood) => void }
 >(
@@ -129,4 +129,4 @@ export const TableScrollArea = forwardRef<
   );
 });
 
-TableScrollArea.displayName = 'TableScrollArea';
+IntakeFoodsTable.displayName = 'TableScrollArea';

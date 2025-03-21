@@ -2,9 +2,9 @@
 import { AutocompleteLoading } from "@/components/AutocompleteLoading";
 import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
 import { IntakeFoodDetail } from "@/components/IntakeFoodDetail";
+import { IntakeFoodsTable } from "@/components/IntakeFoodsTable";
 import { NavMenu } from "@/components/NavMenu";
 import { StatsRing } from "@/components/Stats";
-import { TableScrollArea } from "@/components/TableScrollArea";
 import { useUser } from "@/context/userContext";
 import { fetchDietLog, GetDietLogResponse, IntakeFood } from "@/lib/api";
 import {
@@ -22,33 +22,6 @@ import '@mantine/dates/styles.css';
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-
-// Component that uses useSearchParams
-// function SearchParamsHandler() {
-//   const searchParams = useSearchParams();
-  
-//   useEffect(() => {
-//     const googleId = searchParams.get('id');
-//     const userId = searchParams.get('user_id');
-//     const name = searchParams.get('name');
-//     const email = searchParams.get('email');
-//     const picture = searchParams.get('picture');
-
-//     if (googleId && userId && name && email) {
-//       const userInfo = {
-//         googleId,
-//         userId,
-//         name: decodeURIComponent(name),
-//         email,
-//         picture
-//       };
-
-//       localStorage.setItem('userInfo', JSON.stringify(userInfo));
-//     }
-//   }, [searchParams]);
-
-//   return null;
-// }
 
 export default function Home() {
   const [dietLog, setDietLog] = useState<GetDietLogResponse|null>(null);
@@ -176,7 +149,7 @@ export default function Home() {
               <StatsRing dietLog={dietLog} />
             </Collapse>
           </div>
-          <TableScrollArea 
+          <IntakeFoodsTable 
             ref={tableScrollAreaRef} 
             dietLog={dietLog} 
             onRemoveIntake={handleFetchDietLog}

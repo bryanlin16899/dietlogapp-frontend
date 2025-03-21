@@ -7,7 +7,7 @@ import { GiMeat } from 'react-icons/gi';
 export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
   const [caloriesGoal, setCaloriesGoal] = useState<string>("2000");
   const dietStats = {
-    calories: dietLog?.calories || 0,
+    intake: dietLog?.intake || 0,
     consumption: dietLog?.consumption || 0,
   };
 
@@ -23,11 +23,11 @@ export function StatsRing({ dietLog }: { dietLog: GetDietLogResponse|null }) {
   const statsData = [
     { 
       label: '熱量攝入', 
-      stats: `${dietStats.calories ? Math.round(dietStats.calories) : '-'} 大卡`, 
-      progress: calculateProgress(dietStats.calories, Number(caloriesGoal)), 
+      stats: `${dietStats.intake ? Math.round(dietStats.intake) : '-'} 大卡`, 
+      progress: calculateProgress(dietStats.intake, Number(caloriesGoal)), 
       color: 'yellow', 
       icon: 'up',
-      tooltipMsg: `還剩 ${(Number(caloriesGoal)-dietStats.calories).toFixed(0)} 大卡 🫠`
+      tooltipMsg: `還剩 ${(Number(caloriesGoal)-dietStats.intake).toFixed(0)} 大卡 🫠`
     },
     { 
       label: '熱量消耗', 
