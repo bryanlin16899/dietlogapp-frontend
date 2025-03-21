@@ -2,7 +2,7 @@
 import { ActionIcon, Group, ScrollArea, Table } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconTrash } from '@tabler/icons-react';
+import { IconTrash, IconPlus } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useState } from 'react';
 import classes from './TableScrollArea.module.css';
@@ -13,9 +13,14 @@ import { forwardRef, useImperativeHandle } from 'react';
 
 export const IntakeFoodsTable = forwardRef<
   { refreshDietLog: () => void }, 
-  { dietLog: GetDietLogResponse|null, onRemoveIntake: () => void, onFoodRowClick?: (food: IntakeFood) => void }
+  { 
+    dietLog: GetDietLogResponse|null, 
+    onRemoveIntake: () => void, 
+    onFoodRowClick?: (food: IntakeFood) => void,
+    onAddFood?: () => void 
+  }
 >(
-  ({ dietLog, onRemoveIntake, onFoodRowClick }, ref) => {
+  ({ dietLog, onRemoveIntake, onFoodRowClick, onAddFood }, ref) => {
     const [scrolled, setScrolled] = useState(false);
     const isMobile = useMediaQuery('(max-width: 768px)');
     const { userInfo } = useUser();
@@ -123,7 +128,31 @@ export const IntakeFoodsTable = forwardRef<
             <Table.Th>操作</Table.Th>
           </Table.Tr>
         </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
+        <Table.Tbody>
+          {rows}
+          {onAddFood && (
+            <Table.Tr 
+              style={{ 
+                cursor: 'pointer', 
+                backgroundColor: 'var(--mantine-color-gray-1)', 
+                textAlign: 'center' 
+              }}
+              onClick={onAddFood}
+            >
+              <Table.Td colSpan={isMobile ? 3 : 7} style={{ textAlign: 'center' }}>
+                <Group justify="center" align="center">
+                  <ActionIcon 
+                    variant="subtle" 
+                    color="blue" 
+                    size="lg"
+                  >
+                    <IconPlus size={24} stroke={1.5} />
+                  </ActionIcon>
+                </Group>
+              </Table.Td>
+            </Table.Tr>
+          )}
+        </Table.Tbody>
       </Table>
     </ScrollArea>
   );
