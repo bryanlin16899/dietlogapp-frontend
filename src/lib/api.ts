@@ -284,3 +284,38 @@ export const updateIngredient = async (ingredientData: {
     throw error;
   }
 };
+
+export const recordDietIntakeManually = async (
+  googleId: string, 
+  logDate: string, 
+  foodName: string, 
+  calories: number,
+  quantity: number, 
+  unitType: UnitType = 'grams'
+) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/intake-manually`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        google_id: googleId,
+        log_date: logDate,
+        food_name: foodName,
+        calories: calories,
+        quantity: quantity,
+        unit_type: unitType
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error recording manual intake:', error);
+    throw error;
+  }
+};
