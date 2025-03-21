@@ -286,12 +286,17 @@ export const updateIngredient = async (ingredientData: {
 };
 
 export const recordDietIntakeManually = async (
-  googleId: string, 
-  logDate: string, 
-  foodName: string, 
-  calories: number,
-  quantity: number, 
-  unitType: UnitType = 'grams'
+  manuallyIntakeData: {
+    googleId: string; 
+    logDate: string; 
+    foodName: string; 
+    calories: number;
+    protein: number;
+    fat: number;
+    carbohydrates: number;
+    quantity: number; 
+    unitType: UnitType;
+  }
 ): Promise<GetDietLogResponse> => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diet/intake-manually`, {
@@ -300,12 +305,12 @@ export const recordDietIntakeManually = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        google_id: googleId,
-        log_date: logDate,
-        food_name: foodName,
-        calories: calories,
-        quantity: quantity,
-        unit_type: unitType
+        google_id: manuallyIntakeData.googleId,
+        log_date: manuallyIntakeData.logDate,
+        food_name: manuallyIntakeData.foodName,
+        calories: manuallyIntakeData.calories,
+        quantity: manuallyIntakeData.quantity,
+        unit_type: manuallyIntakeData.unitType
       })
     });
     

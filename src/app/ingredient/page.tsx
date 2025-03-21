@@ -5,8 +5,7 @@ import {
   AppShell,
   AppShellMain,
   Box,
-  Button,
-  Text
+  Button
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
@@ -60,7 +59,7 @@ export default function Ingredients() {
         </div>
 
         
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <Text
             className="text-center text-gray-700 dark:text-gray-300 max-w-[500px] mb-2"
             ta="center"
@@ -68,7 +67,7 @@ export default function Ingredients() {
           >
             Log you diet, mantain your diet and keep track of your diet.
           </Text>
-        </div>
+        </div> */}
       </AppShellMain>
     </AppShell>
   );

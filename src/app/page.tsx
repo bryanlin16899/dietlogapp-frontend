@@ -16,7 +16,6 @@ import {
   Group,
   Modal,
   NumberInput, SegmentedControl,
-  Text,
   TextInput,
   Title
 } from "@mantine/core";
@@ -102,7 +101,7 @@ export default function Home() {
     },
     validate: {
       foodName: (value) => value.trim() === '' ? '食物名稱不能為空' : null,
-      calories: (value) => value < 0 ? '卡路里不能為負數' : null,
+      calories: (value) => value == 0 ? '熱量不能為空' : null,
       quantity: (value) => value <= 0 ? '份量必須大於0' : null,
     }
   });
@@ -151,7 +150,7 @@ export default function Home() {
       setManualIntakeModalOpened(false);
       handleFetchDietLog();
       manualIntakeForm.reset();
-    } catch (error) {
+    } catch {
       notifications.show({
         position: 'top-right',
         title: '錯誤',
@@ -254,12 +253,11 @@ export default function Home() {
             <form onSubmit={manualIntakeForm.onSubmit(submitManualIntake)}>
               <TextInput
                 label="食物名稱"
-                placeholder="輸入食物名稱"
+                placeholder="便當沒吃飯 🌾, 試吃 🧁"
                 {...manualIntakeForm.getInputProps('foodName')}
                 mb="md"
               />
               <SegmentedControl
-                label="單位"
                 {...manualIntakeForm.getInputProps('unitType')}
                 data={[
                   { label: '克', value: 'grams' },
@@ -273,7 +271,6 @@ export default function Home() {
                 placeholder="輸入卡路里"
                 {...manualIntakeForm.getInputProps('calories')}
                 mb="md"
-                min={0}
               />
               <NumberInput
                 label="蛋白質"
@@ -308,13 +305,13 @@ export default function Home() {
               </Group>
             </form>
           </Modal>
-          <Text
+          {/* <Text
             className="text-center text-gray-700 dark:text-gray-300 mb-2"
             ta="center"
             size="lg"
           >
             Log your diet, maintain your diet and keep track of your nutrition.
-          </Text>
+          </Text> */}
         </div>
       </AppShellMain>
     </AppShell>

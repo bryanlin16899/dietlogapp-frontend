@@ -133,8 +133,10 @@ export const IntakeFoodsTable = forwardRef<
           <Table.Tr 
             style={{ 
               cursor: 'pointer', 
-              textAlign: 'center' 
+              textAlign: 'center',
+              transition: 'background-color 0.2s ease',
             }}
+            className="hover:bg-gray-100 dark:hover:bg-gray-800"
             onClick={onAddFood}
           >
             <Table.Td colSpan={isMobile ? 3 : 7} style={{ textAlign: 'center' }}>
