@@ -258,6 +258,16 @@ export default function Home() {
                 {...manualIntakeForm.getInputProps('foodName')}
                 mb="md"
               />
+              <SegmentedControl
+                label="單位"
+                {...manualIntakeForm.getInputProps('unitType')}
+                data={[
+                  { label: '克', value: 'grams' },
+                  { label: '份', value: 'servings' }
+                ]}
+                fullWidth
+                mb="md"
+              />
               <NumberInput
                 label="熱量"
                 placeholder="輸入卡路里"
@@ -292,14 +302,6 @@ export default function Home() {
                 {...manualIntakeForm.getInputProps('quantity')}
                 mb="md"
                 min={0}
-              />
-              <SegmentedControl
-                {...manualIntakeForm.getInputProps('unitType')}
-                data={[
-                  { label: '克', value: 'grams' },
-                  { label: '份', value: 'servings' }
-                ]}
-                mb="md"
               />
               <Group justify="flex-end" mt="md">
                 <Button type="submit" variant="filled">新增</Button>
