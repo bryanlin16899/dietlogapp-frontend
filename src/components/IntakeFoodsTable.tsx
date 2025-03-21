@@ -2,7 +2,7 @@
 import { ActionIcon, Group, ScrollArea, Table } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconTrash, IconPlus } from '@tabler/icons-react';
+import { IconPlus, IconTrash } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useState } from 'react';
 import classes from './TableScrollArea.module.css';
@@ -130,28 +130,24 @@ export const IntakeFoodsTable = forwardRef<
         </Table.Thead>
         <Table.Tbody>
           {rows}
-          {onAddFood && (
-            <Table.Tr 
-              style={{ 
-                cursor: 'pointer', 
-                backgroundColor: 'var(--mantine-color-gray-1)', 
-                textAlign: 'center' 
-              }}
-              onClick={onAddFood}
-            >
-              <Table.Td colSpan={isMobile ? 3 : 7} style={{ textAlign: 'center' }}>
-                <Group justify="center" align="center">
-                  <ActionIcon 
-                    variant="subtle" 
-                    color="blue" 
-                    size="lg"
-                  >
-                    <IconPlus size={24} stroke={1.5} />
-                  </ActionIcon>
-                </Group>
-              </Table.Td>
-            </Table.Tr>
-          )}
+          <Table.Tr 
+            style={{ 
+              cursor: 'pointer', 
+              textAlign: 'center' 
+            }}
+            onClick={onAddFood}
+          >
+            <Table.Td colSpan={isMobile ? 3 : 7} style={{ textAlign: 'center' }}>
+              <Group justify="center" align="center">
+                <ActionIcon 
+                  variant="subtle" 
+                  size="lg"
+                >
+                  <IconPlus size={24} stroke={1.5} />
+                </ActionIcon>
+              </Group>
+            </Table.Td>
+          </Table.Tr>
         </Table.Tbody>
       </Table>
     </ScrollArea>
