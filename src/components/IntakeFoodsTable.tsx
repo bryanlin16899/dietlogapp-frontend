@@ -140,8 +140,14 @@ export const IntakeFoodsTable = forwardRef<
             <Table.Td colSpan={isMobile ? 3 : 7} style={{ textAlign: 'center' }}>
               <Group justify="center" align="center">
                 <ActionIcon 
-                  variant="subtle" 
+                  variant="transparent" 
                   size="lg"
+                  style={{
+                    transition: 'transform 0.2s ease',
+                    ':hover': {
+                      transform: 'scale(1.1)'
+                    }
+                  }}
                 >
                   <IconPlus size={24} stroke={1.5} />
                 </ActionIcon>
