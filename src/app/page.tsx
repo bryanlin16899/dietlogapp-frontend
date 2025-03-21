@@ -94,12 +94,15 @@ export default function Home() {
     initialValues: {
       foodName: '',
       calories: 0,
+      protein: 0,
+      fat: 0,
+      carbohydrates: 0,
       quantity: 0,
       unitType: 'grams' as UnitType
     },
     validate: {
       foodName: (value) => value.trim() === '' ? '食物名稱不能為空' : null,
-      calories: (value) => value <= 0 ? '卡路里必須大於0' : null,
+      calories: (value) => value < 0 ? '卡路里不能為負數' : null,
       quantity: (value) => value <= 0 ? '份量必須大於0' : null,
     }
   });
@@ -130,9 +133,9 @@ export default function Home() {
         logDate: formattedDate,
         foodName: manualIntakeForm.values.foodName, 
         calories: manualIntakeForm.values.calories, 
-        protein: 0,
-        fat: 0,
-        carbohydrates: 0,
+        protein: manualIntakeForm.values.protein,
+        fat: manualIntakeForm.values.fat,
+        carbohydrates: manualIntakeForm.values.carbohydrates,
         quantity: manualIntakeForm.values.quantity, 
         unitType: manualIntakeForm.values.unitType
       }
@@ -259,6 +262,27 @@ export default function Home() {
                 label="熱量"
                 placeholder="輸入卡路里"
                 {...manualIntakeForm.getInputProps('calories')}
+                mb="md"
+                min={0}
+              />
+              <NumberInput
+                label="蛋白質"
+                placeholder="輸入蛋白質克數"
+                {...manualIntakeForm.getInputProps('protein')}
+                mb="md"
+                min={0}
+              />
+              <NumberInput
+                label="脂肪"
+                placeholder="輸入脂肪克數"
+                {...manualIntakeForm.getInputProps('fat')}
+                mb="md"
+                min={0}
+              />
+              <NumberInput
+                label="碳水化合物"
+                placeholder="輸入碳水化合物克數"
+                {...manualIntakeForm.getInputProps('carbohydrates')}
                 mb="md"
                 min={0}
               />
